@@ -60,7 +60,10 @@ close $summary;
 
 open my $exper, '>', 'experimental/index.html';
 
-say { $exper } $header =~ s,(?<=href=")(?=style.css"),../,r;
+say { $exper } $header
+  =~ s,(?=</title>), — النسخة التجريبية,r
+  =~ s,(?<=href=")(?=style.css"),../,r
+  ;
 
 say { $exper } <<~'END_OF_TEXT';
   <div class="experimental-alert" align="center">
