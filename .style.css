@@ -1,0 +1,61 @@
+body {
+  font-family: serif;
+  width: min(85%, 35em);
+  margin: auto;
+  background: #fafaff;
+}
+
+/* lines around terms */
+/* modified from https://codepen.io/oaviv/pen/GqXwYp
+   (found at https://uicookies.com/html-hr-css/) */
+h2 {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: navy;
+}
+h2:after, h2:before {
+  content: '';
+  flex-grow: 1;
+  height: 1px;
+  background: #007;
+  min-width: 1em;
+  margin: auto;
+}
+h2:before { margin-left:  0.5em }
+h2:after  { margin-right: 0.5em }
+
+a        { color: #009 }
+a:hover  { color: #00f }
+a:active { color: #08f }
+
+a:not(.out) { text-decoration: none }
+a:hover { text-decoration: underline }
+
+h2 a        { color: #000080 }
+h2 a:hover  { color: #0000e0 }
+h2 a:active { color: #0080d0 }
+
+blockquote {
+  border-right: 2px solid #bbc;
+  padding-right: 10px;
+  margin-right: 0;
+  position: relative;
+}
+blockquote:before {
+  content: '”';
+  font-size: 200%;
+  display: block;
+  position: absolute;
+  top: -0.5rem;
+  right: calc(-12px - 0.25em);
+}
+
+.seealso {
+  margin-bottom: -1em;
+}
+
+.experimental-alert {
+  padding: 1em;
+  background: rgba(255, 0, 0, 0.1);
+}
