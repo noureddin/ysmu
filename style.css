@@ -55,7 +55,16 @@ blockquote:before {
   margin-bottom: -1em;
 }
 
-.experimental-alert {
+.alert {
   padding: 1em;
   background: rgba(255, 0, 0, 0.1);
+}
+
+.footer {
+  padding: 1em;
+  background: rgba(0, 0, 255, 0.1);
+}
+
+.emptypage {
+  padding: 2em;
 }

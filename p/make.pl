@@ -23,6 +23,13 @@ my $header = <<~'END_OF_TEXT';
 END_OF_TEXT
 
 my $footer = <<~'END_OF_TEXT';
+  <div class="footer" align="center">
+    <!--experimental-->
+    <p>يمكنك التواصل معنا عبر
+      صفحة <a href="https://github.com/noureddin/ysmu/issues">مسائل GitHub</a><br>
+      أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>.
+    </p>
+  </div>
   </body>
   </html>
 END_OF_TEXT
@@ -44,14 +51,26 @@ open my $summary, '>', 'ysmu.tsv';
 
 say { $index } $header;
 
+my $words;
+
 for my $term (<w/*>) {
+  ++$words;
   my $html = filepath_to_html $term;
   say { $index } term_to_header $term;
   say { $index } $html;
   say { $summary } $term, "\t", html_to_summary $html;
 }
 
-say { $index } $footer;
+my $goto_experimental = '<p>يمكنك أيضا رؤية <a href="experimental">المصطلحات التجريبية</a>.</p>';
+
+if (!$words) {
+  say { $index } '<div class="emptypage" align="center">لا توجد مصطلحات مستقرة بعد.</div>';
+  $goto_experimental =~ s/أيضا//;
+}
+
+say { $index } $footer
+  =~ s|<!--experimental-->|$goto_experimental|r
+  ;
 
 close $index;
 close $summary;
@@ -61,24 +80,32 @@ close $summary;
 open my $exper, '>', 'experimental/index.html';
 
 say { $exper } $header
-  =~ s,(?=</title>), — النسخة التجريبية,r
+  =~ s,(?=</title>), — المصطلحات التجريبية,r
   =~ s,(?<=href=")(?=style.css"),../,r
   ;
 
 say { $exper } <<~'END_OF_TEXT';
-  <div class="experimental-alert" align="center">
+  <div class="alert" align="center">
     <strong>تنبيه:</strong>
-    هذه الترجمات تجريبية؛ انظر
-    <a href="..">النسخة المستقرة من المعجم</a>.
+    هذه المصطلحات تجريبية؛ انظر
+    <a href="..">المصطلحات المستقرة</a>.
   </div align="center">
 END_OF_TEXT
 
+my $xwords;
 for my $term (<x/*>) {
+  ++$xwords;
   say { $exper } term_to_header $term;
   say { $exper } filepath_to_html $term;
 }
 
-say { $exper } $footer;
+if (!$xwords) {
+  say { $exper } '<div class="emptypage" align="center">لا توجد مصطلحات تجريبية حاليا.</div>';
+}
+
+say { $exper } $footer
+  =~ s| *<!--experimental--> *\n||r
+  ;
 
 close $exper;
 
