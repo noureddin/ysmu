@@ -17,7 +17,7 @@ my $header = <<~'END_OF_TEXT';
   <head>
   <meta charset="utf-8">
   <title>معجم يسمو</title>
-  <link rel="stylesheet" type="text/css" href=".style.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
 END_OF_TEXT
@@ -60,7 +60,7 @@ close $summary;
 
 open my $exper, '>', 'experimental/index.html';
 
-say { $exper } $header =~ s,(?<=href=")(?=[.]style.css"),../,r;
+say { $exper } $header =~ s,(?<=href=")(?=style.css"),../,r;
 
 say { $exper } <<~'END_OF_TEXT';
   <div class="experimental-alert" align="center">

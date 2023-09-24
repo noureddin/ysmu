@@ -34,6 +34,6 @@ This repo's files consists of three sections:
 
     - `experimental/`: contains a single file: `index.html`, which is like the root's `index.html` but for the experimental entries only.
 
-    - `.style.css`: the CSS style shared by both HTML files.
+    - `style.css`: the CSS style shared by both HTML files.
 
     - `MARK.md`: an informal description of the lightweight markup language used in `w/` and `x/`.
