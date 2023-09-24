@@ -1,10 +1,14 @@
-all: index.html ysmu.tsv
+targets = index.html ysmu.tsv experimental/index.html
 
-ysmu.tsv: p/* w/* x/*
+words = $(wildcards w/*) $(wildcards x/*)
+# $(wildcard) becomes empty if no files match
+
+all: $(targets)
+
+$(targets): p/* $(words)
 	perl -Mutf8 -CDSA p/make.pl
 
-index.html: p/* w/* x/*
-	perl -Mutf8 -CDSA p/make.pl
+.PHONY: clean
 
-experimental/index.html: p/* w/* x/*
-	perl -Mutf8 -CDSA p/make.pl
+clean:
+	rm -f $(targets)
