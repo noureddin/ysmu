@@ -2,13 +2,15 @@
 
 Check it at: https://noureddin.github.io/ysmu/
 
-## License
-
-Creative Commons Zero (equivalent to Public Domain).
+The **experimental** entries are at: https://noureddin.github.io/ysmu/experimental/
 
 ## Contact
 
 Open a GitHub issue, or talk to us on Aosus Localization's Matrix room: `#localization:aosus.org`.
+
+## License
+
+Creative Commons Zero (equivalent to Public Domain).
 
 ## Structure
 
