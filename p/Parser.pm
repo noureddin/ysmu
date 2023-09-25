@@ -30,7 +30,7 @@ sub transform_see_also(_) {
   return
     sprintf qq[<p class="seealso">انظر أيضا:</p><ul>\n%s\n</ul>],
       join "\n",
-        map { qq[<li><a dir="ltr" href="#$_">$_</a></li>] }
+        map { s|<br>||; qq[<li><a dir="ltr" href="#$_">$_</a></li>] }
           split "\n", $_[0]
 }
 
@@ -46,7 +46,7 @@ sub transform_para(_) {
       =~ s|<p></p>||gr
       =~ s|\A\n+||gr
       =~ s|\n+\Z||gr
-      =~ s|\n\n+|\n\n|gr
+      =~ s|\n\n+|\n|gr
       =~ s|^<p>::::<br>\n(.*?)</p>|transform_see_also($1)|mgrse
       =~ s|^<p>(?:&gt;){4}<br>\n(.*?)</p>|transform_blockquote($1)|mgrse
 }

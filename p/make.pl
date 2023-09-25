@@ -11,32 +11,35 @@ chdir "$FindBin::RealBin/../";
 # load our libraries
 use Parser;
 
-my $header = <<~'END_OF_TEXT';
-  <!doctype html>
-  <html dir="rtl" lang="ar">
-  <head>
-  <meta charset="utf-8">
-  <title>معجم يسمو</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
-  </head>
-  <body>
+my $header = <<'END_OF_TEXT';
+<!doctype html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8">
+<title>معجم يسمو</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
 END_OF_TEXT
 
-my $footer = <<~'END_OF_TEXT';
-  <div class="footer" align="center">
-    <!--experimental-->
-    <p>يمكنك التواصل معنا عبر
-      صفحة <a href="https://github.com/noureddin/ysmu/issues">مسائل GitHub</a><br>
-      أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>.
-    </p>
-  </div>
-  </body>
-  </html>
+my $footer = <<'END_OF_TEXT';
+<div class="footer">
+  <!--experimental-->
+  <p>يمكنك التواصل معنا عبر
+    صفحة <a href="https://github.com/noureddin/ysmu/issues">مسائل GitHub</a><br>
+    أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
+  </p>
+</div>
+</body>
+</html>
 END_OF_TEXT
 
-sub term_to_header(_) { my ($term) = @_;
-  $term =~ s,^.*/,,;
-  return qq[<h2 id="$term"><a href="#$term">@{[ $term =~ s/_/ /gr ]}</a></h2>];
+sub make_entry { my ($file, $out_html, $out_tsv) = @_;
+  my $link = $file =~ s,^.*/,,r;
+  my $title = $link =~ s,_, ,gr;
+  my $html = filepath_to_html $file;
+  say { $out_html } qq[<h2 id="$link"><a href="#$link">$title</a></h2>\n$html];
+  say { $out_tsv } $title, "\t", html_to_summary $html  if $out_tsv;
 }
 
 # we generate three files:
@@ -49,22 +52,19 @@ sub term_to_header(_) { my ($term) = @_;
 open my $index, '>', 'index.html';
 open my $summary, '>', 'ysmu.tsv';
 
-say { $index } $header;
+print { $index } $header;
 
 my $words;
 
 for my $term (<w/*>) {
   ++$words;
-  my $html = filepath_to_html $term;
-  say { $index } term_to_header $term;
-  say { $index } $html;
-  say { $summary } $term, "\t", html_to_summary $html;
+  make_entry($term, $index, $summary);
 }
 
 my $goto_experimental = '<p>يمكنك أيضا رؤية <a href="experimental">المصطلحات التجريبية</a>.</p>';
 
 if (!$words) {
-  say { $index } '<div class="emptypage" align="center">لا توجد مصطلحات مستقرة بعد.</div>';
+  say { $index } '<div class="emptypage">لا توجد مصطلحات مستقرة بعد.</div>';
   $goto_experimental =~ s/أيضا//;
 }
 
@@ -79,28 +79,27 @@ close $summary;
 
 open my $exper, '>', 'experimental/index.html';
 
-say { $exper } $header
+print { $exper } $header
   =~ s,(?=</title>), — المصطلحات التجريبية,r
   =~ s,(?<=href=")(?=style.css"),../,r
   ;
 
-say { $exper } <<~'END_OF_TEXT';
-  <div class="alert" align="center">
-    <strong>تنبيه:</strong>
-    هذه المصطلحات تجريبية؛ انظر
-    <a href="..">المصطلحات المستقرة</a>.
-  </div align="center">
+print { $exper } <<'END_OF_TEXT';
+<div class="alert">
+  <strong>تنبيه:</strong>
+  هذه المصطلحات تجريبية؛ انظر
+  <a href="..">المصطلحات المستقرة</a>.
+</div>
 END_OF_TEXT
 
 my $xwords;
 for my $term (<x/*>) {
   ++$xwords;
-  say { $exper } term_to_header $term;
-  say { $exper } filepath_to_html $term;
+  make_entry($term, $exper);
 }
 
 if (!$xwords) {
-  say { $exper } '<div class="emptypage" align="center">لا توجد مصطلحات تجريبية حاليا.</div>';
+  say { $exper } '<div class="emptypage">لا توجد مصطلحات تجريبية حاليا.</div>';
 }
 
 say { $exper } $footer

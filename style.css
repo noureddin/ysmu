@@ -100,12 +100,14 @@ blockquote:before {
 }
 
 .alert {
+  text-align: center;
   padding: 1em;
   background: var(--al);
   border-bottom: 1px ridge var(--AL);
 }
 
 .footer {
+  text-align: center;
   margin-top: 2em;
   padding: 1em;
   background: var(--ft);
@@ -113,5 +115,7 @@ blockquote:before {
 }
 
 .emptypage {
+  text-align: center;
   padding: 2em;
+  margin-top: 2em; /* for symmetry b/c of .footer */
 }
