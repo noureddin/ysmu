@@ -24,10 +24,10 @@ use constant HEADER => <<'END_OF_TEXT';
 END_OF_TEXT
 
 sub make_header { my ($additional_title) = @_;
-  $additional_title = $additional_title ? ' — '.$additional_title : '';
+  my $desc = $additional_title ? ' — '.$additional_title : ' للمصطلحات التقنية الحديثة';
   my $root = $additional_title ? '../' : '';
   return HEADER
-    =~ s,(?=</title>),$additional_title,r
+    =~ s,(?=</title>),$desc,r
     =~ s,(?<=href=")(?=style.css"),$root,r
 
 }
