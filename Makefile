@@ -1,6 +1,6 @@
 targets = index.html ysmu.tsv experimental/index.html
 
-words = $(wildcards w/*) $(wildcards x/*)
+words = $(wildcard w/*) $(wildcard x/*)
 # $(wildcard) becomes empty if no files match
 
 all: $(targets)
