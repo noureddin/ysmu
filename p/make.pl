@@ -29,10 +29,10 @@ sub make_header { my ($additional_title) = @_;
   return HEADER
     =~ s,(?=</title>),$desc,r
     =~ s,(?<=href=")(?=style.css"),$root,r
-
+    =~ s,\n\Z,,r  # to use say with almost everything
 }
 
-use constant FOOTER => <<'END_OF_TEXT';
+use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost everything
 <div class="footer">
   <!--before-contact-->
   <p>يمكنك التواصل معنا عبر
@@ -76,12 +76,34 @@ sub make_footer { my ($s) = @_;
   }
 }
 
-sub make_entry { my ($file, $out_html, $out_tsv) = @_;
-  my $link = $file =~ s,^.*/,,r;
-  my $title = $link =~ s,_, ,gr;
+sub _make_entry { my ($file) = @_;
+  my $id = $file =~ s,^.*/,,r;
+  my $title = $id =~ s,_, ,gr;
   my $html = filepath_to_html $file;
-  say { $out_html } qq[<h2 id="$link"><a href="#$link">$title</a></h2>\n$html];
-  say { $out_tsv } $title, "\t", html_to_summary $html  if $out_tsv;
+  my $link = qq[<a dir="ltr" href="#$id">$title</a>];
+  return (
+    link => $link,
+    entry => qq[<h2 id="$id">$link</h2>\n$html],
+    summary => (join "\t", $title, html_to_summary $html),
+  );
+}
+
+sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
+  my $n = 0;
+  my $toc = '';
+  my $body = '';
+  my $summary = '';
+  for my $file (@_) {
+    ++$n;
+    my %e = _make_entry($file);
+    $toc .= $e{link}."\n";
+    $body .= $e{entry}."\n";
+    $summary .= $e{summary}."\n"  if $out_tsv;
+  }
+  $toc = $toc ? qq[<div class="toc">\n$toc</div>\n] : '';
+  print { $out_html } $toc.$body;
+  print { $out_tsv } $summary  if $out_tsv;
+  return $n;
 }
 
 # we generate four files:
@@ -95,20 +117,14 @@ sub make_entry { my ($file, $out_html, $out_tsv) = @_;
 open my $index, '>', 'index.html';
 open my $summary, '>', 'ysmu.tsv';
 
-print { $index } make_header;
+say { $index } make_header;
 
-my $words;
-for my $term (<w/*>) {
-  ++$words;
-  make_entry($term, $index, $summary);
+if (make_entries($index, $summary, <w/*>)) {  # non-empty
+  say { $index } make_footer 'stable';
 }
-
-if (!$words) {
+else {  # empty
   say { $index } '<div class="emptypage">لا توجد مصطلحات مستقرة بعد.</div>';
   say { $index } make_footer 'empty stable';
-}
-else {
-  say { $index } make_footer 'stable';
 }
 
 close $index;
@@ -118,7 +134,7 @@ close $summary;
 
 open my $exper, '>', 'experimental/index.html';
 
-print { $exper } make_header 'المصطلحات التجريبية';
+say { $exper } make_header 'المصطلحات التجريبية';
 
 print { $exper } <<"END_OF_TEXT";
 <div class="alert">
@@ -128,30 +144,21 @@ print { $exper } <<"END_OF_TEXT";
 </div>
 END_OF_TEXT
 
-my $xwords;
-for my $term (<x/*>) {
-  ++$xwords;
-  make_entry($term, $exper);
-}
-
-if (!$xwords) {
-  say { $exper } '<div class="emptypage">لا توجد مصطلحات تجريبية حاليا.</div>';
-  say { $exper } make_footer 'empty experimental';
+if (make_entries($exper, undef, <x/*>)) {  # non-empty
+  say { $exper } make_footer 'experimental';
 }
 else {
-  say { $exper } make_footer 'experimental';
+  say { $exper } '<div class="emptypage">لا توجد مصطلحات تجريبية حاليا.</div>';
+  say { $exper } make_footer 'empty experimental';
 }
 
 close $exper;
 
-# and the notes
+# and then the notes
 
 open my $notes, '>', 'notes/index.html';
 
-print { $notes } make_header 'موارد وإرشادات';
-
-print { $notes } <<'END_OF_TEXT';
-END_OF_TEXT
+say { $notes } make_header 'موارد وإرشادات';
 
 say { $notes } basic_html_to_big_html filepath_to_html 'notes/src';
 

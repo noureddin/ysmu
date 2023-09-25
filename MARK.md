@@ -19,3 +19,6 @@ That's for entries (under `w/` and `x/`); notes (`notes/src`) has the same synta
 - `!!!!` followed by a list of "https://link long mandatory title" to make a list of external links.
 - Starting a para with `== title` makes that a `h2`, and preceding that with `[[id]]` on a separate line in the same paragraph gives it an id and makes it a like.
 - internal (term) links are linked against the stable dictionary. To link to an experimental entry, prepend '##'.
+
+Other notes:
+- files' names in `w/` and `x/` must not contain spaces; use underscores instead.
