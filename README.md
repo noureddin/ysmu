@@ -4,6 +4,8 @@ Check it at: https://noureddin.github.io/ysmu/
 
 The **experimental** entries are at: https://noureddin.github.io/ysmu/experimental/
 
+Resources, guidelines, and general notes are available at: https://noureddin.github.io/ysmu/notes/
+
 ## Contact
 
 Open a GitHub issue, or talk to us on Aosus Localization's Matrix room: `#localization:aosus.org`.
