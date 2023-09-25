@@ -29,6 +29,7 @@ my $footer = <<'END_OF_TEXT';
     صفحة <a href="https://github.com/noureddin/ysmu/issues">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
   </p>
+  <p class="license">الرخصة: <a href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
 </div>
 </body>
 </html>

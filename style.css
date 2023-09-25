@@ -119,3 +119,9 @@ blockquote:before {
   padding: 2em;
   margin-top: 2em; /* for symmetry b/c of .footer */
 }
+
+.license {
+  opacity: 33%;
+  transition: 0.5s;
+}
+.license:hover { opacity: 100% }
