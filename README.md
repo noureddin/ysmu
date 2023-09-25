@@ -8,11 +8,11 @@ Resources, guidelines, and general notes are available at: https://noureddin.git
 
 ## Contact
 
-Open a GitHub issue, or talk to us on Aosus Localization's Matrix room: `#localization:aosus.org`.
+Open [an issue](https://github.com/noureddin/ysmu/issues), or talk to us on Aosus Localization's Matrix room: [#localization:aosus.org](https://matrix.to/#/#localization:aosus.org).
 
 ## License
 
-Creative Commons Zero (equivalent to Public Domain).
+[Creative Commons Zero](https://creativecommons.org/choose/zero/) (equivalent to Public Domain).
 
 ## Structure
 
@@ -20,7 +20,7 @@ This repo consists of four sections:
 
 - Data:
 
-    - `w/`: contains all the (stable) words, one English word in each file, representing a single entry. Files use a home-grown Markdown-like lightweight markup language, which is described in `MARK.md`.
+    - `w/`: contains all the (stable) words, one English word in each file, representing a single entry. Files use a home-grown restricted lightweight markup language, which is described in `MARK.md`.
 
     - `x/`: like `w/` but contains only experimental entries, including changes to “stable” entries.
 
