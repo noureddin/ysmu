@@ -1,11 +1,11 @@
-targets = index.html ysmu.tsv experimental/index.html
+targets = index.html ysmu.tsv experimental/index.html notes/index.html
 
 words = $(wildcard w/*) $(wildcard x/*)
 # $(wildcard) becomes empty if no files match
 
 all: $(targets)
 
-$(targets): p/* $(words)
+$(targets): p/* $(words) notes/src
 	perl -Mutf8 -CDSA p/make.pl
 
 .PHONY: clean

@@ -14,7 +14,7 @@ Creative Commons Zero (equivalent to Public Domain).
 
 ## Structure
 
-This repo's files consists of three sections:
+This repo consists of four sections:
 
 - Data:
 
@@ -22,11 +22,13 @@ This repo's files consists of three sections:
 
     - `x/`: like `w/` but contains only experimental entries, including changes to “stable” entries.
 
+    - `notes/src`: resources, guidelines, and general notes that might be of interest to those interested in this project.
+
 - Processing:
 
     - `p/`: contains the processing script that converts the lightweight marked up files in `w/` into a single good-looking HTML file, and another one for `x/`, and generates `ysmu.tsv`.
 
-    - `Makefile`: calls the appropriate script in `p/` and does all the necessary processing.
+    - `Makefile`: calls the appropriate script in `p/` and does all the necessary processing on change.
 
 - Output:
 
@@ -36,6 +38,14 @@ This repo's files consists of three sections:
 
     - `experimental/`: contains a single file: `index.html`, which is like the root's `index.html` but for the experimental entries only.
 
-    - `style.css`: the CSS style shared by both HTML files.
+    - `notes/index.html`: a human-friendly rendering of `notes/src`.
 
-    - `MARK.md`: an informal description of the lightweight markup language used in `w/` and `x/`.
+- Static:
+
+    - `style.css`: the CSS style shared by the HTML files.
+
+    - `MARK.md`: an informal description of the lightweight markup language used in this project.
+
+    - `README.md`.
+
+    - `LICENSE`.

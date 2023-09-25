@@ -120,8 +120,8 @@ blockquote:before {
   margin-top: 2em; /* for symmetry b/c of .footer */
 }
 
-.license {
+.blurred {
   opacity: 33%;
   transition: 0.5s;
 }
-.license:hover { opacity: 100% }
+.blurred:hover { opacity: 100% }

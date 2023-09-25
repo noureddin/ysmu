@@ -10,8 +10,9 @@ chdir "$FindBin::RealBin/../";
 
 # load our libraries
 use Parser;
+use BigParser;
 
-my $header = <<'END_OF_TEXT';
+use constant HEADER => <<'END_OF_TEXT';
 <!doctype html>
 <html dir="rtl" lang="ar">
 <head>
@@ -22,18 +23,58 @@ my $header = <<'END_OF_TEXT';
 <body>
 END_OF_TEXT
 
-my $footer = <<'END_OF_TEXT';
+sub make_header { my ($additional_title) = @_;
+  $additional_title = $additional_title ? ' — '.$additional_title : '';
+  my $root = $additional_title ? '../' : '';
+  return HEADER
+    =~ s,(?=</title>),$additional_title,r
+    =~ s,(?<=href=")(?=style.css"),$root,r
+
+}
+
+use constant FOOTER => <<'END_OF_TEXT';
 <div class="footer">
-  <!--experimental-->
+  <!--before-contact-->
   <p>يمكنك التواصل معنا عبر
-    صفحة <a href="https://github.com/noureddin/ysmu/issues">مسائل GitHub</a><br>
+    صفحة <a href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
   </p>
-  <p class="license">الرخصة: <a href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
+  <!--before-license-->
+  <p class="blurred">الرخصة: <a href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
 </div>
 </body>
 </html>
 END_OF_TEXT
+
+sub notes_link  { '<a href="'.($_[0] // '').'notes/">موارد وإرشادات</a>' }
+sub exper_link  { '<a href="'.($_[0] // '').'experimental/">المصطلحات التجريبية</a>' }
+sub stable_link { '<a href="..">المصطلحات المستقرة</a>' }
+
+sub make_footer { my ($s) = @_;
+  if ($s eq 'stable') {
+    return FOOTER
+      =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ exper_link ]}</p>|r
+      =~ s| *<!--before-license--> *\n||r
+  }
+  elsif ($s eq 'empty stable') {
+    return FOOTER
+      =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ exper_link ]}</p>|r
+      =~ s| *<!--before-license--> *\n||r
+  }
+  elsif ($s eq 'experimental' || $s eq 'empty experimental') {
+    return FOOTER
+      =~ s| *<!--before-contact--> *\n||r
+      =~ s|<!--before-license-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
+  }
+  elsif ($s eq 'notes') {
+    return FOOTER
+      =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ stable_link ]} أو @{[ exper_link '../' ]}</p>|r
+      =~ s| *<!--before-license--> *\n||r
+  }
+  else {
+    die "make_footer received wrong argument: '$s'\n"
+  }
+}
 
 sub make_entry { my ($file, $out_html, $out_tsv) = @_;
   my $link = $file =~ s,^.*/,,r;
@@ -43,35 +84,32 @@ sub make_entry { my ($file, $out_html, $out_tsv) = @_;
   say { $out_tsv } $title, "\t", html_to_summary $html  if $out_tsv;
 }
 
-# we generate three files:
+# we generate four files:
 #   index.html, which contains the stable entries (in w/*)
 #   ysmu.tsv, which summarizes the stable entries (in w/*)
 #   experimental/index.html, which contains the experimental entries (in x/*)
+#   notes/index.html from notes/src, which is general prose
 
 # we start with the stable entries
 
 open my $index, '>', 'index.html';
 open my $summary, '>', 'ysmu.tsv';
 
-print { $index } $header;
+print { $index } make_header;
 
 my $words;
-
 for my $term (<w/*>) {
   ++$words;
   make_entry($term, $index, $summary);
 }
 
-my $goto_experimental = '<p>يمكنك أيضا رؤية <a href="experimental">المصطلحات التجريبية</a>.</p>';
-
 if (!$words) {
   say { $index } '<div class="emptypage">لا توجد مصطلحات مستقرة بعد.</div>';
-  $goto_experimental =~ s/أيضا//;
+  say { $index } make_footer 'empty stable';
 }
-
-say { $index } $footer
-  =~ s|<!--experimental-->|$goto_experimental|r
-  ;
+else {
+  say { $index } make_footer 'stable';
+}
 
 close $index;
 close $summary;
@@ -80,16 +118,13 @@ close $summary;
 
 open my $exper, '>', 'experimental/index.html';
 
-print { $exper } $header
-  =~ s,(?=</title>), — المصطلحات التجريبية,r
-  =~ s,(?<=href=")(?=style.css"),../,r
-  ;
+print { $exper } make_header 'المصطلحات التجريبية';
 
-print { $exper } <<'END_OF_TEXT';
+print { $exper } <<"END_OF_TEXT";
 <div class="alert">
   <strong>تنبيه:</strong>
   هذه المصطلحات تجريبية؛ انظر
-  <a href="..">المصطلحات المستقرة</a>.
+  @{[ stable_link ]}.
 </div>
 END_OF_TEXT
 
@@ -101,11 +136,26 @@ for my $term (<x/*>) {
 
 if (!$xwords) {
   say { $exper } '<div class="emptypage">لا توجد مصطلحات تجريبية حاليا.</div>';
+  say { $exper } make_footer 'empty experimental';
+}
+else {
+  say { $exper } make_footer 'experimental';
 }
 
-say { $exper } $footer
-  =~ s| *<!--experimental--> *\n||r
-  ;
-
 close $exper;
+
+# and the notes
+
+open my $notes, '>', 'notes/index.html';
+
+print { $notes } make_header 'موارد وإرشادات';
+
+print { $notes } <<'END_OF_TEXT';
+END_OF_TEXT
+
+say { $notes } basic_html_to_big_html filepath_to_html 'notes/src';
+
+say { $notes } make_footer 'notes';
+
+close $notes;
 
