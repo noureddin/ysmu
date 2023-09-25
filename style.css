@@ -41,7 +41,7 @@
 }
 
 body {
-  font-family: serif;
+  font-family: "Amiri", serif;
   width: min(85%, 35em);
   margin: auto;
   color: var(--fg);
@@ -82,16 +82,17 @@ h2 a:active { color: var(--ha) }
 blockquote {
   border-right: 2px solid var(--bq);
   padding-right: 10px;
-  margin-right: 0;
+  margin-right: 20px;
   position: relative;
 }
 blockquote:before {
   content: '”';
+  color: var(--bq);
   font-size: 200%;
   display: block;
   position: absolute;
   top: -0.5rem;
-  right: calc(-12px - 0.25em);
+  right: -24px;
 }
 
 .seealso {
