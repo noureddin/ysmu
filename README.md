@@ -24,6 +24,8 @@ This repo consists of four sections:
 
     - `x/`: like `w/` but contains only experimental entries, including changes to “stable” entries.
 
+    - `.h/`: hidden entries, that still haven't reached the “staging area” called `x/`.
+
     - `notes/src`: resources, guidelines, and general notes that might be of interest to those interested in this project.
 
 - Processing:
