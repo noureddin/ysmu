@@ -2,6 +2,8 @@
 
 Check it at: https://noureddin.github.io/ysmu/
 
+Or see the summarized entries (without their explainations) at: https://github.com/noureddin/ysmu/raw/main/ysmu.tsv
+
 The **experimental** entries are at: https://noureddin.github.io/ysmu/experimental/
 
 Resources, guidelines, and general notes are available at: https://noureddin.github.io/ysmu/notes/
@@ -16,23 +18,28 @@ Open [an issue](https://github.com/noureddin/ysmu/issues), or talk to us on Aosu
 
 ## Structure
 
-This repo consists of four sections:
+This repo consists of four logical sections:
 
 - Data:
 
-    - `w/`: contains all the (stable) words, one English word in each file, representing a single entry. Files use a home-grown restricted lightweight markup language, which is described in `MARK.md`.
+    - `w/`: contains all the (stable) words: each entry is a single English word with its translation(s) and explanation and contextual details.
+        - The filename is the English term in small case (with spaces, if any, replaced with underscores).
+        - The first paragraph in each file is the summary that tells how to translate this word without explanation. This is what gets into `ysmu.tsv` and hence into other dictionaries.
+        - The rest of the file is paragraphs explaining the choice of the Arabic term, and its usage in different contexts etc.
+        - The file may end in a "see also" section, linking to other English terms that are related in some way to this English term.
+        - Files use a home-grown restricted lightweight markup language described in `MARK.md`.
 
     - `x/`: like `w/` but contains only experimental entries, including changes to “stable” entries.
 
-    - `.h/`: hidden entries, that still haven't reached the “staging area” called `x/`.
+    - `.h/`: hidden entries, that still haven't reached the “staging area” called `x/` yet.
 
-    - `notes/src`: resources, guidelines, and general notes that might be of interest to those interested in this project.
+    - `notes/src`: resources, guidelines, and general notes that might be of interest to those interested in this project. It uses a superset of the lightweight markup language used in entries.
 
 - Processing:
 
     - `p/`: contains the processing script that converts the lightweight marked up files in `w/` into a single good-looking HTML file, and another one for `x/`, and generates `ysmu.tsv`.
 
-    - `Makefile`: calls the appropriate script in `p/` and does all the necessary processing on change.
+    - `Makefile`: calls the appropriate script in `p/` and does all the necessary processing when something changes.
 
 - Output:
 

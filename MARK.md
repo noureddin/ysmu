@@ -1,7 +1,7 @@
 Inline formatting (in a single line, not across lines):
 - `{{just some ltr text}}`: forces some part of the text to be LTR.
 - `**strong emphasis**`: use sparingly.
-- `<<::term>>`: link a term (shows as LTR)
+- `<<::term>>`: link a term in the same dictionary (stable or experimental) (shows as LTR)
 - `<<altname::term>>`: like the above but with alternative title, and thus doesn't force LTR; use `{{` and `}}`.
 - `<<https://link>>`: an external link (shows as LTR)
 - `<<altname||https://link>>`: like the above but with alternative title, and thus doesn't force LTR; use `{{` and `}}`.
