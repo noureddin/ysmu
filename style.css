@@ -17,9 +17,10 @@
   /* others */
   --hl: #007;  /* color of h2 surrounding lines */
   --bq: #bbc;  /* blockquote's side border */
-  --ft: rgba(  0,   0, 255, 0.1);  /* .footer's bg (its border is --hl) */
-  --al: rgba(255,  32,  32, 0.1);  /* .alert's bg */
-  --AL: rgba(255,  32,  32, 0.4);  /* .alert's border */
+  --ft: rgba(  0,   0, 255, 0.1);   /* .footer's bg (its border is --hl) */
+  --al: rgba(255,  32,  32, 0.1);   /* .alert's bg */
+  --AL: rgba(255,  32,  32, 0.4);   /* .alert's border */
+  --sp: rgba(  0, 128, 255, 0.05);  /* summary paragraph's bg */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,6 +46,7 @@
   --ft: rgba(255, 128, 128, 0.15);
   --al: rgba(255,  12,  12, 0.3);
   --AL: rgba(255,  12,  12, 0.8);
+  --sp: rgba(255, 128,   0, 0.1);   /* summary paragraph's bg */
 }
 }
 
@@ -155,4 +157,8 @@ blockquote:before {
   text-decoration: none;
   box-shadow: 0 0 2px 2px currentColor;
   background: var(--ta);
+}
+
+h2 + p {
+  background: var(--sp);
 }
