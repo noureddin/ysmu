@@ -47,18 +47,29 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
 END_OF_TEXT
 
 sub notes_link  { '<a href="'.($_[0] // '').'notes/">موارد وإرشادات</a>' }
+sub rc_link     { '<a href="'.($_[0] // '').'candidate/">المصطلحات المرشحة</a>' }
 sub exper_link  { '<a href="'.($_[0] // '').'experimental/">المصطلحات التجريبية</a>' }
-sub stable_link { '<a href="..">المصطلحات المستقرة</a>' }
+sub stable_link { '<a href="..">المصطلحات المتفق عليها</a>' }
 
 sub make_footer { my ($s) = @_;
   if ($s eq 'stable') {
     return FOOTER
-      =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ exper_link ]}</p>|r
+      =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ rc_link ]}</p>|r
       =~ s| *<!--before-license--> *\n||r
   }
   elsif ($s eq 'empty stable') {
     return FOOTER
-      =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ exper_link ]}</p>|r
+      =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ rc_link ]}</p>|r
+      =~ s| *<!--before-license--> *\n||r
+  }
+  elsif ($s eq 'candidate') {
+    return FOOTER
+      =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ exper_link '../' ]}</p>|r
+      =~ s| *<!--before-license--> *\n||r
+  }
+  elsif ($s eq 'empty candidate') {
+    return FOOTER
+      =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ exper_link '../' ]}</p>|r
       =~ s| *<!--before-license--> *\n||r
   }
   elsif ($s eq 'experimental' || $s eq 'empty experimental') {
@@ -106,9 +117,10 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   return $n;
 }
 
-# we generate four files:
-#   index.html, which contains the stable entries (in w/*)
-#   ysmu.tsv, which summarizes the stable entries (in w/*)
+# we generate five files:
+#   index.html, which contains the agreed-upon entries (in w/*)
+#   ysmu.tsv, which summarizes the agreed-upon entries (in w/*)
+#   candidate/index.html, which contains the "release candidate" entries (in c/*)
 #   experimental/index.html, which contains the experimental entries (in x/*)
 #   notes/index.html from notes/src, which is general prose
 
@@ -119,19 +131,45 @@ open my $summary, '>', 'ysmu.tsv';
 
 say { $index } make_header;
 
-if (make_entries($index, $summary, <w/*>)) {  # non-empty
+if (make_entries($index, $summary, <w/*>)) {  # if non-empty
   say { $index } make_footer 'stable';
 }
-else {  # empty
-  say { $index } '<div class="emptypage">لا توجد مصطلحات مستقرة بعد.</div>';
+else {  # if empty
+  say { $index } '<div class="emptypage">لا توجد مصطلحات متفق عليها بعد.</div>';
   say { $index } make_footer 'empty stable';
 }
 
 close $index;
 close $summary;
 
+# now the candidate entries
+
+mkdir 'candidate' unless -d 'candidate';
+open my $rc, '>', 'candidate/index.html';
+
+say { $rc } make_header 'المصطلحات المرشحة';
+
+print { $rc } <<"END_OF_TEXT";
+<div class="alert">
+  <strong>تنبيه:</strong>
+  هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد؛ انظر
+  @{[ stable_link ]}.
+</div>
+END_OF_TEXT
+
+if (make_entries($rc, undef, <c/*>)) {  # if non-empty
+  say { $rc } make_footer 'candidate';
+}
+else {  # if empty
+  say { $rc } '<div class="emptypage">لا توجد مصطلحات مرشحة حاليا.</div>';
+  say { $rc } make_footer 'empty candidate';
+}
+
+close $rc;
+
 # now the experimental entries
 
+mkdir 'experimental' unless -d 'experimental';
 open my $exper, '>', 'experimental/index.html';
 
 say { $exper } make_header 'المصطلحات التجريبية';
@@ -144,10 +182,10 @@ print { $exper } <<"END_OF_TEXT";
 </div>
 END_OF_TEXT
 
-if (make_entries($exper, undef, <x/*>)) {  # non-empty
+if (make_entries($exper, undef, <x/*>)) {  # if non-empty
   say { $exper } make_footer 'experimental';
 }
-else {
+else {  # if empty
   say { $exper } '<div class="emptypage">لا توجد مصطلحات تجريبية حاليا.</div>';
   say { $exper } make_footer 'empty experimental';
 }
@@ -156,6 +194,7 @@ close $exper;
 
 # and then the notes
 
+mkdir 'notes' unless -d 'notes';
 open my $notes, '>', 'notes/index.html';
 
 say { $notes } make_header 'موارد وإرشادات';

@@ -1,6 +1,6 @@
-targets = index.html ysmu.tsv experimental/index.html notes/index.html
+targets = index.html ysmu.tsv candidate/index.html experimental/index.html notes/index.html
 
-words = $(wildcard w/*) $(wildcard x/*)
+words = $(wildcard w/*) $(wildcard c/*) $(wildcard x/*)
 # $(wildcard) becomes empty if no files match
 
 all: $(targets)
