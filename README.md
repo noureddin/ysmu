@@ -1,62 +1,79 @@
-<h1 dir="rtl">معجم يسمو للمصطلحات التقنية الحديثة</h1>
+# معجم يسمو للمصطلحات التقنية الحديثة
 
-Check it at: https://noureddin.github.io/ysmu/
+- المصطلحات المتفق عليها مع شرح سبب اختيارها وأمثلة عليها:  
+  https://noureddin.github.io/ysmu
 
-Or see the summarized entries (without their explainations) at: https://github.com/noureddin/ysmu/raw/main/ysmu.tsv
+- المصطلحات المتفق عليها بغير شرح (للتطبيقات والمعاجم المجمعة):  
+  https://github.com/noureddin/ysmu/raw/main/ysmu.tsv
 
-The **experimental** entries are at: https://noureddin.github.io/ysmu/experimental/
+- المصطلحات المرشحة للاتفاق، التي ستصير «متفق عليها» بعد ساعات غالبا:  
+  https://noureddin.github.io/ysmu/candidate
 
-Resources, guidelines, and general notes are available at: https://noureddin.github.io/ysmu/notes/
+- المصطلحات **التجريبية** التي لم يتفق المجتمع عليها بعد:  
+  https://noureddin.github.io/ysmu/experimental
 
-## Contact
+- موارد وإرشادات وملاحظات عامة:  
+  https://noureddin.github.io/ysmu/notes
 
-Open [an issue](https://github.com/noureddin/ysmu/issues), or talk to us on Aosus Localization's Matrix room: [#localization:aosus.org](https://matrix.to/#/#localization:aosus.org).
+## تواصل
 
-## License
+عبر [مسائل GitHub](https://github.com/noureddin/ysmu/issues/)
+أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: [‪#localization:aosus.org‬](https://matrix.to/#/#localization:aosus.org)
 
-[Creative Commons Zero](https://creativecommons.org/choose/zero/) (equivalent to Public Domain).
+## الرخصة
 
-## Structure
+[المشاع الإبداعي الصفرية (CC0)](https://creativecommons.org/choose/zero/) (مكافئة للملكية العامة).
 
-This repo consists of four logical sections:
+## مراحل المصطلحات
 
-- Data:
+- **المصطلحات المتفق عليها:** هي المصطلحات التي وافق عليها أعضاء غرفة الترجمة في مجتمع أسس بعد نقاش و/أو تصويت. ([صفحتها ⬉](https://noureddin.github.io/ysmu/))
+- **المصطلحات المرشحة للاتفاق:** هي المصطلحات التي في مرحلة التصويت، أو في آخر مرحلة النقاش. ([صفحتها ⬉](https://noureddin.github.io/ysmu/candidate/))
+- **المصطلحات التجريبية:** هي المصطلحات التي لم يتفق عليها المجتمع بعد، وقد يكون نقاشها في بدايته أو لم يبدأ بعد أصلا. ([صفحتها ⬉](https://noureddin.github.io/ysmu/experimental/))
 
-    - `w/`: contains all the (stable) words: each entry is a single English word with its translation(s) and explanation and contextual details.
-        - The filename is the English term in small case (with spaces, if any, replaced with underscores).
-        - The first paragraph in each file is the summary that tells how to translate this word without explanation. This is what gets into `ysmu.tsv` and hence into other dictionaries.
-        - The rest of the file is paragraphs explaining the choice of the Arabic term, and its usage in different contexts etc.
-        - The file may end in a "see also" section, linking to other English terms that are related in some way to this English term.
-        - Files use a home-grown restricted lightweight markup language described in `MARK.md`.
+وكل مجموعة من هذا المصطلحات تظهر في صفحة خاصة بها، والمصطلحات المتفق عليها فقط هي التي تصل إلى [ملف المعجم المختصر](https://github.com/noureddin/ysmu/raw/main/ysmu.tsv).
 
-    - `x/`: like `w/` but contains only experimental entries, including changes to “stable” entries.
+## تنظيم المستودع
 
-    - `.h/`: hidden entries, that still haven't reached the “staging area” called `x/` yet.
+يُقسم هذا المستودع إلى أربعة أقسام منطقية:
 
-    - `notes/src`: resources, guidelines, and general notes that might be of interest to those interested in this project. It uses a superset of the lightweight markup language used in entries.
+### البيانات:
 
-- Processing:
+- مجلد `w`: فيه المصطلحات المتفق عليها.
+- مجلد `c`: فيه المصطلحات المرشحة للاتفاق.
+- مجلد `x`: فيه المصطلحات التجريبية.
+- مجلد <code dir="ltr">.h</code> (يبدأ بنقطة): فيه المصطلحات المؤجلة، والتي لا تظهر في الصفحات.
+- ملف `notes/src`: فيه إرشادات وموارد وملاحظات عامة قد تهم من يهتم بمثل هذا المشروع.
 
-    - `p/`: contains the processing script that converts the lightweight marked up files in `w/` into a single good-looking HTML file, and another one for `x/`, and generates `ysmu.tsv`.
+### المعالجة:
 
-    - `Makefile`: calls the appropriate script in `p/` and does all the necessary processing when something changes.
+- مجلد `p`: فيه بُريمج التحويل والمكتبات المساعدة، وهو يحوّل ملفات البيانات إلى صفحات الويب والمعجم المختصر.
+- ملف `Makefile`: ليُرشد برنامج `make` لإعداد الملفات عند أي تغيير في البيانات.
 
-- Output:
+### النواتج:
 
-    - `ysmu.tsv`: an English-Arabic dictionary as summarized from the stable entries in `w/`.
+- ملف `index.html`: صفحة الويب التي تعرض المصطلحات المتفق عليها. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/).
+- ملف `candidate/index.html`: صفحة الويب التي تعرض المصطلحات المرشحة للاتفاق. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/candidate/)
+- ملف `experimental/index.html`: صفحة الويب التي تعرض المصطلحات التجريبية. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/experimental/)
+- ملف `notes/index.html`:  هي ناتج تصيير `notes/src`، أي أنها صفحة الويب التي تعرض الموارد والإرشادات. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/notes/)
+- ملف `ysmu.tsv`: المصطلحات المتفق عليها بغير شرح وبصيغة مناسبة للتطبيقات. [اذهب إليها ⬉](https://github.com/noureddin/ysmu/raw/main/ysmu.tsv)
 
-    - `index.html`: a human-friendly rendering of the entries in `w/`.
+### السواكن:
 
-    - `experimental/`: contains a single file: `index.html`, which is like the root's `index.html` but for the experimental entries only.
+- ملف `MARK.md`: وصف إنساني للغة تنسيق المدخلات المستعملة في هذا المشروع.
+- ملف `style.css`: ضبط شكل صفحات الويب.
+- ملف `README.md`.
+- ملف `LICENSE`.
 
-    - `notes/index.html`: a human-friendly rendering of `notes/src`.
+## صيغ الملفات
 
-- Static:
+تحتوي مجلدات المصطلحات (مثل مجلد `w`) على ملف لكل مصطلح إنجليزي، بحروف صغيرة، وبشرطة سفلية (`_`) بدلا من المسافة إن وجدت.
 
-    - `style.css`: the CSS style shared by the HTML files.
+يتكون ملف كل مصطلح من نص عادي، فقرته الأولى هي الترجمة المختصرة التي تعرضها المعاجم، وهي الترجمة إلى تذهب إلى «ملف المعجم المختصر».
 
-    - `MARK.md`: an informal description of the lightweight markup language used in this project.
+وتُتبع الفقرة الأولى بفقرات تشرح سبب اختيار هذا المصطلح أو توضح أمثلة على استخدام أو ما يناسب عموما.
 
-    - `README.md`.
+وقد يُنهى ملف المصطلح بقائمة «انظر أيضا» للإشارة إلى مصطلحات (إنجليزية) أخرى في المعجم.
 
-    - `LICENSE`.
+وتستعمل ملفات المصطلحات لغة تنسيقية خفيفة مشروحة في ملف `MARK.md`.
+
+ويستخدم ملف الإرشادات `notes/src` نسخة موسعة من نفس اللغة التنسيقية، وهي مشروحة في ملف `MARK.md` أيضا.
