@@ -51,7 +51,7 @@
 
 ### النواتج:
 
-- ملف `index.html`: صفحة ويب المصطلحات المتفق عليها. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/).
+- ملف `index.html`: صفحة ويب المصطلحات المتفق عليها. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/)
 - ملف `candidate/index.html`: صفحة ويب المصطلحات المرشحة للاتفاق. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/candidate/)
 - ملف `experimental/index.html`: صفحة ويب المصطلحات التجريبية. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/experimental/)
 - ملف `notes/index.html`:  هي ناتج تصيير `notes/src`، أي صفحة ويب الموارد والإرشادات. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/notes/)
@@ -61,8 +61,8 @@
 
 - ملف `MARK.md`: وصف إنساني للغة تنسيق المدخلات المستعملة في هذا المشروع.
 - ملف `style.css`: ضبط شكل صفحات الويب.
-- ملف `README.md`.
-- ملف `LICENSE`.
+- ملف `LICENSE`: نص رخصة المشاع الإبداعي الصفرية باللغة الإنجليزية.
+- ملف `README.md`: هذا الملف.
 
 ## صيغ الملفات
 
