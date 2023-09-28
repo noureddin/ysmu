@@ -23,9 +23,10 @@ use constant HEADER => <<'END_OF_TEXT';
 <body>
 END_OF_TEXT
 
-sub make_header { my ($additional_title) = @_;
+sub make_header { my ($additional_title, $base) = @_;
+  my $root = $base ? $base :
+             $additional_title ? '../' : '';
   my $desc = $additional_title ? ' — '.$additional_title : ' للمصطلحات التقنية الحديثة';
-  my $root = $additional_title ? '../' : '';
   return HEADER
     =~ s,(?=</title>),$desc,r
     =~ s,(?<=href=")(?=style.css"),$root,r
@@ -82,16 +83,27 @@ sub make_footer { my ($s) = @_;
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ stable_link ]} أو @{[ exper_link '../' ]}</p>|r
       =~ s| *<!--before-license--> *\n||r
   }
+  elsif ($s eq 'link') {
+    return FOOTER
+      =~ s| *<!--before-contact--> *\n||r
+      =~ s| *<!--before-license--> *\n||r
+  }
   else {
     die "make_footer received wrong argument: '$s'\n"
   }
 }
+
+# for each term, we generate a link in link/TERM/ that redirects to it in
+# the agreed-upon page, or in the candidate page, or in the experimental page,
+# in that order, so it's easier to link to term before it's stabilized.
+my %links;
 
 sub _make_entry { my ($file) = @_;
   my $id = $file =~ s,^.*/,,r;
   my $title = $id =~ s,_, ,gr;
   my $html = filepath_to_html $file;
   my $link = qq[<a dir="ltr" href="#$id">$title</a>];
+  $links{$id} = $file =~ s,/.*,,r unless exists $links{$id};
   return (
     link => $link,
     entry => qq[<h2 id="$id">$link</h2>\n$html],
@@ -117,7 +129,7 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   return $n;
 }
 
-# we generate five files:
+# we generate five files (in addition to the links mentioned above):
 #   index.html, which contains the agreed-upon entries (in w/*)
 #   ysmu.tsv, which summarizes the agreed-upon entries (in w/*)
 #   candidate/index.html, which contains the "release candidate" entries (in c/*)
@@ -204,4 +216,26 @@ say { $notes } basic_html_to_big_html filepath_to_html 'notes/src';
 say { $notes } make_footer 'notes';
 
 close $notes;
+
+# and finally the links
+
+use File::Path qw[ remove_tree ];
+remove_tree 'link' if -d 'link';
+mkdir 'link';
+
+for my $id (keys %links) {
+  my $title = $id =~ s,_, ,gr;
+  my $parent = $links{$id} eq 'w' ? ''
+             : $links{$id} eq 'c' ? 'candidate/'
+             : $links{$id} eq 'x' ? 'experimental/'
+             : die "bad parent for '$id' in link/\n";
+  my $url = "../../$parent#$id";
+  mkdir "link/$id";
+  open my $fh, '>', "link/$id/index.html";
+  say { $fh } make_header('توجيه إلى '.$title, '../../')
+    =~ s,\n</head>,<meta http-equiv="Refresh" content="0; url=$url" />$&,r;
+  say { $fh } qq[<center>ستحول الآن إلى <a href="$url">$title</a></center>];
+  say { $fh } make_footer 'notes';
+  close $fh;
+}
 
