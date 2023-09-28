@@ -10,5 +10,11 @@ $(targets): p/* $(words) notes/src
 
 .PHONY: clean
 
+define newline
+
+
+endef
+
 clean:
-	rm -f $(targets)
+	$(addprefix ${newline}rm -f ,${targets})
+	rm -rf link/

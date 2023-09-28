@@ -6,7 +6,10 @@ use parent 'Exporter';
 our @EXPORT = qw[
   filepath_to_html
   html_to_summary
+  title_of
 ];
+
+sub title_of(_) { return $_[0] =~ s,_, ,gr }
 
 sub parse_line(_) {
   return $_[0]
@@ -15,10 +18,11 @@ sub parse_line(_) {
     =~ s|>|\x03|grx
     =~ s|\*\*(.*?)\*\*|<strong>$1</strong>|grx
     =~ s|\x02\x02 ([^:>]+) :: ([^:>]+) \x03\x03|<a href="#$2">$1</a>|grx
-    =~ s|\x02\x02          :: (.*?)    \x03\x03|<a dir="ltr" href="#$1">$1</a>|grx
+    =~ s|\x02\x02          :: (.*?)    \x03\x03|qq[<a dir="ltr" href="#$1">].title_of($1).qq[</a>]|grxe
     =~ s,\x02\x02 ([^|\x03]*) [|]{2} ([^|\x03]*) \x03\x03,<a class="out" href="$2">$1</a>,grx
     =~ s|\x02\x02 (.*?) \x03\x03|<a dir="ltr" class="out" href="$1">$1</a>|grx
     =~ s|\{\{(.*?)\}\}|<span dir="ltr">$1</span>|grx
+    =~ s|``(.*?)``|<code dir="ltr">$1</code>|grx
     =~ s|\x02|&lt;|grx
     =~ s|\x03|&gt;|grx
     =~ s|&amp;(?=[^"]*">)|&|grx  # un-encode '&' in hrefs
@@ -30,7 +34,7 @@ sub transform_see_also(_) {
   return
     sprintf qq[<p class="seealso">انظر أيضا:</p><ul>\n%s\n</ul>],
       join "\n",
-        map { s|<br>||; qq[<li><a dir="ltr" href="#$_">$_</a></li>] }
+        map { s|<br>||; qq[<li><a dir="ltr" href="#$_">].title_of($_).qq[</a></li>] }
           split "\n", $_[0]
 }
 

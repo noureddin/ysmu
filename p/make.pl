@@ -100,7 +100,7 @@ my %links;
 
 sub _make_entry { my ($file) = @_;
   my $id = $file =~ s,^.*/,,r;
-  my $title = $id =~ s,_, ,gr;
+  my $title = title_of($id);
   my $html = filepath_to_html $file;
   my $link = qq[<a dir="ltr" href="#$id">$title</a>];
   $links{$id} = $file =~ s,/.*,,r unless exists $links{$id};
@@ -124,6 +124,14 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
     $summary .= $e{summary}."\n"  if $out_tsv;
   }
   $toc = $toc ? qq[<div class="toc">\n$toc</div>\n] : '';
+  my $parent = !defined $_[0]   ? undef : ($_[0] =~ s,/.*,,r);
+  my $root   = !defined $parent ? undef : $parent eq 'w' ? '' : '..';
+  my @links = ($body =~ /<a\b[^>]* href="#([^"]*)"/g);
+  for my $term (@links) {
+    if (!-f "$parent/$term") {  # not in this stage; make it a /link/
+      $body =~ s,(<a\b[^>]* href=")#$term",$1$root/link/$term/",g
+    }
+  }
   print { $out_html } $toc.$body;
   print { $out_tsv } $summary  if $out_tsv;
   return $n;
@@ -224,7 +232,7 @@ remove_tree 'link' if -d 'link';
 mkdir 'link';
 
 for my $id (keys %links) {
-  my $title = $id =~ s,_, ,gr;
+  my $title = title_of($id);
   my $parent = $links{$id} eq 'w' ? ''
              : $links{$id} eq 'c' ? 'candidate/'
              : $links{$id} eq 'x' ? 'experimental/'
