@@ -12,7 +12,8 @@ our @EXPORT_OK = qw[
 
 sub word_title_of(_) {
   return $_[0] =~ s,_, ,gr
-  # add here special cases for mixed-case (non-acronym) titles
+  # add here special cases for mixed-case (non-acronym) titles, eg:
+  # =~ s/^c\+\+$/C++/gr
 }
 
 sub acronym_title_of(_) {

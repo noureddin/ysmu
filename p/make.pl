@@ -137,6 +137,18 @@ sub human_title_of(_) { my ($id) = @_;
   }
 }
 
+sub toc_links {  # array of [$title, "#$id"]; returns a string '<div class="toc">...<a href="#id">title</a>...</div>' (or undef if empty)
+  if (@_) {
+    return qq[<div class="toc">\n] . (
+      join '',
+        map { qq[  <a href="$_->[1]">$_->[0]</a>\n] }
+        sort { $a->[0] cmp $b->[0] }
+          @_
+    ) . qq[</div>];
+  }
+  return;  # undef if empty
+}
+
 # for each term, we generate a link in link/TERM/ that redirects to it in
 # the agreed-upon page, or in the candidate page, or in the experimental page,
 # in that order, so it's easier to link to term before it's stabilized.
@@ -151,7 +163,7 @@ sub _make_entry { my ($file) = @_;
   $links{$id} = $file =~ s,/.*,,r unless exists $links{$id};
   # NOTE: files MUST use the short name
   return (
-    link => qq[<a dir="ltr" href="#$id">$title</a>],
+    toclinkpair => [ $title, '#'.$id ],
     entry => qq[<h2$h_id><a$a_id dir="ltr" href="#$id">$title</a></h2>\n$html],
     summary => (join "\t", $title, html_to_summary $html),
   );
@@ -159,17 +171,17 @@ sub _make_entry { my ($file) = @_;
 
 sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   my $n = 0;
-  my $toc = '';
+  my @toc;
   my $body = '';
   my $summary = '';
   for my $file (@_) {
     ++$n;
     my %e = _make_entry($file);
-    $toc .= $e{link}."\n";
+    push @toc, $e{toclinkpair};
     $body .= $e{entry}."\n";
     $summary .= $e{summary}."\n"  if $out_tsv;
   }
-  $toc = $toc ? qq[<div class="toc">\n$toc</div>\n] : '';
+  my $toc = toc_links(@toc) // '';
   my $parent = !defined $_[0]   ? undef : ($_[0] =~ s,/.*,,r);
   my $root   = !defined $parent ? undef : $parent eq 'w' ? '' : '..';
   my @links = ($body =~ /<a\b[^>]* href="#([^"]*)"/g);
@@ -178,7 +190,7 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
       $body =~ s,(<a\b[^>]* href=")#$term",$1$root/link/$term/",g
     }
   }
-  print { $out_html } $toc.$body;
+  print { $out_html } ($toc ? $toc."\n" : '') . $body;
   print { $out_tsv } $summary  if $out_tsv;
   return $n;
 }
@@ -303,25 +315,21 @@ use constant EMPTY_STAGE_LINKS => qq[  <center class="blurred">لا توجد م�
 make_page 'link',
   make_header('روابط جميع المصطلحات'),
   do {
-    my ($w, $c, $x, $u) = ('') x 4;
-    for my $id (sort keys %links) {
+    my (@w, @c, @x, @u);
+    for my $id (keys %links) {
+      # %links sorting is not enough, b/c if an acronym exists it uses for sorting (consider 2FA).
       my $title = human_title_of($id);
-      if    ($links{$id} eq 'w') { $w .= qq[  <a dir="ltr" href="../]              . qq[#$id">$title</a>\n] }
-      elsif ($links{$id} eq 'c') { $c .= qq[  <a dir="ltr" href="../candidate/]    . qq[#$id">$title</a>\n] }
-      elsif ($links{$id} eq 'x') { $x .= qq[  <a dir="ltr" href="../experimental/] . qq[#$id">$title</a>\n] }
-      elsif ($links{$id} eq 'u') { $u .= qq[  <a dir="ltr" href="../unstaged/]     . qq[#$id">$title</a>\n] }
+      if    ($links{$id} eq 'w') { push @w, [ $title,              "../#$id" ] }
+      elsif ($links{$id} eq 'c') { push @c, [ $title,    "../candidate/#$id" ] }
+      elsif ($links{$id} eq 'x') { push @x, [ $title, "../experimental/#$id" ] }
+      elsif ($links{$id} eq 'u') { push @u, [ $title,     "../unstaged/#$id" ] }
       else { die "\e[1;31m  bad parent for '$id' in link/\e[m\n"; }
     }
-    # if empty say so, otherwise enclose in div.toc 
-    $w = $w eq '' ? EMPTY_STAGE_LINKS : qq[<div class="toc">\n] . $w . qq[</div>];
-    $c = $c eq '' ? EMPTY_STAGE_LINKS : qq[<div class="toc">\n] . $c . qq[</div>];
-    $x = $x eq '' ? EMPTY_STAGE_LINKS : qq[<div class="toc">\n] . $x . qq[</div>];
-    $u = $u eq '' ? EMPTY_STAGE_LINKS : qq[<div class="toc">\n] . $u . qq[</div>];
     # return
     sprintf qq[<h2 id="%s"><a href="#%s">%s</a></h2>\n%s%s] x 4,
-      ('agreed')x2,       'المصطلحات المتفق عليها',     $w, "\n",
-      ('candidate')x2,    'المصطلحات المرشحة للاتفاق',  $c, "\n",
-      ('experimental')x2, 'المصطلحات التجريبية',        $x, "\n",
-      ('unstaged')x2,     'المصطلحات المؤجلة',          $u, ""
+      ('agreed')x2,       'المصطلحات المتفق عليها',     toc_links(@w) // EMPTY_STAGE_LINKS, "\n",
+      ('candidate')x2,    'المصطلحات المرشحة للاتفاق',  toc_links(@c) // EMPTY_STAGE_LINKS, "\n",
+      ('experimental')x2, 'المصطلحات التجريبية',        toc_links(@x) // EMPTY_STAGE_LINKS, "\n",
+      ('unstaged')x2,     'المصطلحات المؤجلة',          toc_links(@u) // EMPTY_STAGE_LINKS, ""
   };
 

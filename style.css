@@ -138,6 +138,7 @@ blockquote:before {
 .toc {
   margin-top: 1em;
   text-align: center;
+  direction: ltr;
 }
 
 .toc a {
@@ -145,6 +146,7 @@ blockquote:before {
   border-radius: 1em;
   padding: 0 0.4em;
   background: var(--tn);
+  white-space: nowrap;  /* don't break lines inside */
 }
 
 .toc a:hover {
