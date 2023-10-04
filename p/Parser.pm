@@ -36,11 +36,12 @@ sub parse_line(_) {
     =~ s|\h+| |gr  # collapse all horizontal spaces into one normal ASCII space; also replaces \t (for ysmu.tsv)
 }
 
-sub transform_see_also(_) {
+sub transform_see_also(_;$) {
+  my $title_of = $_[1] // \&title_of;
   return
     sprintf qq[<p class="seealso">انظر أيضا:</p><ul>\n%s\n</ul>],
       join "\n",
-        map { s|<br>||; qq[<li><a dir="ltr" href="#$_">].title_of($_).qq[</a></li>] }
+        map { s|<br>||; s| |_|g; qq[<li><a dir="ltr" href="#$_">].$title_of->($_).qq[</a></li>] }
           split "\n", $_[0]
 }
 
@@ -50,7 +51,7 @@ sub transform_blockquote(_) {
       $_[0]
 }
 
-sub transform_para(_) {
+sub transform_para(_;$) {
   return
     ('<p>'.( $_[0] =~ s|<br>\n<br>\n|</p>\n\n<p>|gr).'</p>')
       =~ s|<p>\h*<br>\n|<p>|gr
@@ -58,17 +59,17 @@ sub transform_para(_) {
       =~ s|\A\n+||gr
       =~ s|\n+\Z||gr
       =~ s|\n\n+|\n|gr
-      =~ s|^<p>::::<br>\n(.*?)</p>|transform_see_also($1)|mgrse
+      =~ s|^<p>::::<br>\n(.*?)</p>|transform_see_also($1, $_[1])|mgrse
       =~ s|^<p>(?:&gt;){4}<br>\n(.*?)</p>|transform_blockquote($1)|mgrse
 }
 
-sub filepath_to_html(_) {
+sub filepath_to_html(_;$) {
   my $ret = '';
   open my $f, '<', $_[0];
   while (<$f>) {
     $ret .= parse_line;
   }
-  return transform_para $ret;
+  return transform_para $ret, $_[1];
 }
 
 sub html_to_summary(_) {

@@ -114,10 +114,25 @@ my %long =
   map { s,[ \r\n]+,,gr }  # spaces are not allowed; use underscores between words
   do { open my $fh, '<', 'longnames.tsv'; <$fh> };  # read as an array of lines
 
+my %short = reverse %long;
+
 sub long_title_of(_) { my ($id) = @_;
   my $ttl = title_of($long{$id});
   my $acr = acronym_title_of($id);
   return "$ttl ($acr)";
+}
+
+sub human_title_of(_) { my ($id) = @_;
+  $id = $id =~ s,^\s*,,r =~ s,\s*$,,r =~ s,\s+,_,gr;
+  if (exists $long{$id}) {
+    return long_title_of($id)
+  }
+  elsif (exists $short{$id}) {
+    return long_title_of($short{$id});
+  }
+  else {
+    return title_of($id);
+  }
 }
 
 # for each term, we generate a link in link/TERM/ that redirects to it in
@@ -127,14 +142,10 @@ my %links;
 
 sub _make_entry { my ($file) = @_;
   my $id = $file =~ s,^.*/,,r;
-  my $h_id = qq[ id="$id"];
-  my $a_id = qq[];
-  my $title = title_of($id);
-  if (exists $long{$id}) {
-    $a_id = qq[ id="$long{$id}"];
-    $title = long_title_of($id);
-  }
-  my $html = filepath_to_html $file;
+  my $h_id = qq[ id="$id"];  # assumption for short_ids: file names are always the short
+  my $a_id = exists $long{$id} ? qq[ id="$long{$id}"] : '';
+  my $title = human_title_of($id);
+  my $html = filepath_to_html $file, \&human_title_of;
   $links{$id} = $file =~ s,/.*,,r unless exists $links{$id};
   return (
     link => qq[<a dir="ltr" href="#$id">$title</a>],
@@ -291,7 +302,7 @@ make_page 'link',
   do {
     my ($w, $c, $x, $u) = ('') x 4;
     for my $id (sort keys %links) {
-      my $title = exists $long{$id} ? long_title_of($id) : title_of($id);
+      my $title = human_title_of($id);
       my $link = qq[  <a dir="ltr" href="$id">$title</a>\n];
       if    ($links{$id} eq 'w') { $w .= $link }
       elsif ($links{$id} eq 'c') { $c .= $link }
