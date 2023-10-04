@@ -162,3 +162,7 @@ blockquote:before {
 h2 + p {
   background: var(--sp);
 }
+
+center:first-child {  /* redirect pages */
+  margin-top: 2em;
+}

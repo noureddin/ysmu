@@ -1,0 +1,93 @@
+<!doctype html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8">
+<title>‫معجم يسمو — المصطلحات المؤجلة‬</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+<div class="alert">
+  <strong>تنبيه:</strong>
+  هذه المصطلحات مؤجلة، فليست حتى معروضة للنقاش في المجتمع؛
+  انظر <a href="..">المصطلحات المتفق عليها</a>
+</div>
+<div class="toc">
+<a dir="ltr" href="#2fa">two-factor authentication (2FA)</a>
+<a dir="ltr" href="#authenticate">authenticate</a>
+<a dir="ltr" href="#authentication">authentication</a>
+<a dir="ltr" href="#binary">binary</a>
+<a dir="ltr" href="#blob">blob</a>
+<a dir="ltr" href="#cursor">cursor</a>
+<a dir="ltr" href="#pointer">pointer</a>
+<a dir="ltr" href="#reference">reference</a>
+</div>
+<h2 id="2fa"><a id="two-factor_authentication" dir="ltr" href="#2fa">two-factor authentication (2FA)</a></h2>
+<p>استيثاق ثنائي</p>
+<p class="seealso">انظر أيضا:</p><ul>
+<li><a dir="ltr" href="#authenticate">authenticate</a></li>
+<li><a dir="ltr" href="#authentication">authentication</a></li>
+</ul>
+<h2 id="authenticate"><a dir="ltr" href="#authenticate">authenticate</a></h2>
+<p>اسْتَوْثَق يَسْتَوْثِق اسْتِيثَاقًا (ج: اسْتِيثَاقَات)</p>
+<p class="seealso">انظر أيضا:</p><ul>
+<li><a dir="ltr" href="../link/two-factor authentication/">two-factor authentication</a></li>
+</ul>
+<h2 id="authentication"><a dir="ltr" href="#authentication">authentication</a></h2>
+<p>اسْتِيثَاق (ج: اسْتِيثَاقَات)</p>
+<p class="seealso">انظر أيضا:</p><ul>
+<li><a dir="ltr" href="#authenticate">authenticate</a></li>
+<li><a dir="ltr" href="../link/two-factor authentication/">two-factor authentication</a></li>
+</ul>
+<h2 id="binary"><a dir="ltr" href="#binary">binary</a></h2>
+<p>للأعداد والعوامل: ثنائي.<br>
+للملفات والبيانات: رقمي.</p>
+<p>نقول عدد ثنائي وعدد <a href="../link/decimal/">عشري</a> وعدد <a href="../link/hexadecimal/">ستعشري</a> وعدد <a href="../link/octal/">ثُماني</a>.<br>
+ومنها أن العدد العشري 4 يُمثَّل في نظام الأعداد الثنائية 100.</p>
+<p>أما للملفات والبيانات، فنقول رقمي. وهذا لأنها عكس «نصي».<br>
+فالبيانات، وبالتبعية الملفات، تُقسم غالبا إلى نوعين: بيانات نصية، وبيانات غير نصية.</p>
+<p>البيانات النصية هي التي لا تحتوي إلا على «نصوص»، أما البيانات غير النصية فهي تحتوي على «كل شيء آخر»: الصور والصوتيات والبرامج التنفيذية، إلخ.</p>
+<p>هذا التفريق تفريق عملي بحت. فأغلب الأوقات الفرق الوحيد في تعامل البرامج مع النوعين هو اعتبار وجود المِحرَف الصفري (<code dir="ltr">U+0000</code>) من عدمه، فهو غير موجود في البيانات النصية لكن قد يوجد في البيانات الرقمية.</p>
+<p>فرق آخر هو معاملة سلسلة إنهاء السطر على أنظمة التشغيل المختلفة، فويندوز يستعمل السلسلة CRLF (أو <code dir="ltr">"\r\n"</code> في الكثير من لغات البرمجة)،<br>
+ولكن الأنظمة اليونكسية مثل ماك (منذ Mac OS X) وغنو/لينكس وأنظمة BSD الحرة وغيرهم، جميعها تستخدم مِحرَف LF (<code dir="ltr">U+000A</code>، أي <code dir="ltr">"\n"</code>) وحده، ومِحرَف CL (<code dir="ltr">U+000D</code>، أي <code dir="ltr">"\r"</code>) له سلوك آخر على هذه الأنظمة.</p>
+<p>يظهر هذا الفرق عند فتح الملفات في عدد من لغات البرمجة: الوضع النصي (text) يحوّل سلسلة إنهاء السطر عند القراءة من الملف أو الكتابة إليه إلى ما يستخدمه نظام تشغيلك الذي تشغّل عليه البرنامج. وعند استخدام الوضع الرقمي (binary)، فإن القراءة والكتابة تكون أمينة بغير تحويل أي مِحرَف.<br>
+(فرق آخر عند فتح الملفات بالوضع النصي هو إمكانية تحديد <a href="../link/character_encoding/">ترميز المحارف</a>، بل وجوب تحديده.)</p>
+<p>الواقع أن البيانات النصية (text data) جزء من البيانات الرقمية (binary data)، ولكن لها معاملة خاصة نظرا لطبيعتها.<br>
+والجميل أن المصطلح العربي يحمل هذا المعنى أيضا، بل يجعله أوضح.<br>
+</p>
+<h2 id="blob"><a dir="ltr" href="#blob">blob</a></h2>
+<p>كَائِن رَقَمِيّ (ج: كَائِنَات رَقَمِيَّة)</p>
+<p>من العبارة الإنجليزية ”binary large object“.<br>
+وأيضا كلمة ”blob“ في الإنجليزية تعني كتلة ذات شكل غير محدد.<br>
+وكانت في قواعد البيانات، حيث large تعني أن الكائن ذو حجم أكبر من الأحجام المعتادة للحقول (والتي لم تزد على عدة بايتات).<br>
+ولكن في Git وغيره تستخدم لكائنات البيانات بغض النظر عن حجمها.</p>
+<p class="seealso">انظر أيضا:</p><ul>
+<li><a dir="ltr" href="#binary">binary</a></li>
+</ul>
+<h2 id="cursor"><a dir="ltr" href="#cursor">cursor</a></h2>
+<p>مُؤَشِّر (ج: مُؤَشِّرَات)</p>
+<p class="seealso">انظر أيضا:</p><ul>
+<li><a dir="ltr" href="#pointer">pointer</a></li>
+</ul>
+<h2 id="pointer"><a dir="ltr" href="#pointer">pointer</a></h2>
+<p>للفأرة: مُؤَشِّر (ج: مُؤَشِّرَات)<br>
+في البرمجة: مُشِير (ج: مُشِيرَات)</p>
+<p>عند التحدث عن الفأرة مثلا، فكلمة «مؤشر» (pointer أو cursor) صحيحة لأنها اسم الفاعل من الفعل «يؤشر» أيْ ذلك الشيء الذي «يضع إشارة». أما في سياق البرمجة، فإن pointer لا تعني «مؤشر»، لأن الـpointer لا يضع إشارة على شيء، بل يشير إلى شيء، فاللفظ الصحيح هو «مُشِير». وهو اللفظ المستخدم <a class="out" href="https://web.archive.org/web/20111028171719/http://iamsamy.blogspot.com/2011/08/blog-post_11.html">في لغة كلمات</a>.</p>
+<p class="seealso">انظر أيضا:</p><ul>
+<li><a dir="ltr" href="#reference">reference</a></li>
+<li><a dir="ltr" href="#cursor">cursor</a></li>
+</ul>
+<h2 id="reference"><a dir="ltr" href="#reference">reference</a></h2>
+<p>في البرمجة: مُحِيل (ج: مُحِيلَات)</p>
+<p>كلمة reference في سياق الكتب تعني الكتاب الذي نرجع إليه للبحث عن معلومة، فترجمته إلى «مرجع» عندئذٍ صحيحة. لكن في سياق البرمجة، الـreference لا يَرجع إلى شيء، بل يُرجعنا نحن أو يُحيلنا إلى شيء (refer to)، فترجمته إلى «مُحيل» أفضل.</p>
+<p class="seealso">انظر أيضا:</p><ul>
+<li><a dir="ltr" href="#pointer">pointer</a></li>
+</ul>
+<div class="footer">
+  <p>يمكنك التواصل معنا عبر
+    صفحة <a href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
+    أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
+  </p>
+  <p class="blurred">الرخصة: <a href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
+</div>
+</body>
+</html>

@@ -31,6 +31,9 @@ sub make_header { my ($additional_title, $base) = @_;
     =~ s,(?=</title>),$desc,r
     =~ s,(?<=href=")(?=style.css"),$root,r
     =~ s,\n\Z,,r  # to use say with almost everything
+    # ensure proper text direction for the page's title
+    =~ s,(?<=<title>),\N{RIGHT-TO-LEFT EMBEDDING},r
+    =~ s,(?=</title>),\N{POP DIRECTIONAL FORMATTING},r
 }
 
 use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost everything
@@ -48,7 +51,7 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
 END_OF_TEXT
 
 sub notes_link  { '<a href="'.($_[0] // '').'notes/">موارد وإرشادات</a>' }
-sub rc_link     { '<a href="'.($_[0] // '').'candidate/">المصطلحات المرشحة</a>' }
+sub rc_link     { '<a href="'.($_[0] // '').'candidate/">المصطلحات المرشحة للاتفاق</a>' }
 sub exper_link  { '<a href="'.($_[0] // '').'experimental/">المصطلحات التجريبية</a>' }
 sub stable_link { '<a href="..">المصطلحات المتفق عليها</a>' }
 
@@ -83,15 +86,23 @@ sub make_footer { my ($s) = @_;
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ stable_link ]} أو @{[ exper_link '../' ]}</p>|r
       =~ s| *<!--before-license--> *\n||r
   }
-  elsif ($s eq 'link') {
+  elsif ($s eq 'link' || $s eq 'empty unstaged' || $s eq 'unstaged') {
     return FOOTER
       =~ s| *<!--before-contact--> *\n||r
       =~ s| *<!--before-license--> *\n||r
   }
   else {
-    die "make_footer received wrong argument: '$s'\n"
+    die "\e[1;31m  make_footer received wrong argument: '$s'\e[m\n"
   }
 }
+
+my %long =
+  map {
+    # if this line contains exactly one tab, with entries on both sides
+    /^[^\t]+\t[^\t]+$/ ? split "\t" : ()
+  }
+  map { s,[ \r\n]+,,gr }  # spaces are not allowed; use underscores between words
+  do { open my $fh, '<', 'longnames.tsv'; <$fh> };  # read as an array of lines
 
 # for each term, we generate a link in link/TERM/ that redirects to it in
 # the agreed-upon page, or in the candidate page, or in the experimental page,
@@ -100,13 +111,18 @@ my %links;
 
 sub _make_entry { my ($file) = @_;
   my $id = $file =~ s,^.*/,,r;
+  my $h_id = qq[ id="$id"];
+  my $a_id = qq[];
   my $title = title_of($id);
+  if (exists $long{$id}) {
+    $a_id = qq[ id="$long{$id}"];
+    $title = title_of($long{$id}) . " (@{[ uc $title ]})";
+  }
   my $html = filepath_to_html $file;
-  my $link = qq[<a dir="ltr" href="#$id">$title</a>];
   $links{$id} = $file =~ s,/.*,,r unless exists $links{$id};
   return (
-    link => $link,
-    entry => qq[<h2 id="$id">$link</h2>\n$html],
+    link => qq[<a dir="ltr" href="#$id">$title</a>],
+    entry => qq[<h2$h_id><a$a_id dir="ltr" href="#$id">$title</a></h2>\n$html],
     summary => (join "\t", $title, html_to_summary $html),
   );
 }
@@ -137,11 +153,12 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   return $n;
 }
 
-# we generate five files (in addition to the links mentioned above):
+# we generate these files (in addition to the links mentioned above):
 #   index.html, which contains the agreed-upon entries (in w/*)
 #   ysmu.tsv, which summarizes the agreed-upon entries (in w/*)
 #   candidate/index.html, which contains the "release candidate" entries (in c/*)
 #   experimental/index.html, which contains the experimental entries (in x/*)
+#   unstaged/index.html, which contains the unstaged entries (in u/*)
 #   notes/index.html from notes/src, which is general prose
 
 # we start with the stable entries
@@ -155,75 +172,67 @@ if (make_entries($index, $summary, <w/*>)) {  # if non-empty
   say { $index } make_footer 'stable';
 }
 else {  # if empty
-  say { $index } '<div class="emptypage">لا توجد مصطلحات متفق عليها بعد.</div>';
+  say { $index } '<div class="emptypage">لا توجد مصطلحات متفق عليها بعد</div>';
   say { $index } make_footer 'empty stable';
 }
 
 close $index;
 close $summary;
 
-# now the candidate entries
+# all other stages have an identical structure
 
-mkdir 'candidate' unless -d 'candidate';
-open my $rc, '>', 'candidate/index.html';
-
-say { $rc } make_header 'المصطلحات المرشحة';
-
-print { $rc } <<"END_OF_TEXT";
-<div class="alert">
-  <strong>تنبيه:</strong>
-  هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد؛ انظر
-  @{[ stable_link ]}.
-</div>
-END_OF_TEXT
-
-if (make_entries($rc, undef, <c/*>)) {  # if non-empty
-  say { $rc } make_footer 'candidate';
-}
-else {  # if empty
-  say { $rc } '<div class="emptypage">لا توجد مصطلحات مرشحة حاليا.</div>';
-  say { $rc } make_footer 'empty candidate';
-}
-
-close $rc;
-
-# now the experimental entries
-
-mkdir 'experimental' unless -d 'experimental';
-open my $exper, '>', 'experimental/index.html';
-
-say { $exper } make_header 'المصطلحات التجريبية';
-
-print { $exper } <<"END_OF_TEXT";
-<div class="alert">
-  <strong>تنبيه:</strong>
-  هذه المصطلحات تجريبية؛ انظر
-  @{[ stable_link ]}.
-</div>
-END_OF_TEXT
-
-if (make_entries($exper, undef, <x/*>)) {  # if non-empty
-  say { $exper } make_footer 'experimental';
-}
-else {  # if empty
-  say { $exper } '<div class="emptypage">لا توجد مصطلحات تجريبية حاليا.</div>';
-  say { $exper } make_footer 'empty experimental';
+sub make_stage { my ($words_dir, $name, $title, $alert, $emptymsg) = @_;
+  mkdir $name unless -d $name;
+  open my $fh, '>', $name.'/index.html';
+  #
+  say { $fh } make_header $title;
+  #
+  print { $fh } <<~"END_OF_TEXT" if $alert;
+  <div class="alert">
+    <strong>تنبيه:</strong>
+    $alert؛
+    انظر @{[ stable_link ]}
+  </div>
+  END_OF_TEXT
+  #
+  if (make_entries($fh, undef, <$words_dir/*>)) {  # if non-empty
+    say { $fh } make_footer $name;
+  }
+  else {  # if empty
+    say { $fh } qq[<div class="emptypage">$emptymsg</div>];
+    say { $fh } make_footer "empty $name";
+  }
+  #
+  close $fh;
 }
 
-close $exper;
+sub make_page { my ($name, $header, $content, $footername) = @_;
+  $footername //= $name =~ s,/.*,,r;
+  mkdir $name unless -d $name;
+  open my $fh, '>', $name.'/index.html';
+  say { $fh } $header ;
+  say { $fh } $content;
+  say { $fh } make_footer $footername;
+  close $fh;
+}
 
-# and then the notes
+#################################################
 
-mkdir 'notes' unless -d 'notes';
-open my $notes, '>', 'notes/index.html';
+make_stage 'c', 'candidate', 'المصطلحات المرشحة',
+  'هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد',
+  'لا توجد مصطلحات مرشحة حاليا';
 
-say { $notes } make_header 'موارد وإرشادات';
+make_stage 'x', 'experimental', 'المصطلحات التجريبية',
+  'هذه المصطلحات تجريبية ولم تُناقش في المجتمع بعد',
+  'لا توجد مصطلحات تجريبية حاليا';
 
-say { $notes } basic_html_to_big_html filepath_to_html 'notes/src';
+make_stage 'u', 'unstaged', 'المصطلحات المؤجلة',
+  'هذه المصطلحات مؤجلة، فليست حتى معروضة للنقاش في المجتمع',
+  'لا توجد مصطلحات مؤجلة حاليا';
 
-say { $notes } make_footer 'notes';
-
-close $notes;
+make_page 'notes',
+  make_header('موارد وإرشادات'),
+  basic_html_to_big_html(filepath_to_html 'notes/src');
 
 # and finally the links
 
@@ -231,19 +240,28 @@ use File::Path qw[ remove_tree ];
 remove_tree 'link' if -d 'link';
 mkdir 'link';
 
+use constant ROOT_FOR_LINKS => '../../';
+sub make_link { my ($id, $title, $parent) = @_;
+  my $url = join '', ROOT_FOR_LINKS, $parent, '#', $id;
+  #
+  make_page "link/$id",
+    make_header("توجيه إلى \N{LEFT-TO-RIGHT EMBEDDING}$title\N{POP DIRECTIONAL FORMATTING} آليا", ROOT_FOR_LINKS)
+      =~ s,\n</head>,<meta http-equiv="Refresh" content="0; url=$url" />$&,r,
+    qq[<center>ستوجه الآن إلى <a dir="rtl" href="$url">$title</a> آليا<br>(اضغط على الرابط أعلاه إن لم توجه)</center>];
+}
+
 for my $id (keys %links) {
-  my $title = title_of($id);
   my $parent = $links{$id} eq 'w' ? ''
              : $links{$id} eq 'c' ? 'candidate/'
              : $links{$id} eq 'x' ? 'experimental/'
-             : die "bad parent for '$id' in link/\n";
-  my $url = "../../$parent#$id";
-  mkdir "link/$id";
-  open my $fh, '>', "link/$id/index.html";
-  say { $fh } make_header('توجيه إلى '.$title, '../../')
-    =~ s,\n</head>,<meta http-equiv="Refresh" content="0; url=$url" />$&,r;
-  say { $fh } qq[<center>ستحول الآن إلى <a href="$url">$title</a></center>];
-  say { $fh } make_footer 'notes';
-  close $fh;
+             : $links{$id} eq 'u' ? 'unstaged/'
+             : die "\e[1;31m  bad parent for '$id' in link/\e[m\n";
+  if (exists $long{$id}) {  # if $id is an acronym
+    make_link $id, uc title_of($id), $parent;
+    make_link $long{$id}, title_of($long{$id}), $parent;
+  }
+  else {
+    make_link $id, title_of($id), $parent;
+  }
 }
 
