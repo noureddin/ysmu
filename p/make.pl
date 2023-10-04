@@ -305,11 +305,10 @@ make_page 'link',
     my ($w, $c, $x, $u) = ('') x 4;
     for my $id (sort keys %links) {
       my $title = human_title_of($id);
-      my $link = qq[  <a dir="ltr" href="$id/">$title</a>\n];
-      if    ($links{$id} eq 'w') { $w .= $link }
-      elsif ($links{$id} eq 'c') { $c .= $link }
-      elsif ($links{$id} eq 'x') { $x .= $link }
-      elsif ($links{$id} eq 'u') { $u .= $link }
+      if    ($links{$id} eq 'w') { $w .= qq[  <a dir="ltr" href="../]              . qq[#$id">$title</a>\n] }
+      elsif ($links{$id} eq 'c') { $c .= qq[  <a dir="ltr" href="../candidate/]    . qq[#$id">$title</a>\n] }
+      elsif ($links{$id} eq 'x') { $x .= qq[  <a dir="ltr" href="../experimental/] . qq[#$id">$title</a>\n] }
+      elsif ($links{$id} eq 'u') { $u .= qq[  <a dir="ltr" href="../unstaged/]     . qq[#$id">$title</a>\n] }
       else { die "\e[1;31m  bad parent for '$id' in link/\e[m\n"; }
     }
     # if empty say so, otherwise enclose in div.toc 
