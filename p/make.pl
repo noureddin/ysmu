@@ -13,7 +13,7 @@ chdir "$FindBin::RealBin/../";
 use Parser qw[
   filepath_to_html
   html_to_summary
-  title_of
+  word_title_of
   acronym_title_of
 ];
 
@@ -119,7 +119,7 @@ my %long =
 my %short = reverse %long;
 
 sub long_title_of(_) { my ($id) = @_;
-  my $ttl = title_of($long{$id});
+  my $ttl = word_title_of($long{$id});
   my $acr = acronym_title_of($id);
   return "$ttl ($acr)";
 }
@@ -133,7 +133,7 @@ sub human_title_of(_) { my ($id) = @_;
     return long_title_of($short{$id});
   }
   else {
-    return title_of($id);
+    return word_title_of($id);
   }
 }
 
@@ -144,11 +144,12 @@ my %links;
 
 sub _make_entry { my ($file) = @_;
   my $id = $file =~ s,^.*/,,r;
-  my $h_id = qq[ id="$id"];  # assumption for short_ids: file names are always the short
+  my $h_id = qq[ id="$id"];
   my $a_id = exists $long{$id} ? qq[ id="$long{$id}"] : '';
   my $title = human_title_of($id);
   my $html = filepath_to_html $file, \&human_title_of;
   $links{$id} = $file =~ s,/.*,,r unless exists $links{$id};
+  # NOTE: files MUST use the short name
   return (
     link => qq[<a dir="ltr" href="#$id">$title</a>],
     entry => qq[<h2$h_id><a$a_id dir="ltr" href="#$id">$title</a></h2>\n$html],
@@ -288,10 +289,10 @@ for my $id (keys %links) {
              : die "\e[1;31m  bad parent for '$id' in link/\e[m\n";
   if (exists $long{$id}) {  # if $id is an acronym
     make_link $id, acronym_title_of($id), $parent;
-    make_link $long{$id}, title_of($long{$id}), $parent;
+    make_link $long{$id}, word_title_of($long{$id}), $parent;
   }
   else {
-    make_link $id, title_of($id), $parent;
+    make_link $id, word_title_of($id), $parent;
   }
 }
 

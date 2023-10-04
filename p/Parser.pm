@@ -6,25 +6,29 @@ use parent 'Exporter';
 our @EXPORT_OK = qw[
   filepath_to_html
   html_to_summary
-  title_of
+  word_title_of
   acronym_title_of
 ];
 
-sub title_of(_) { return $_[0] =~ s,_, ,gr }
-
-sub acronym_title_of(_) {
-  my $acr = title_of($_[0]);
-  return $acr =~ /[A-Z]/ ? $acr : uc $acr
+sub word_title_of(_) {
+  return $_[0] =~ s,_, ,gr
+  # add here special cases for mixed-case (non-acronym) titles
 }
 
-sub parse_line(_) {
+sub acronym_title_of(_) {
+  return (uc word_title_of($_[0]))
+  # add here special cases for mixed-case acronyms
+}
+
+sub parse_line(_;$) {
+  my $title_of = $_[1] // \&word_title_of;
   return $_[0]
     =~ s|&|&amp;|grx
     =~ s|<|\x02|grx
     =~ s|>|\x03|grx
     =~ s|\*\*(.*?)\*\*|<strong>$1</strong>|grx
     =~ s|\x02\x02 ([^:>]+) :: ([^:>]+) \x03\x03|<a href="#$2">$1</a>|grx
-    =~ s|\x02\x02          :: (.*?)    \x03\x03|qq[<a dir="ltr" href="#$1">].title_of($1).qq[</a>]|grxe
+    =~ s|\x02\x02          :: (.*?)    \x03\x03|qq[<a dir="ltr" href="#$1">].$title_of->($1).qq[</a>]|grxe
     =~ s,\x02\x02 ([^|\x03]*) [|]{2} ([^|\x03]*) \x03\x03,<a class="out" href="$2">$1</a>,grx
     =~ s|\x02\x02 (.*?) \x03\x03|<a dir="ltr" class="out" href="$1">$1</a>|grx
     =~ s|\{\{(.*?)\}\}|<span dir="ltr">$1</span>|grx
@@ -37,7 +41,7 @@ sub parse_line(_) {
 }
 
 sub transform_see_also(_;$) {
-  my $title_of = $_[1] // \&title_of;
+  my $title_of = $_[1] // \&word_title_of;
   return
     sprintf qq[<p class="seealso">انظر أيضا:</p><ul>\n%s\n</ul>],
       join "\n",
@@ -68,7 +72,7 @@ sub filepath_to_html(_;$) {
   my $ret = '';
   open my $f, '<', $_[0];
   while (<$f>) {
-    $ret .= parse_line;
+    $ret .= parse_line $_, $_[1];
   }
   return transform_para $ret, $_[1];
 }
