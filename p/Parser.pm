@@ -56,6 +56,7 @@ sub transform_para(_;$) {
     ('<p>'.( $_[0] =~ s|<br>\n<br>\n|</p>\n\n<p>|gr).'</p>')
       =~ s|<p>\h*<br>\n|<p>|gr
       =~ s|<p>\h*</p>||gr
+      =~ s|<p>---</p>|<hr>|gr
       =~ s|\A\n+||gr
       =~ s|\n+\Z||gr
       =~ s|\n\n+|\n|gr

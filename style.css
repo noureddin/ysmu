@@ -51,7 +51,7 @@
 }
 
 body {
-  font-family: "Amiri", serif;
+  font-family: "Amiri", "KacstOne", "Noto Naskh Arabic", "Noto Serif", serif;
   width: min(85%, 35em);
   margin: auto;
   color: var(--fg);
@@ -165,4 +165,21 @@ h2 + p {
 
 center:first-child {  /* redirect pages */
   margin-top: 2em;
+}
+
+/* stolen straight from MDN's example then modified heavily.
+   https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr */
+hr {
+  border: none;
+  color: var(--bq);
+  overflow: visible;
+  text-align: center;
+  height: 0;
+}
+
+hr:after {
+  content: '⁂';
+  /* content: '٭٭٭'; */
+  position: relative;
+  top: -0.75em;
 }

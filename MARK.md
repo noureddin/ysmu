@@ -15,6 +15,7 @@ Block formatting:
 - Blank lines delimit paragraphs.
 - `>>>>` on a line by its own, preceding a paragraph, makes it a blockquote.
 - `::::` on a line by its own, makes every line till the end of paragraph a see-also linked term. It should be used at the end.
+- `---` in a paragraph by its own makes a `<hr>` (thematic break); use sparingly.
 
 That's for entries (under `w/`, `c/`, and `x/`); notes (`notes/src`) has the same syntax plus these additions:
 - `!!!!` followed by a list of "https://link long mandatory title" lines to make a list of external links.
