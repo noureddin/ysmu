@@ -15,6 +15,9 @@
 - موارد وإرشادات وملاحظات عامة:  
   https://noureddin.github.io/ysmu/notes
 
+- قائمة روابط جميع المصطلحات:  
+  https://noureddin.github.io/ysmu/link
+
 ## تواصل
 
 عبر [مسائل GitHub](https://github.com/noureddin/ysmu/issues/)
@@ -58,6 +61,7 @@
 - ملف `experimental/index.html`: صفحة ويب المصطلحات التجريبية. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/experimental/)
 - ملف `notes/index.html`:  هي ناتج تصيير `notes/src`، أي صفحة ويب الموارد والإرشادات. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/notes/)
 - ملف `ysmu.tsv`: المصطلحات المتفق عليها بغير شرح وبصيغة مناسبة للتطبيقات. [اذهب إليه ⬉](https://github.com/noureddin/ysmu/raw/main/ysmu.tsv)
+- ملف `link/index.html`: قائمة روابط جميع المصطلحات. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/link/)
 - ملفات `link/*/index.html`: صفحات توجيه إلى المصطلح بغض النظر عن مرحلته الحالية (`*` هي اسم المصطلح الإنجليزي).
 
 ### السواكن:

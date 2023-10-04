@@ -60,6 +60,7 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
 </html>
 END_OF_TEXT
 
+sub all_link    { '<a href="'.($_[0] // '').'link/">قائمة روابط جميع المصطلحات</a>' }
 sub notes_link  { '<a href="'.($_[0] // '').'notes/">موارد وإرشادات</a>' }
 sub rc_link     { '<a href="'.($_[0] // '').'candidate/">المصطلحات المرشحة للاتفاق</a>' }
 sub exper_link  { '<a href="'.($_[0] // '').'experimental/">المصطلحات التجريبية</a>' }
@@ -93,7 +94,8 @@ sub make_footer { my ($s) = @_;
   }
   elsif ($s eq 'notes') {
     return FOOTER
-      =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ stable_link ]} أو @{[ exper_link '../' ]}</p>|r
+      # =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ stable_link ]} أو @{[ exper_link '../' ]}</p>|r
+      =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ all_link '../' ]}</p>|r
       =~ s| *<!--before-license--> *\n||r
   }
   elsif ($s eq 'link' || $s eq 'empty unstaged' || $s eq 'unstaged') {
@@ -295,7 +297,7 @@ for my $id (keys %links) {
 
 # ...and the links index
 
-use constant EMPTY_STAGE_LINKS => qq[  <center class="blurred">لا توجد مصطلحات في هذه المرحلة</center>];
+use constant EMPTY_STAGE_LINKS => qq[  <center class="blurred">لا توجد مصطلحات في هذه المرحلة حاليا</center>];
 
 make_page 'link',
   make_header('روابط جميع المصطلحات'),
@@ -303,7 +305,7 @@ make_page 'link',
     my ($w, $c, $x, $u) = ('') x 4;
     for my $id (sort keys %links) {
       my $title = human_title_of($id);
-      my $link = qq[  <a dir="ltr" href="$id">$title</a>\n];
+      my $link = qq[  <a dir="ltr" href="$id/">$title</a>\n];
       if    ($links{$id} eq 'w') { $w .= $link }
       elsif ($links{$id} eq 'c') { $c .= $link }
       elsif ($links{$id} eq 'x') { $x .= $link }
