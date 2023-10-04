@@ -9,8 +9,18 @@ use lib $FindBin::RealBin;
 chdir "$FindBin::RealBin/../";
 
 # load our libraries
-use Parser;
-use BigParser;
+
+use Parser qw[
+  filepath_to_html
+  html_to_summary
+  title_of
+  acronym_title_of
+];
+
+use BigParser qw[
+  basic_html_to_big_html
+];
+# a single function that reads the output of Parser's filepath_to_html on a big file
 
 use constant HEADER => <<'END_OF_TEXT';
 <!doctype html>
@@ -104,6 +114,12 @@ my %long =
   map { s,[ \r\n]+,,gr }  # spaces are not allowed; use underscores between words
   do { open my $fh, '<', 'longnames.tsv'; <$fh> };  # read as an array of lines
 
+sub long_title_of(_) { my ($id) = @_;
+  my $ttl = title_of($long{$id});
+  my $acr = acronym_title_of($id);
+  return "$ttl ($acr)";
+}
+
 # for each term, we generate a link in link/TERM/ that redirects to it in
 # the agreed-upon page, or in the candidate page, or in the experimental page,
 # in that order, so it's easier to link to term before it's stabilized.
@@ -116,7 +132,7 @@ sub _make_entry { my ($file) = @_;
   my $title = title_of($id);
   if (exists $long{$id}) {
     $a_id = qq[ id="$long{$id}"];
-    $title = title_of($long{$id}) . " (@{[ uc $title ]})";
+    $title = long_title_of($id);
   }
   my $html = filepath_to_html $file;
   $links{$id} = $file =~ s,/.*,,r unless exists $links{$id};
@@ -160,6 +176,7 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
 #   experimental/index.html, which contains the experimental entries (in x/*)
 #   unstaged/index.html, which contains the unstaged entries (in u/*)
 #   notes/index.html from notes/src, which is general prose
+#   link/index.html, which is an index of all terms in the four stages.
 
 # we start with the stable entries
 
@@ -218,7 +235,7 @@ sub make_page { my ($name, $header, $content, $footername) = @_;
 
 #################################################
 
-make_stage 'c', 'candidate', 'المصطلحات المرشحة',
+make_stage 'c', 'candidate', 'المصطلحات المرشحة للاتفاق',
   'هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد',
   'لا توجد مصطلحات مرشحة حاليا';
 
@@ -234,7 +251,7 @@ make_page 'notes',
   make_header('موارد وإرشادات'),
   basic_html_to_big_html(filepath_to_html 'notes/src');
 
-# and finally the links
+# and finally the links...
 
 use File::Path qw[ remove_tree ];
 remove_tree 'link' if -d 'link';
@@ -257,11 +274,41 @@ for my $id (keys %links) {
              : $links{$id} eq 'u' ? 'unstaged/'
              : die "\e[1;31m  bad parent for '$id' in link/\e[m\n";
   if (exists $long{$id}) {  # if $id is an acronym
-    make_link $id, uc title_of($id), $parent;
+    make_link $id, acronym_title_of($id), $parent;
     make_link $long{$id}, title_of($long{$id}), $parent;
   }
   else {
     make_link $id, title_of($id), $parent;
   }
 }
+
+# ...and the links index
+
+use constant EMPTY_STAGE_LINKS => qq[  <center class="blurred">لا توجد مصطلحات في هذه المرحلة</center>];
+
+make_page 'link',
+  make_header('روابط جميع المصطلحات'),
+  do {
+    my ($w, $c, $x, $u) = ('') x 4;
+    for my $id (sort keys %links) {
+      my $title = exists $long{$id} ? long_title_of($id) : title_of($id);
+      my $link = qq[  <a dir="ltr" href="$id">$title</a>\n];
+      if    ($links{$id} eq 'w') { $w .= $link }
+      elsif ($links{$id} eq 'c') { $c .= $link }
+      elsif ($links{$id} eq 'x') { $x .= $link }
+      elsif ($links{$id} eq 'u') { $u .= $link }
+      else { die "\e[1;31m  bad parent for '$id' in link/\e[m\n"; }
+    }
+    # if empty say so, otherwise enclose in div.toc 
+    $w = $w eq '' ? EMPTY_STAGE_LINKS : qq[<div class="toc">\n] . $w . qq[</div>];
+    $c = $c eq '' ? EMPTY_STAGE_LINKS : qq[<div class="toc">\n] . $c . qq[</div>];
+    $x = $x eq '' ? EMPTY_STAGE_LINKS : qq[<div class="toc">\n] . $x . qq[</div>];
+    $u = $u eq '' ? EMPTY_STAGE_LINKS : qq[<div class="toc">\n] . $u . qq[</div>];
+    # return
+    sprintf qq[<h2 id="%s"><a href="#%s">%s</a></h2>\n%s%s] x 4,
+      ('agreed')x2,       'المصطلحات المتفق عليها',     $w, "\n",
+      ('candidate')x2,    'المصطلحات المرشحة للاتفاق',  $c, "\n",
+      ('experimental')x2, 'المصطلحات التجريبية',        $x, "\n",
+      ('unstaged')x2,     'المصطلحات المؤجلة',          $u, ""
+  };
 

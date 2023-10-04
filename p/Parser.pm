@@ -3,13 +3,19 @@ use v5.14; use warnings; use autodie; use utf8;
 use open qw[ :encoding(UTF-8) :std ];
 
 use parent 'Exporter';
-our @EXPORT = qw[
+our @EXPORT_OK = qw[
   filepath_to_html
   html_to_summary
   title_of
+  acronym_title_of
 ];
 
 sub title_of(_) { return $_[0] =~ s,_, ,gr }
+
+sub acronym_title_of(_) {
+  my $acr = title_of($_[0]);
+  return $acr =~ /[A-Z]/ ? $acr : uc $acr
+}
 
 sub parse_line(_) {
   return $_[0]

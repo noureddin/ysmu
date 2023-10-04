@@ -8,12 +8,16 @@ all: $(targets)
 $(targets): p/* $(words) notes/src longnames.tsv
 	perl -Mutf8 -CDSA p/make.pl
 
-.PHONY: clean
+.PHONY: clean force all
 
 define newline
 
 
 endef
+
+force: clean all
+# `make -B` would re-build once for each target,
+# but only one time for all targets is needed.
 
 clean:
 	$(addprefix ${newline}rm -f ,${targets})

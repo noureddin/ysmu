@@ -3,7 +3,7 @@ use v5.14; use warnings; use autodie; use utf8;
 use open qw[ :encoding(UTF-8) :std ];
 
 use parent 'Exporter';
-our @EXPORT = qw[
+our @EXPORT_OK = qw[
   basic_html_to_big_html
 ];
 # a single function that reads the output of Parser's filepath_to_html on a big file
