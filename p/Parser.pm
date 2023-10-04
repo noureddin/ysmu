@@ -46,14 +46,14 @@ sub transform_see_also(_;$) {
   return
     sprintf qq[<p class="seealso">انظر أيضا:</p><ul>\n%s\n</ul>],
       join "\n",
-        map { s|<br>||; s| |_|g; qq[<li><a dir="ltr" href="#$_">].$title_of->($_).qq[</a></li>] }
+        map { s|<br>||; s| |_|g; qq[  <li><a dir="ltr" href="#$_">].$title_of->($_).qq[</a></li>] }
           split "\n", $_[0]
 }
 
 sub transform_blockquote(_) {
   return
     sprintf qq[<blockquote>\n%s\n</blockquote>],
-      $_[0]
+      $_[0] =~ s,<br>\n\Z,,r
 }
 
 sub transform_para(_;$) {
