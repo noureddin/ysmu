@@ -60,6 +60,69 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
 </html>
 END_OF_TEXT
 
+use constant SINGLE_FILTERING_SCRIPT => <<'END_OF_TEXT';
+<script>
+  function normalize_text (t) {  // for filtering
+    return t.toLowerCase().replace(/[-_\s]+/g, ' ').replace(/^ /g, '').replace(/ $/g, ' ')
+    // .trim() is introduced in 2010; .replace() is introduced in 2000
+  }
+  function filter_terms (q) {
+    // hide toc entries that aren't a substring of the input (q)
+    var tocens = document.querySelectorAll('.toc > a')
+    var nonempty = false
+    for (var i = 0; i < tocens.length; ++i) {
+      var a = tocens[i]
+      // TODO: make spaces an "AND" operation instead of matching
+      // TODO: search in the "see also" terms
+      //       and in the terms mentioned in the entry's desc.
+      a.className =
+        normalize_text(a.textContent).indexOf(normalize_text(q)) === -1
+          ? 'hidden'
+          : ''
+      if (a.className === '') { nonempty = true }
+      // oldest .indexOf() instead of the 2015 .includes()
+    }
+    document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
+    // for & var & className instead of forEach & const & classList
+    // to work on the oldest browsers (ignoring IE).
+  }
+  onload = filter_terms(document.getElementById('filter').value)
+</script>
+END_OF_TEXT
+
+use constant MULTIPLE_FILTERING_SCRIPT => <<'END_OF_TEXT';
+<script>
+  function normalize_text (t) {  // for filtering
+    return t.toLowerCase().replace(/[-_\s]+/g, ' ').replace(/^ /g, '').replace(/ $/g, ' ')
+    // .trim() is introduced in 2010; .replace() is introduced in 2000
+  }
+  function filter_terms (q) {
+    // hide toc entries that aren't a substring of the input (q)
+    var tocens = document.querySelectorAll('.toc > a')
+    for (var i = 0; i < tocens.length; ++i) {
+      var a = tocens[i]
+      // TODO: make spaces an "AND" operation instead of matching
+      // TODO: search in the "see also" terms
+      //       and in the terms mentioned in the entry's desc.
+      a.className =
+        normalize_text(a.textContent).indexOf(normalize_text(q)) === -1
+          ? 'hidden'
+          : ''
+      // oldest .indexOf() instead of the 2015 .includes()
+    }
+    var tocs = document.querySelectorAll('.toc')
+    for (var i = 0; i < tocs.length; ++i) {
+      tocs[i].querySelector('.emptytoc').style.display =
+        tocs[i].querySelector('a:not(.hidden)') == null
+          ? 'block' : 'none'
+    }
+    // for & var & className instead of forEach & const & classList
+    // to work on the oldest browsers (ignoring IE).
+  }
+  onload = filter_terms(document.getElementById('filter').value)
+</script>
+END_OF_TEXT
+
 sub all_link    { '<a href="'.($_[0] // '').'link/">قائمة روابط جميع المصطلحات</a>' }
 sub notes_link  { '<a href="'.($_[0] // '').'notes/">موارد وإرشادات</a>' }
 sub rc_link     { '<a href="'.($_[0] // '').'candidate/">المصطلحات المرشحة للاتفاق</a>' }
@@ -71,6 +134,7 @@ sub make_footer { my ($s) = @_;
     return FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ rc_link ]}</p>|r
       =~ s| *<!--before-license--> *\n||r
+      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r;
   }
   elsif ($s eq 'empty stable') {
     return FOOTER
@@ -81,6 +145,7 @@ sub make_footer { my ($s) = @_;
     return FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ exper_link '../' ]}</p>|r
       =~ s| *<!--before-license--> *\n||r
+      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r;
   }
   elsif ($s eq 'empty candidate') {
     return FOOTER
@@ -91,6 +156,7 @@ sub make_footer { my ($s) = @_;
     return FOOTER
       =~ s| *<!--before-contact--> *\n||r
       =~ s|<!--before-license-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
+      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r;
   }
   elsif ($s eq 'empty experimental') {
     return FOOTER
@@ -101,6 +167,7 @@ sub make_footer { my ($s) = @_;
     return FOOTER
       =~ s| *<!--before-contact--> *\n||r
       =~ s| *<!--before-license--> *\n||r
+      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r;
   }
   elsif ($s eq 'empty unstaged') {
     return FOOTER
@@ -111,6 +178,7 @@ sub make_footer { my ($s) = @_;
     return FOOTER
       =~ s| *<!--before-contact--> *\n||r
       =~ s| *<!--before-license--> *\n||r
+      =~ s,(?=</body>),@{[ MULTIPLE_FILTERING_SCRIPT ]},r;
   }
   elsif ($s eq 'link') {
     return FOOTER
@@ -164,7 +232,7 @@ sub toc_links {  # array of [$title, "#$id"]; returns a string '<div class="toc"
         map { qq[  <a href="$_->[1]">$_->[0]</a>\n] }
         sort { $a->[0] cmp $b->[0] }
           @_
-    ) . qq[</div>];
+    ) . qq[<div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>\n</div>];
   }
   return;  # undef if empty
 }
@@ -189,6 +257,11 @@ sub _make_entry { my ($file) = @_;
   );
 }
 
+use constant TOC_FILTER =>
+  '<input id="filter" type="text" oninput="filter_terms(this.value)"'
+ .' placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">'
+ ."\n";
+
 sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   my $n = 0;
   my @toc;
@@ -210,7 +283,7 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
       $body =~ s,(<a\b[^>]* href=")#$term",$1$root/link/$term/",g
     }
   }
-  print { $out_html } ($toc ? $toc."\n" : '') . $body;
+  print { $out_html } ($toc ? TOC_FILTER.$toc."\n" : '') . $body;
   print { $out_tsv } $summary  if $out_tsv;
   return $n;
 }
@@ -346,6 +419,7 @@ make_page 'link',
       else { die "\e[1;31m  bad parent for '$id' in link/\e[m\n"; }
     }
     # return
+    TOC_FILTER .
     sprintf qq[<h2 id="%s"><a href="#%s">%s</a></h2>\n%s%s] x 4,
       ('agreed')x2,       'المصطلحات المتفق عليها',     toc_links(@w) // EMPTY_STAGE_LINKS, "\n",
       ('candidate')x2,    'المصطلحات المرشحة للاتفاق',  toc_links(@c) // EMPTY_STAGE_LINKS, "\n",

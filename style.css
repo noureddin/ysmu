@@ -1,7 +1,7 @@
 :root {  /* light mode */
   /* body */
   --fg: #222;
-  --bg: #fafaff;
+  --bg: #f8f8ff;
   /* color of a */
   --an: #009;  /* normal */
   --ah: #00f;  /* hover */
@@ -21,6 +21,7 @@
   --al: rgba(255,  32,  32, 0.1);   /* .alert's bg */
   --AL: rgba(255,  32,  32, 0.4);   /* .alert's border */
   --sp: rgba(  0, 128, 255, 0.05);  /* summary paragraph's bg */
+  --fl: rgba(255, 255, 255, 0.50);  /* filter's bg when active */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -47,6 +48,7 @@
   --al: rgba(255,  12,  12, 0.3);
   --AL: rgba(255,  12,  12, 0.8);
   --sp: rgba(255, 128,   0, 0.1);   /* summary paragraph's bg */
+  --fl: rgba(  0,   0,   0, 0.35);  /* filter's bg when active */
 }
 }
 
@@ -56,6 +58,11 @@ body {
   margin: auto;
   color: var(--fg);
   background: var(--bg);
+}
+
+input {
+  font-family: inherit;
+  font-size: inherit;
 }
 
 /* lines around terms */
@@ -159,6 +166,25 @@ blockquote:before {
   text-decoration: none;
   box-shadow: 0 0 2px 2px currentColor;
   background: var(--ta);
+}
+
+#filter {
+  margin: 2em 0 0 0;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  color: inherit;
+  background: inherit;
+  border: 1px solid var(--hl);
+  border-radius: 1em;
+}
+#filter:focus,
+#filter:active {
+  background: var(--fl);
+}
+
+.toc > a.hidden {
+  display: none;
 }
 
 h2 + p {

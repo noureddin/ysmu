@@ -6,11 +6,13 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+<input id="filter" type="text" oninput="filter_terms(this.value)" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
 <div class="toc">
   <a href="#check_in">check in</a>
   <a href="#commit">commit</a>
   <a href="#instance">instance</a>
   <a href="#repository">repository</a>
+<div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
 </div>
 <h2 id="check_in"><a dir="ltr" href="#check_in">check in</a></h2>
 <p>في أنظمة إدارة النسخ: أَوْدَع يُودِع إِيدَاعًا (ج: إِيدَاعَات) فهو مُودِع، والأمر أَوْدِع، والمفعول أُودِع يُودَع فهو مُودَع.</p>
@@ -55,5 +57,32 @@
   </p>
   <p class="blurred">الرخصة: <a href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
 </div>
+<script>
+  function normalize_text (t) {  // for filtering
+    return t.toLowerCase().replace(/[-_\s]+/g, ' ').replace(/^ /g, '').replace(/ $/g, ' ')
+    // .trim() is introduced in 2010; .replace() is introduced in 2000
+  }
+  function filter_terms (q) {
+    // hide toc entries that aren't a substring of the input (q)
+    var tocens = document.querySelectorAll('.toc > a')
+    var nonempty = false
+    for (var i = 0; i < tocens.length; ++i) {
+      var a = tocens[i]
+      // TODO: make spaces an "AND" operation instead of matching
+      // TODO: search in the "see also" terms
+      //       and in the terms mentioned in the entry's desc.
+      a.className =
+        normalize_text(a.textContent).indexOf(normalize_text(q)) === -1
+          ? 'hidden'
+          : ''
+      if (a.className === '') { nonempty = true }
+      // oldest .indexOf() instead of the 2015 .includes()
+    }
+    document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
+    // for & var & className instead of forEach & const & classList
+    // to work on the oldest browsers (ignoring IE).
+  }
+  onload = filter_terms(document.getElementById('filter').value)
+</script>
 </body>
 </html>
