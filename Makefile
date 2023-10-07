@@ -21,4 +21,4 @@ force: clean all
 
 clean:
 	$(addprefix ${newline}rm -f ,${targets})
-	rm -rf link/
+	rm -fr link/
