@@ -257,10 +257,10 @@ sub _make_entry { my ($file) = @_;
   );
 }
 
-use constant TOC_FILTER =>
-  '<input id="filter" type="text" oninput="filter_terms(this.value)"'
- .' placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">'
- ."\n";
+use constant TOC_FILTER => sprintf "<input %s>\n", join ' ',
+  'id="filter"', 'type="text"', 'dir="ltr"',
+  'oninput="filter_terms(this.value)"',
+  'placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة"';
 
 sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   my $n = 0;

@@ -202,6 +202,9 @@ blockquote:before {
 #filter:active {
   background: var(--fl);
 }
+#filter:placeholder-shown {
+  direction: rtl;
+}
 
 .toc > a.hidden {
   display: none;
