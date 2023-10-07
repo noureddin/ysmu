@@ -87,20 +87,40 @@ sub make_footer { my ($s) = @_;
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ exper_link '../' ]}</p>|r
       =~ s| *<!--before-license--> *\n||r
   }
-  elsif ($s eq 'experimental' || $s eq 'empty experimental') {
+  elsif ($s eq 'experimental') {
     return FOOTER
       =~ s| *<!--before-contact--> *\n||r
       =~ s|<!--before-license-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
+  }
+  elsif ($s eq 'empty experimental') {
+    return FOOTER
+      =~ s| *<!--before-contact--> *\n||r
+      =~ s|<!--before-license-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
+  }
+  elsif ($s eq 'unstaged') {
+    return FOOTER
+      =~ s| *<!--before-contact--> *\n||r
+      =~ s| *<!--before-license--> *\n||r
+  }
+  elsif ($s eq 'empty unstaged') {
+    return FOOTER
+      =~ s| *<!--before-contact--> *\n||r
+      =~ s| *<!--before-license--> *\n||r
+  }
+  elsif ($s eq 'all') {
+    return FOOTER
+      =~ s| *<!--before-contact--> *\n||r
+      =~ s| *<!--before-license--> *\n||r
+  }
+  elsif ($s eq 'link') {
+    return FOOTER
+      =~ s| *<!--before-contact--> *\n||r
+      =~ s| *<!--before-license--> *\n||r
   }
   elsif ($s eq 'notes') {
     return FOOTER
       # =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ stable_link ]} أو @{[ exper_link '../' ]}</p>|r
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ all_link '../' ]}</p>|r
-      =~ s| *<!--before-license--> *\n||r
-  }
-  elsif ($s eq 'link' || $s eq 'empty unstaged' || $s eq 'unstaged') {
-    return FOOTER
-      =~ s| *<!--before-contact--> *\n||r
       =~ s| *<!--before-license--> *\n||r
   }
   else {
@@ -331,5 +351,6 @@ make_page 'link',
       ('candidate')x2,    'المصطلحات المرشحة للاتفاق',  toc_links(@c) // EMPTY_STAGE_LINKS, "\n",
       ('experimental')x2, 'المصطلحات التجريبية',        toc_links(@x) // EMPTY_STAGE_LINKS, "\n",
       ('unstaged')x2,     'المصطلحات المؤجلة',          toc_links(@u) // EMPTY_STAGE_LINKS, ""
-  };
+  },
+  'all';
 
