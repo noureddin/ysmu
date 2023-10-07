@@ -52,6 +52,10 @@
 }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Amiri", "KacstOne", "Noto Naskh Arabic", "Noto Serif", serif;
   width: min(85%, 35em);
@@ -94,6 +98,22 @@ a:hover { text-decoration: underline }
 h2 a        { color: var(--hn) }
 h2 a:hover  { color: var(--hh) }
 h2 a:active { color: var(--ha) }
+
+a[target="_blank"]:not([dir])::after {  /* RTL */
+  /* content is preceded by NARROW NO-BREAK SPACE */
+  content: ' [↖]';
+  vertical-align: super;
+  font-size: 50%;
+  line-height: normal;
+}
+
+a[target="_blank"][dir="ltr"]::before {
+  /* content is followed by NARROW NO-BREAK SPACE */
+  content: '[↖] ';
+  vertical-align: super;
+  font-size: 50%;
+  line-height: normal;
+}
 
 blockquote {
   border-right: 2px solid var(--bq);

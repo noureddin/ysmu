@@ -50,11 +50,11 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
 <div class="footer">
   <!--before-contact-->
   <p>يمكنك التواصل معنا عبر
-    صفحة <a href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
-    أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
+    صفحة <a target="_blank" rel="author" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
+    أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a target="_blank" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
   </p>
   <!--before-license-->
-  <p class="blurred">الرخصة: <a href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
+  <p class="blurred">الرخصة: <a target="_blank" rel="license" href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
 </div>
 </body>
 </html>
