@@ -232,7 +232,7 @@ sub toc_links {  # array of [$title, "#$id"]; returns a string '<div class="toc"
         map { qq[  <a href="$_->[1]">$_->[0]</a>\n] }
         sort { $a->[0] cmp $b->[0] }
           @_
-    ) . qq[<div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>\n</div>];
+    ) . qq[  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>\n</div>];
   }
   return;  # undef if empty
 }

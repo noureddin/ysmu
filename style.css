@@ -92,7 +92,10 @@ a        { color: var(--an) }
 a:hover  { color: var(--ah) }
 a:active { color: var(--aa) }
 
-a:not(.out) { text-decoration: none }
+/* make all links without underline,
+   except outward links in page (not footer) */
+a:not([target]), .footer a, li > a { text-decoration: none }
+
 a:hover { text-decoration: underline }
 
 h2 a        { color: var(--hn) }
