@@ -237,3 +237,11 @@ hr:after {
   position: relative;
   top: -0.75em;
 }
+
+li {
+  margin-right: -1em;
+}
+ol {
+  list-style: arabic-indic;
+}
+/* <ol> shouldn't have 10 or more <li> (which is discouraged anyway) */

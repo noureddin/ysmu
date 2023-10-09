@@ -56,17 +56,30 @@ sub transform_blockquote(_) {
       $_[0] =~ s,<br>\n\Z,,r
 }
 
+sub transform_list(_) {
+  return $_[0]
+    =~ s,^<p>--\h+(.*)</p>$,<li>$1</li>,mgr
+    # note: '****' are translated to the empty <strong></strong>
+    # thus our big list items are started by <p><strong></strong></p>
+    =~ s,^<p><strong></strong></p>\n(.*?)(?=\n<p><strong></strong></p>$|\n<li>|\Z),<li>$1</li>,mgrs
+}
+
 sub transform_para(_;$) {
   return
     ('<p>'.( $_[0] =~ s|<br>\n<br>\n|</p>\n\n<p>|gr).'</p>')
       =~ s|<p>\h*<br>\n|<p>|gr
       =~ s|<p>\h*</p>||gr
-      =~ s|<p>---</p>|<hr>|gr
+      =~ s|<p>----</p>|<hr>|gr
       =~ s|\A\n+||gr
       =~ s|\n+\Z||gr
       =~ s|\n\n+|\n|gr
-      =~ s|^<p>::::<br>\n(.*?)</p>|transform_see_also($1, $_[1])|mgrse
-      =~ s|^<p>(?:&gt;){4}<br>\n(.*?)</p>|transform_blockquote($1)|mgrse
+      =~ s|<p>::::<br>\n(.*?)</p>|transform_see_also($1, $_[1])|mgrse
+      =~ s|<p>(?:&gt;){4}<br>\n(.*?)</p>|transform_blockquote($1)|mgrse
+      =~ s|<p>\[\[([^";]*?)\]\]<br>\n\Q##((\E</p>(.*?)<p>\Q))##\E</p>|qq[<ol style="list-style-type:$1">].transform_list($2).'</ol>'|mgrse
+      =~ s|<p>\[\[([^";]*?)\]\]<br>\n\Q++((\E</p>(.*?)<p>\Q))++\E</p>|qq[<ul style="list-style-type:$1">].transform_list($2).'</ul>'|mgrse
+      =~ s|<p>\Q##((\E</p>(.*?)<p>\Q))##\E</p>|'<ol>'.transform_list($1).'</ol>'|mgrse
+      =~ s|<p>\Q++((\E</p>(.*?)<p>\Q))++\E</p>|'<ul>'.transform_list($1).'</ul>'|mgrse
+      =~ s|<p>@@@@</p>|<div style="margin: -1em"></div>|gr
 }
 
 sub filepath_to_html(_;$) {
