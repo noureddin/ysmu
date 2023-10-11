@@ -26,22 +26,32 @@ use constant HEADER => <<'END_OF_TEXT';
 <!doctype html>
 <html dir="rtl" lang="ar">
 <head>
-<meta charset="utf-8">
-<title>معجم يسمو</title>
-<link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:locale" content="ar_AR">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{title}}">
+  <link rel="canonical" href="{{url}}">
+  <meta property="og:url" content="{{url}}">
 </head>
 <body>
 END_OF_TEXT
 
-sub make_header { my ($additional_title, $base) = @_;
+sub make_header { my ($additional_title, $path, $base) = @_;
+  $path //= '';
   my $root = $base ? $base :
              $additional_title ? '../' : '';
   my $desc = $additional_title ? ' — '.$additional_title : ' للمصطلحات التقنية الحديثة';
+  my $url  = "https://noureddin.github.io/ysmu/$path/" =~ s,/+$,/,r;
+
   return HEADER
-    =~ s,(?=</title>),$desc,r
+    =~ s,\Q{{title}}\E,معجم يسمو$desc,gr
+    =~ s,\Q{{url}}\E,$url,gr
     =~ s,(?<=href=")(?=style.css"),$root,r
     =~ s,\n\Z,,r  # to use say with almost everything
-    # ensure proper text direction for the page's title
+    # ensure proper text direction for the page's title (TODO: only for <title> and not meta og:title?)
     =~ s,(?<=<title>),\N{RIGHT-TO-LEFT EMBEDDING},r
     =~ s,(?=</title>),\N{POP DIRECTIONAL FORMATTING},r
 }
@@ -321,7 +331,7 @@ sub make_stage { my ($words_dir, $name, $title, $alert, $emptymsg) = @_;
   mkdir $name unless -d $name;
   open my $fh, '>', $name.'/index.html';
   #
-  say { $fh } make_header $title;
+  say { $fh } make_header $title, $name;
   #
   print { $fh } <<~"END_OF_TEXT" if $alert;
   <div class="alert">
@@ -346,7 +356,7 @@ sub make_page { my ($name, $header, $content, $footername) = @_;
   $footername //= $name =~ s,/.*,,r;
   mkdir $name unless -d $name;
   open my $fh, '>', $name.'/index.html';
-  say { $fh } $header ;
+  say { $fh } $header;
   say { $fh } $content;
   say { $fh } make_footer $footername;
   close $fh;
@@ -367,7 +377,7 @@ make_stage 'u', 'unstaged', 'المصطلحات المؤجلة',
   'لا توجد مصطلحات مؤجلة حاليا';
 
 make_page 'notes',
-  make_header('موارد وإرشادات'),
+  make_header('موارد وإرشادات', 'notes'),
   basic_html_to_big_html(filepath_to_html 'notes/src');
 
 # and finally the links...
@@ -381,8 +391,8 @@ sub make_link { my ($id, $title, $parent) = @_;
   my $url = join '', ROOT_FOR_LINKS, $parent, '#', $id;
   #
   make_page "link/$id",
-    make_header("توجيه إلى \N{LEFT-TO-RIGHT EMBEDDING}$title\N{POP DIRECTIONAL FORMATTING} آليا", ROOT_FOR_LINKS)
-      =~ s,\n</head>,<meta http-equiv="Refresh" content="0; url=$url" />$&,r,
+    make_header("توجيه إلى \N{LEFT-TO-RIGHT EMBEDDING}$title\N{POP DIRECTIONAL FORMATTING} آليا", "link/$id", ROOT_FOR_LINKS)
+      =~ s,\n</head>,\n  <meta http-equiv="Refresh" content="0; url=$url">$&,r,
     qq[<center>ستوجه الآن إلى <a dir="rtl" href="$url">$title</a> آليا<br>(اضغط على الرابط أعلاه إن لم توجه)</center>];
 }
 
@@ -406,7 +416,7 @@ for my $id (keys %links) {
 use constant EMPTY_STAGE_LINKS => qq[  <center class="blurred">لا توجد مصطلحات في هذه المرحلة حاليا</center>];
 
 make_page 'link',
-  make_header('روابط جميع المصطلحات'),
+  make_header('روابط جميع المصطلحات', 'link'),
   do {
     my (@w, @c, @x, @u);
     for my $id (keys %links) {
