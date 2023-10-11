@@ -137,13 +137,14 @@ sub all_link    { '<a href="'.($_[0] // '').'link/">قائمة روابط جمي
 sub notes_link  { '<a href="'.($_[0] // '').'notes/">موارد وإرشادات</a>' }
 sub rc_link     { '<a href="'.($_[0] // '').'candidate/">المصطلحات المرشحة للاتفاق</a>' }
 sub exper_link  { '<a href="'.($_[0] // '').'experimental/">المصطلحات التجريبية</a>' }
+sub tsv_link    { '<a href="https://github.com/noureddin/ysmu/raw/main/ysmu.tsv">ysmu.tsv</a>' }
 sub stable_link { '<a href="..">المصطلحات المتفق عليها</a>' }
 
 sub make_footer { my ($s) = @_;
   if ($s eq 'stable') {
     return FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ rc_link ]}</p>|r
-      =~ s| *<!--before-license--> *\n||r
+      =~ s|<!--before-license-->|<p class="blurred">الترجمة المختصرة بصيغة TSV للتطبيقات والمعاجم: @{[ tsv_link ]}</p>|r
       =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r;
   }
   elsif ($s eq 'empty stable') {
