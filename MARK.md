@@ -13,11 +13,14 @@ Line formatting:
 
 Block formatting:
 - Blank lines delimit paragraphs.
-- `>>>>` on a line by its own, preceding a paragraph, makes it a blockquote.
+- `""""` on a line by its own, preceding a paragraph, makes it a blockquote.
 - `::::` on a line by its own, makes every line till the end of paragraph a see-also linked term. It should be used at the end.
 - `----` in a paragraph by its own makes a `<hr>` (thematic break); use sparingly.
 - `@@@@` in a paragraph by its own makes a negative paragraph space; can be used between paragraph and following tight lists
   (ie, lists whose all items are lines, never a block element like a paragraph).
+
+Big blockquotes:
+- Start it by `>>>>` in a paragraph by its own, and end it by `<<<<` in a paragraph on its own.
 
 Lists (other than "see-also" term lists):
 - Start an ordered list with `##((` in a paragraph by its own, and end it by `))##` in a paragraph by its own. (Think number = "#".)

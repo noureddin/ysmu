@@ -74,7 +74,8 @@ sub transform_para(_;$) {
       =~ s|\n+\Z||gr
       =~ s|\n\n+|\n|gr
       =~ s|<p>::::<br>\n(.*?)</p>|transform_see_also($1, $_[1])|mgrse
-      =~ s|<p>(?:&gt;){4}<br>\n(.*?)</p>|transform_blockquote($1)|mgrse
+      =~ s|<p>"{4}<br>\n(.*?)</p>|transform_blockquote($1)|mgrse
+      =~ s|<p>(?:&gt;){4}</p>\n(.*?)\n<p>(?:&lt;){4}</p>|transform_blockquote($1)|mgrse
       =~ s|<p>\[\[([^";]*?)\]\]<br>\n\Q##((\E</p>(.*?)<p>\Q))##\E</p>|qq[<ol style="list-style-type:$1">].transform_list($2).'</ol>'|mgrse
       =~ s|<p>\[\[([^";]*?)\]\]<br>\n\Q++((\E</p>(.*?)<p>\Q))++\E</p>|qq[<ul style="list-style-type:$1">].transform_list($2).'</ul>'|mgrse
       =~ s|<p>\Q##((\E</p>(.*?)<p>\Q))##\E</p>|'<ol>'.transform_list($1).'</ol>'|mgrse
