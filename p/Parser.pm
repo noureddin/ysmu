@@ -95,11 +95,11 @@ sub filepath_to_html(_;$) {
 sub html_to_summary(_) {
   # get only the first paragraph, and collapse it into a single line
   local $_ = $_[0] =~ s|<p>(.*?)</p>.*|$1|sr;  # /s makes . match any char, including \n
-  if (/[^.]<br>\n/ || /[^.]\Z/) {
+  if (/[^.]<br>\n?/ || /[^.]<\/p>/) {
     die "\e[1;31m  summary has line(s) that don't end in a fullstop.\e[m\n"
       . join '', map { "\e[1;31m    $_\e[m\n" } split "\n";
   }
-  return s/<br>\n/ /gr;
+  return s/<br>\n/ /gr =~ s/ \Z//gr;
 }
 
 1;
