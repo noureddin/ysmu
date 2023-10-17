@@ -66,6 +66,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 20px;
 }
 
 body {
@@ -104,12 +105,19 @@ a        { color: var(--an) }
 a:hover  { color: var(--ah) }
 a:active { color: var(--aa) }
 
+
+a { text-underline-offset: 35% }
+a.other /* h2 in /link/index.html */
+  { text-underline-offset: 45% }
+
 /* make all links without underline,
    except outward links in page (not footer) */
-a:not([target]), footer a, li > a { text-decoration: none }
+a:not([target]),       footer a,       li > a { text-decoration: none }
 
-a:hover { text-decoration: underline }
-a.other { text-decoration: underline }  /* h2 in /link/index.html */
+a:not([target]):hover, footer a:hover, li > a:hover,
+a:not([target]):focus, footer a:focus, li > a:focus,
+a.other
+  { text-decoration: underline 1px }
 
 h2>a        { color: var(--hn) }
 h2>a:hover  { color: var(--hh) }
@@ -275,13 +283,20 @@ nav > a:not([href]) {  /* current page in the navbar */
   color: var(--nv);
   display: inline;
   font-weight: bold;
+  text-decoration: none !important;  /* affects :focus, :hover, etc */
 }
 
 .title {
   font-size: 133%;
 }
 
-.title svg {
+.logo > span {
+  display: none;
+}
+
+.logo {
+  background: url(favicon.svg);
+  display: inline-block;
   height: 1.3em;
   width: 1.3em;
   margin: 0 .05em 0 .1em;

@@ -63,10 +63,10 @@ sub make_header { my ($additional_title, $path, $base) = @_;
   my $url  = "https://noureddin.github.io/ysmu/$path/" =~ s,/+$,/,r;
   my $page = $path ? "$root$path/" : '';
   my $title = "معجم يسمو$desc";
-  my $header_title = "معجم يسمو\n{{logo}}\n$desc"
-    =~ s/ — //r
-    =~ s|\Q{{logo}}\E|do { local $/; open my $f, '<', 'etc/favicon.svg'; <$f> }|re
-    ;
+  my $header_title = "معجم يسمو\n{{logo}}\n$desc" =~ s/ — //r
+    =~ s|\Q{{logo}}\E|<span class="logo"><span>\N{SUNRISE OVER MOUNTAINS}</span></span>|r;
+    # this hack (with the associated css) is to use the img on css-enabled browsers,
+    # but to use the unicode character in reader mode and browsers w/o css.
 
   return HEADER
     =~ s,\Q{{title}}\E,$title,gr
@@ -84,7 +84,7 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
 <footer>
   <!--before-contact-->
   <p>يمكنك التواصل معنا عبر
-    صفحة <a target="_blank" rel="author" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
+    صفحة <a target="_blank" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a target="_blank" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
   </p>
   <!--before-license-->
@@ -261,14 +261,14 @@ sub human_title_of(_) { my ($id) = @_;
   }
 }
 
-sub toc_links {  # array of [$title, "#$id"]; returns a string '<div class="toc">...<a href="#id">title</a>...</div>' (or undef if empty)
+sub toc_links {  # array of [$title, "#$id"]; returns a string '<section class="toc">...<a href="#id">title</a>...</section>' (or undef if empty)
   if (@_) {
-    return qq[<div class="toc">\n] . (
+    return qq[<section class="toc">\n] . (
       join '',
         map { qq[  <a href="$_->[1]">$_->[0]</a>\n] }
         sort { $a->[0] cmp $b->[0] }
           @_
-    ) . qq[  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>\n</div>];
+    ) . qq[  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>\n</section>];
   }
   return;  # undef if empty
 }
@@ -288,7 +288,7 @@ sub _make_entry { my ($file) = @_;
   # NOTE: files MUST use the short name
   return (
     toclinkpair => [ $title, '#'.$id ],
-    entry => qq[<h2$h_id><a$a_id dir="ltr" href="#$id">$title</a></h2>\n$html],
+    entry => qq[<article><h2$h_id><a$a_id dir="ltr" href="#$id">$title</a></h2>\n$html\n</article>],
     summary => (join "\t", $title, html_to_summary $html),
   );
 }
@@ -344,7 +344,7 @@ if (make_entries($index, $summary, <w/*>)) {  # if non-empty
   say { $index } make_footer 'stable';
 }
 else {  # if empty
-  say { $index } '<div class="emptypage">لا توجد مصطلحات متفق عليها بعد</div>';
+  say { $index } '<article class="emptypage">لا توجد مصطلحات متفق عليها بعد</article>';
   say { $index } make_footer 'empty stable';
 }
 
@@ -360,18 +360,18 @@ sub make_stage { my ($words_dir, $name, $title, $alert, $emptymsg) = @_;
   say { $fh } make_header $title, $name;
   #
   print { $fh } <<~"END_OF_TEXT" if $alert;
-  <div class="alert">
+  <aside class="alert">
     <strong>تنبيه:</strong>
     $alert؛
     انظر @{[ stable_link ]}
-  </div>
+  </aside>
   END_OF_TEXT
   #
   if (make_entries($fh, undef, <$words_dir/*>)) {  # if non-empty
     say { $fh } make_footer $name;
   }
   else {  # if empty
-    say { $fh } qq[<div class="emptypage">$emptymsg</div>];
+    say { $fh } qq[<article class="emptypage">$emptymsg</article>];
     say { $fh } make_footer "empty $name";
   }
   #
@@ -456,7 +456,7 @@ make_page 'link',
     }
     # return
     TOC_FILTER .
-    sprintf qq[<h2><a class="other" href="../%s">%s</a></h2>\n%s%s] x 4,
+    sprintf qq[<section><h2><a class="other" href="../%s">%s</a></h2>\n%s\n</section>%s] x 4,
       '',              'المصطلحات المتفق عليها',     toc_links(@w) // EMPTY_STAGE_LINKS, "\n",
       'candidate/',    'المصطلحات المرشحة للاتفاق',  toc_links(@c) // EMPTY_STAGE_LINKS, "\n",
       'experimental/', 'المصطلحات التجريبية',        toc_links(@x) // EMPTY_STAGE_LINKS, "\n",
