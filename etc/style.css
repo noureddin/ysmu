@@ -109,6 +109,7 @@ a:active { color: var(--aa) }
 a:not([target]), footer a, li > a { text-decoration: none }
 
 a:hover { text-decoration: underline }
+a.other { text-decoration: underline }  /* h2 in /link/index.html */
 
 h2>a        { color: var(--hn) }
 h2>a:hover  { color: var(--hh) }

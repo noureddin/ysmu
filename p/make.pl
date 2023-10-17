@@ -456,11 +456,11 @@ make_page 'link',
     }
     # return
     TOC_FILTER .
-    sprintf qq[<h2 id="%s"><a href="#%s">%s</a></h2>\n%s%s] x 4,
-      ('agreed')x2,       'المصطلحات المتفق عليها',     toc_links(@w) // EMPTY_STAGE_LINKS, "\n",
-      ('candidate')x2,    'المصطلحات المرشحة للاتفاق',  toc_links(@c) // EMPTY_STAGE_LINKS, "\n",
-      ('experimental')x2, 'المصطلحات التجريبية',        toc_links(@x) // EMPTY_STAGE_LINKS, "\n",
-      ('unstaged')x2,     'المصطلحات المؤجلة',          toc_links(@u) // EMPTY_STAGE_LINKS, ""
+    sprintf qq[<h2><a class="other" href="../%s">%s</a></h2>\n%s%s] x 4,
+      '',              'المصطلحات المتفق عليها',     toc_links(@w) // EMPTY_STAGE_LINKS, "\n",
+      'candidate/',    'المصطلحات المرشحة للاتفاق',  toc_links(@c) // EMPTY_STAGE_LINKS, "\n",
+      'experimental/', 'المصطلحات التجريبية',        toc_links(@x) // EMPTY_STAGE_LINKS, "\n",
+      'unstaged/',     'المصطلحات المؤجلة',          toc_links(@u) // EMPTY_STAGE_LINKS, ""
   },
   'all';
 
