@@ -28,16 +28,32 @@ use constant HEADER => <<'END_OF_TEXT';
 <head>
   <meta charset="utf-8">
   <title>{{title}}</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="{{root}}etc/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:locale" content="ar_AR">
   <meta property="og:type" content="website">
   <meta property="og:title" content="{{title}}">
   <link rel="canonical" href="{{url}}">
   <meta property="og:url" content="{{url}}">
+  <link rel="icon" type="image/png" sizes="72x72" href="{{root}}etc/favicon-72x72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{root}}etc/favicon-16x16.png">
+  <link rel="icon" type="image/svg+xml" sizes="any" href="{{root}}etc/favicon.svg">
+  <!-- icon is U+1F304 from Twemoji (https://twemoji.twitter.com/) CC-BY 4.0 -->
 </head>
 <body>
+<header>
+<p class="title">
+{{header_title}}
+</p>
+<nav>
+<a href="{{root}}">المصطلحات المتفق عليها</a> |
+<a href="{{root}}candidate/">المصطلحات المرشحة للاتفاق</a> |
+<a href="{{root}}link/">روابط جميع المصطلحات</a> |
+<a href="{{root}}notes/">موارد</a>
+</nav>
+</header>
 END_OF_TEXT
+
 
 sub make_header { my ($additional_title, $path, $base) = @_;
   $path //= '';
@@ -45,11 +61,19 @@ sub make_header { my ($additional_title, $path, $base) = @_;
              $additional_title ? '../' : '';
   my $desc = $additional_title ? ' — '.$additional_title : ' للمصطلحات التقنية الحديثة';
   my $url  = "https://noureddin.github.io/ysmu/$path/" =~ s,/+$,/,r;
+  my $page = $path ? "$root$path/" : '';
+  my $title = "معجم يسمو$desc";
+  my $header_title = "معجم يسمو\n{{logo}}\n$desc"
+    =~ s/ — //r
+    =~ s|\Q{{logo}}\E|do { local $/; open my $f, '<', 'etc/favicon.svg'; <$f> }|re
+    ;
 
   return HEADER
-    =~ s,\Q{{title}}\E,معجم يسمو$desc,gr
+    =~ s,\Q{{title}}\E,$title,gr
+    =~ s,\Q{{header_title}}\E,$header_title,gr
     =~ s,\Q{{url}}\E,$url,gr
-    =~ s,(?<=href=")(?=style.css"),$root,r
+    =~ s,\Q{{root}}\E,$root,gr
+    =~ s,\Q href="$page"\E,,gr
     =~ s,\n\Z,,r  # to use say with almost everything
     # ensure proper text direction for the page's title (TODO: only for <title> and not meta og:title?)
     =~ s,(?<=<title>),\N{RIGHT-TO-LEFT EMBEDDING},r
@@ -57,15 +81,16 @@ sub make_header { my ($additional_title, $path, $base) = @_;
 }
 
 use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost everything
-<div class="footer">
+<footer>
   <!--before-contact-->
   <p>يمكنك التواصل معنا عبر
     صفحة <a target="_blank" rel="author" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a target="_blank" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
   </p>
   <!--before-license-->
-  <p class="blurred">الرخصة: <a target="_blank" rel="license" href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
-</div>
+  <p class="license blurred">الرخصة: <a target="_blank" rel="license" href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
+  <p class="license blurred">الشارة من <a target="_blank" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)</p>
+</footer>
 </body>
 </html>
 END_OF_TEXT
@@ -394,7 +419,7 @@ sub make_link { my ($id, $title, $parent) = @_;
   make_page "link/$id",
     make_header("توجيه إلى \N{LEFT-TO-RIGHT EMBEDDING}$title\N{POP DIRECTIONAL FORMATTING} آليا", "link/$id", ROOT_FOR_LINKS)
       =~ s,\n</head>,\n  <meta http-equiv="Refresh" content="0; url=$url">$&,r,
-    qq[<center>ستوجه الآن إلى <a dir="rtl" href="$url">$title</a> آليا<br>(اضغط على الرابط أعلاه إن لم توجه)</center>];
+    qq[<center class="redirect">ستوجه الآن إلى <a dir="rtl" href="$url">$title</a> آليا<br>(اضغط على الرابط أعلاه إن لم توجه)</center>];
 }
 
 for my $id (keys %links) {

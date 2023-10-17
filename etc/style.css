@@ -10,6 +10,12 @@
   --hn: #000080;
   --hh: #0000e0;
   --ha: #0080d0;
+  /* color of .externallinks > li > a */
+  --xn: #000080;
+  --xh: #0000e0;
+  --xa: #0080d0;
+  /* color of current page in the navbar */
+  --nv: #003;
   /* background of toc (fg is a's usual) */
   --tn: rgba(  0, 128, 255, 0.1);
   --th: rgba(  0, 154, 255, 0.1);
@@ -17,7 +23,7 @@
   /* others */
   --hl: #007;  /* color of h2 surrounding lines */
   --bq: #bbc;  /* blockquote's side border */
-  --ft: rgba(  0,   0, 255, 0.1);   /* .footer's bg (its border is --hl) */
+  --ft: rgba(  0,   0, 255, 0.1);   /* footer's bg (its border is --hl) */
   --al: rgba(255,  32,  32, 0.1);   /* .alert's bg */
   --AL: rgba(255,  32,  32, 0.4);   /* .alert's border */
   --sp: rgba(  0, 128, 255, 0.05);  /* summary paragraph's bg */
@@ -37,6 +43,12 @@
   --hn: #daaaaa;
   --hh: #facaaa;
   --ha: #faeaaa;
+  /* color of .externallinks > li > a */
+  --xn: #dbbbbb;
+  --xh: #facaaa;
+  --xa: #faeaaa;
+  /* color of current page in the navbar */
+  --nv: #eed0d0;
   /* background of toc (fg is a's usual) */
   --tn: rgba(255, 128,   0, 0.3);
   --th: rgba(255, 128,   0, 0.45);
@@ -94,13 +106,17 @@ a:active { color: var(--aa) }
 
 /* make all links without underline,
    except outward links in page (not footer) */
-a:not([target]), .footer a, li > a { text-decoration: none }
+a:not([target]), footer a, li > a { text-decoration: none }
 
 a:hover { text-decoration: underline }
 
-h2 a        { color: var(--hn) }
-h2 a:hover  { color: var(--hh) }
-h2 a:active { color: var(--ha) }
+h2>a        { color: var(--hn) }
+h2>a:hover  { color: var(--hh) }
+h2>a:active { color: var(--ha) }
+
+.externallinks>li>a        { color: var(--xn) }
+.externallinks>li>a:hover  { color: var(--xh) }
+.externallinks>li>a:active { color: var(--xa) }
 
 a[target="_blank"]:not([dir])::after {  /* RTL */
   /* content is preceded by NARROW NO-BREAK SPACE */
@@ -145,7 +161,14 @@ blockquote:before {
   border-bottom: 1px ridge var(--AL);
 }
 
-.footer {
+header {
+  text-align: center;
+  padding: 1em;
+  background: var(--ft);
+  border-bottom: 1px solid var(--hl);
+}
+
+footer {
   text-align: center;
   margin-top: 2em;
   padding: 1em;
@@ -156,7 +179,7 @@ blockquote:before {
 .emptypage {
   text-align: center;
   padding: 2em;
-  margin-top: 2em; /* for symmetry b/c of .footer */
+  margin-top: 2em; /* for symmetry b/c of footer */
 }
 
 .blurred {
@@ -217,7 +240,7 @@ h2 + p {
   background: var(--sp);
 }
 
-center:first-child {  /* redirect pages */
+center.redirect {
   margin-top: 2em;
 }
 
@@ -245,3 +268,25 @@ ol {
   list-style: arabic-indic;
 }
 /* <ol> shouldn't have 10 or more <li> (which is discouraged anyway) */
+
+nav > a:not([href]) {  /* current page in the navbar */
+  all: inherit;
+  color: var(--nv);
+  display: inline;
+  font-weight: bold;
+}
+
+.title {
+  font-size: 133%;
+}
+
+.title svg {
+  height: 1.3em;
+  width: 1.3em;
+  margin: 0 .05em 0 .1em;
+  vertical-align: -0.4em;
+}
+
+.license {
+  font-size: 75%;
+}

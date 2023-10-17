@@ -10,7 +10,7 @@ our @EXPORT_OK = qw[
 
 sub transform_external_resources(_) {
   return
-    sprintf qq[<ul>\n%s\n</ul>],
+    sprintf qq[<ul class="externallinks">\n%s\n</ul>],
       join "\n",
         map { s|<br>||; sprintf qq[  <li><a target="_blank" href="%s">%s</a></li>], split " ", $_, 2 }
           split "\n", $_[0]
