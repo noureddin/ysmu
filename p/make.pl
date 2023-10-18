@@ -95,68 +95,54 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
 </html>
 END_OF_TEXT
 
-use constant SINGLE_FILTERING_SCRIPT => <<'END_OF_TEXT';
+use constant FILTERING_SCRIPT => <<'END_OF_TEXT';
 <script>
-  function normalize_text (t) {  // for filtering
-    return t.toLowerCase().replace(/[-_\s]+/g, ' ').replace(/^ /g, '').replace(/ $/g, ' ')
-    // .trim() is introduced in 2010; .replace() is introduced in 2000
+  function normalize_text (t) {
+    return (t
+      .toLowerCase()
+      .replace(/[\u0640\u064B-\u065F]+/g, '')
+      .replace(/[-_\s,،.;؛?؟!()]+/g, ' ')
+      .replace(/^ /g, '').replace(/ $/g, ' ')
+      )
   }
   function filter_terms (q) {
-    // hide toc entries that aren't a substring of the input (q)
     var tocens = document.querySelectorAll('.toc > a')
-    var nonempty = false
+    /***before*loop***/
     for (var i = 0; i < tocens.length; ++i) {
       var a = tocens[i]
-      // TODO: make spaces an "AND" operation instead of matching
-      // TODO: search in the "see also" terms
-      //       and in the terms mentioned in the entry's desc.
-      a.className =
-        normalize_text(a.textContent).indexOf(normalize_text(q)) === -1
+      var nq = normalize_text(q)
+      a.className
+       = normalize_text(a.textContent).indexOf(nq) === -1
+      && normalize_text(a.title).indexOf(nq) === -1
           ? 'hidden'
           : ''
-      if (a.className === '') { nonempty = true }
-      // oldest .indexOf() instead of the 2015 .includes()
+      /***end*of*loop***/
     }
-    document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
-    // for & var & className instead of forEach & const & classList
-    // to work on the oldest browsers (ignoring IE).
+    /***after*loop***/
   }
   onload = filter_terms(document.getElementById('filter').value)
 </script>
 END_OF_TEXT
 
-use constant MULTIPLE_FILTERING_SCRIPT => <<'END_OF_TEXT';
-<script>
-  function normalize_text (t) {  // for filtering
-    return t.toLowerCase().replace(/[-_\s]+/g, ' ').replace(/^ /g, '').replace(/ $/g, ' ')
-    // .trim() is introduced in 2010; .replace() is introduced in 2000
-  }
-  function filter_terms (q) {
-    // hide toc entries that aren't a substring of the input (q)
-    var tocens = document.querySelectorAll('.toc > a')
-    for (var i = 0; i < tocens.length; ++i) {
-      var a = tocens[i]
-      // TODO: make spaces an "AND" operation instead of matching
-      // TODO: search in the "see also" terms
-      //       and in the terms mentioned in the entry's desc.
-      a.className =
-        normalize_text(a.textContent).indexOf(normalize_text(q)) === -1
-          ? 'hidden'
-          : ''
-      // oldest .indexOf() instead of the 2015 .includes()
-    }
-    var tocs = document.querySelectorAll('.toc')
-    for (var i = 0; i < tocs.length; ++i) {
-      tocs[i].querySelector('.emptytoc').style.display =
-        tocs[i].querySelector('a:not(.hidden)') == null
-          ? 'block' : 'none'
-    }
-    // for & var & className instead of forEach & const & classList
-    // to work on the oldest browsers (ignoring IE).
-  }
-  onload = filter_terms(document.getElementById('filter').value)
-</script>
-END_OF_TEXT
+use constant SINGLE_FILTERING_SCRIPT => FILTERING_SCRIPT
+  =~ s{\Q/***before*loop***/\E}{var nonempty = false}r
+  =~ s{\Q/***end*of*loop***/\E}{if (a.className === '') { nonempty = true }}r
+  =~ s{\Q/***after*loop***/\E}
+    {document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'}r
+  ;
+
+use constant MULTIPLE_FILTERING_SCRIPT => FILTERING_SCRIPT
+  =~ s{^ *\Q/***before*loop***/\E\n}{}mr
+  =~ s{^ *\Q/***end*of*loop***/\E\n}{}mr
+  =~ s{^( *)\Q/***after*loop***/\E\n}
+{$1var tocs = document.querySelectorAll('.toc')
+$1for (var i = 0; i < tocs.length; ++i) {
+$1  tocs[i].querySelector('.emptytoc').style.display =
+$1    tocs[i].querySelector('a:not(.hidden)') == null
+$1      ? 'block' : 'none'
+$1}
+}mr
+  ;
 
 sub all_link    { '<a href="'.($_[0] // '').'link/">قائمة روابط جميع المصطلحات</a>' }
 sub notes_link  { '<a href="'.($_[0] // '').'notes/">موارد وإرشادات</a>' }
@@ -261,22 +247,29 @@ sub human_title_of(_) { my ($id) = @_;
   }
 }
 
-sub toc_links {  # array of [$title, "#$id"]; returns a string '<section class="toc">...<a href="#id">title</a>...</section>' (or undef if empty)
+# for each term, we generate a link in link/TERM/ that redirects to it in
+# the agreed-upon, candidate, experimental, or unstaged page,
+# in that order, so it's easier to link to term before it's stabilized.
+my %links;
+
+# each entry has a summary. we keep it in the toc links for search.
+my %summs;
+
+sub toc_links {  # array of [$id, "#$id"]; returns a string '<section class="toc">...</section>' or undef
   if (@_) {
     return qq[<section class="toc">\n] . (
       join '',
-        map { qq[  <a href="$_->[1]">$_->[0]</a>\n] }
+        map {
+          my $sum = "\N{RIGHT-TO-LEFT EMBEDDING}$summs{$_->[2]}\N{POP DIRECTIONAL FORMATTING}";
+          qq[  <a href="$_->[1]" title="$sum">$_->[0]</a>\n]
+        }
         sort { $a->[0] cmp $b->[0] }
+        map { [ human_title_of($_->[0]), $_->[1], $_->[0] ] }
           @_
     ) . qq[  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>\n</section>];
   }
   return;  # undef if empty
 }
-
-# for each term, we generate a link in link/TERM/ that redirects to it in
-# the agreed-upon page, or in the candidate page, or in the experimental page,
-# in that order, so it's easier to link to term before it's stabilized.
-my %links;
 
 sub _make_entry { my ($file) = @_;
   my $id = $file =~ s,^.*/,,r;
@@ -285,11 +278,12 @@ sub _make_entry { my ($file) = @_;
   my $title = human_title_of($id);
   my $html = filepath_to_html $file, \&human_title_of;
   $links{$id} = $file =~ s,/.*,,r unless exists $links{$id};
+  $summs{$id} = html_to_summary $html;
   # NOTE: files MUST use the short name
   return (
-    toclinkpair => [ $title, '#'.$id ],
+    toclinkpair => [ $id, '#'.$id ],
     entry => qq[<article><h2$h_id><a$a_id dir="ltr" href="#$id">$title</a></h2>\n$html\n</article>],
-    summary => (join "\t", $title, html_to_summary $html),
+    summary => (join "\t", $title, $summs{$id}),
   );
 }
 
@@ -446,12 +440,11 @@ make_page 'link',
   do {
     my (@w, @c, @x, @u);
     for my $id (keys %links) {
-      # %links sorting is not enough, b/c if an acronym exists it uses for sorting (consider 2FA).
-      my $title = human_title_of($id);
-      if    ($links{$id} eq 'w') { push @w, [ $title,              "../#$id" ] }
-      elsif ($links{$id} eq 'c') { push @c, [ $title,    "../candidate/#$id" ] }
-      elsif ($links{$id} eq 'x') { push @x, [ $title, "../experimental/#$id" ] }
-      elsif ($links{$id} eq 'u') { push @u, [ $title,     "../unstaged/#$id" ] }
+      # %links sorting is not enough, b/c if an acronym exists it's used for sorting (eg, 2FA).
+      if    ($links{$id} eq 'w') { push @w, [ $id,              "../#$id" ] }
+      elsif ($links{$id} eq 'c') { push @c, [ $id,    "../candidate/#$id" ] }
+      elsif ($links{$id} eq 'x') { push @x, [ $id, "../experimental/#$id" ] }
+      elsif ($links{$id} eq 'u') { push @u, [ $id,     "../unstaged/#$id" ] }
       else { die "\e[1;31m  bad parent for '$id' in link/\e[m\n"; }
     }
     # return

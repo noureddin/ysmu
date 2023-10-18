@@ -36,10 +36,10 @@
 </aside>
 <input id="filter" type="text" dir="ltr" oninput="filter_terms(this.value)" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
 <section class="toc">
-  <a href="#chat">chat</a>
-  <a href="#immutability">immutability</a>
-  <a href="#immutable">immutable</a>
-  <a href="#sandbox">sandbox</a>
+  <a href="#chat" title="‫مُحَادَثَة (ج: مُحَادَثَات).‬">chat</a>
+  <a href="#immutability" title="‫ثَبِيتِيَّة.‬">immutability</a>
+  <a href="#immutable" title="‫ثَبِيت، ثَبِيتَة، والمصدر ثَبِيتِيَّة.‬">immutable</a>
+  <a href="#sandbox" title="‫مَعْزِل (ج: مَعَازِل).‬">sandbox</a>
   <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
 </section>
 <article><h2 id="chat"><a dir="ltr" href="#chat">chat</a></h2>
@@ -128,29 +128,28 @@
   <p class="license blurred">الشارة من <a target="_blank" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)</p>
 </footer>
 <script>
-  function normalize_text (t) {  // for filtering
-    return t.toLowerCase().replace(/[-_\s]+/g, ' ').replace(/^ /g, '').replace(/ $/g, ' ')
-    // .trim() is introduced in 2010; .replace() is introduced in 2000
+  function normalize_text (t) {
+    return (t
+      .toLowerCase()
+      .replace(/[\u0640\u064B-\u065F]+/g, '')
+      .replace(/[-_\s,،.;؛?؟!()]+/g, ' ')
+      .replace(/^ /g, '').replace(/ $/g, ' ')
+      )
   }
   function filter_terms (q) {
-    // hide toc entries that aren't a substring of the input (q)
     var tocens = document.querySelectorAll('.toc > a')
     var nonempty = false
     for (var i = 0; i < tocens.length; ++i) {
       var a = tocens[i]
-      // TODO: make spaces an "AND" operation instead of matching
-      // TODO: search in the "see also" terms
-      //       and in the terms mentioned in the entry's desc.
-      a.className =
-        normalize_text(a.textContent).indexOf(normalize_text(q)) === -1
+      var nq = normalize_text(q)
+      a.className
+       = normalize_text(a.textContent).indexOf(nq) === -1
+      && normalize_text(a.title).indexOf(nq) === -1
           ? 'hidden'
           : ''
       if (a.className === '') { nonempty = true }
-      // oldest .indexOf() instead of the 2015 .includes()
     }
     document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
-    // for & var & className instead of forEach & const & classList
-    // to work on the oldest browsers (ignoring IE).
   }
   onload = filter_terms(document.getElementById('filter').value)
 </script>
