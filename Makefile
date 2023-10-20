@@ -5,7 +5,7 @@ words = $(wildcard w/*) $(wildcard c/*) $(wildcard x/*) $(wildcard u/*)
 
 all: $(targets)
 
-$(targets): p/* $(words) notes/src longnames.tsv
+$(targets): p/* w/ c/ x/ u/ $(words) notes/src longnames.tsv
 	perl -Mutf8 -CDSA p/make.pl
 
 .PHONY: clean force all
