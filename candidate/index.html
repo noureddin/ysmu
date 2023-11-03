@@ -34,21 +34,9 @@
   هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد؛
   انظر <a href="..">المصطلحات المتفق عليها</a>
 </aside>
-<input id="filter" type="text" dir="ltr" oninput="filter_terms(this.value)" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
-<section class="toc">
-  <a href="#one-time" title="‫[صفة] استخدام واحد (مضاف إليه).‬">one-time</a>
-  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
-</section>
-<article><h2 id="one-time"><a dir="ltr" href="#one-time">one-time</a></h2>
-<p>[صفة] استخدام واحد (مضاف إليه).</p>
-<p>فلا نقول تعبيرا فيه حرف الجر «ل»، لأنه سيسبب الخلط على القارئ، مثل «شارك رابط لمرة واحدة».</p>
-<p>ولأن هذا التعبير مضاف إليه، فإنه يحمل لام التعريف (إن وجدت) بدلا من الاسم، فنقول:</p>
-<p>This is a one-time link = هذا رابط استخدام واحد.<br>
-This is the one-time link = هذا رابط الاستخدام الواحد.<br>
-This is your one-time password (OTP) = هذه كلمة مرور الاستخدام الواحد الخاصة بك.</p>
-</article>
+<article class="emptypage">لا توجد مصطلحات مرشحة حاليا</article>
 <footer>
-  <p>يمكنك أيضا رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
+  <p>يمكنك رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
   <p>يمكنك التواصل معنا عبر
     صفحة <a target="_blank" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a target="_blank" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
@@ -56,31 +44,5 @@ This is your one-time password (OTP) = هذه كلمة مرور الاستخدا
   <p class="license blurred">الرخصة: <a target="_blank" rel="license" href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
   <p class="license blurred">الشارة من <a target="_blank" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)</p>
 </footer>
-<script>
-  function normalize_text (t) {
-    return (t
-      .toLowerCase()
-      .replace(/[\u0640\u064B-\u065F]+/g, '')
-      .replace(/[-_\s,،.;؛?؟!()]+/g, ' ')
-      .replace(/^ /g, '').replace(/ $/g, ' ')
-      )
-  }
-  function filter_terms (q) {
-    var tocens = document.querySelectorAll('.toc > a')
-    var nonempty = false
-    for (var i = 0; i < tocens.length; ++i) {
-      var a = tocens[i]
-      var nq = normalize_text(q)
-      a.className
-       = normalize_text(a.textContent).indexOf(nq) === -1
-      && normalize_text(a.title).indexOf(nq) === -1
-          ? 'hidden'
-          : ''
-      if (a.className === '') { nonempty = true }
-    }
-    document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
-  }
-  onload = filter_terms(document.getElementById('filter').value)
-</script>
 </body>
 </html>
