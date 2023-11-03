@@ -24,7 +24,6 @@ sub acronym_title_of(_) {
 sub parse_line(_;$) {
   my $title_of = $_[1] // \&word_title_of;
   return $_[0]
-    =~ s|&|&amp;|grx
     =~ s|<|\x02|grx
     =~ s|>|\x03|grx
     =~ s|\*\*(.*?)\*\*|<strong>$1</strong>|grx
@@ -36,7 +35,6 @@ sub parse_line(_;$) {
     =~ s|``(.*?)``|<code dir="ltr">$1</code>|grx
     =~ s|\x02|&lt;|grx
     =~ s|\x03|&gt;|grx
-    =~ s|&amp;(?=[^"]*">)|&|grx  # un-encode '&' in hrefs
     =~ s|$|<br>|r  # no /g or it'd be triggered twice
     =~ s|\h+| |gr  # collapse all horizontal spaces into one normal ASCII space; also replaces \t (for ysmu.tsv)
 }
