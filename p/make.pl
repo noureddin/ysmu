@@ -48,8 +48,8 @@ use constant HEADER => <<'END_OF_TEXT';
 <nav>
 <a href="{{root}}">المصطلحات المتفق عليها</a> |
 <a href="{{root}}candidate/">المصطلحات المرشحة للاتفاق</a> |
-<a href="{{root}}link/">روابط جميع المصطلحات</a> |
-<a href="{{root}}notes/">موارد</a>
+<a rel=index href="{{root}}link/">روابط جميع المصطلحات</a> |
+<a rel=help href="{{root}}notes/">موارد</a>
 </nav>
 </header>
 END_OF_TEXT
@@ -84,12 +84,12 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
 <footer>
   <!--before-contact-->
   <p>يمكنك التواصل معنا عبر
-    صفحة <a target="_blank" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
-    أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a target="_blank" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
+    صفحة <a class="out" rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
+    أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a class="out" rel="noreferrer noopener" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
   </p>
   <!--before-license-->
-  <p class="license blurred">الرخصة: <a target="_blank" rel="license" href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
-  <p class="license blurred">الشارة من <a target="_blank" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)</p>
+  <p class="license blurred">الرخصة: <a class="out" rel="noreferrer noopener license" href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
+  <p class="license blurred">الشارة من <a class="out" rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)</p>
 </footer>
 </body>
 </html>
@@ -144,11 +144,11 @@ $1}
 }mr
   ;
 
-sub all_link    { '<a href="'.($_[0] // '').'link/">قائمة روابط جميع المصطلحات</a>' }
-sub notes_link  { '<a href="'.($_[0] // '').'notes/">موارد وإرشادات</a>' }
+sub all_link    { '<a rel=index href="'.($_[0] // '').'link/">قائمة روابط جميع المصطلحات</a>' }
+sub notes_link  { '<a rel=help href="'.($_[0] // '').'notes/">موارد وإرشادات</a>' }
 sub rc_link     { '<a href="'.($_[0] // '').'candidate/">المصطلحات المرشحة للاتفاق</a>' }
 sub exper_link  { '<a href="'.($_[0] // '').'experimental/">المصطلحات التجريبية</a>' }
-sub tsv_link    { '<a href="https://github.com/noureddin/ysmu/raw/main/ysmu.tsv">ysmu.tsv</a>' }
+sub tsv_link    { '<a rel=alternate type=text/tab-separated-values href="https://github.com/noureddin/ysmu/raw/main/ysmu.tsv">ysmu.tsv</a>' }
 sub stable_link { '<a href="..">المصطلحات المتفق عليها</a>' }
 
 sub make_footer { my ($s) = @_;

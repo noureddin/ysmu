@@ -12,7 +12,7 @@ sub transform_external_resources(_) {
   return
     sprintf qq[<ul class="externallinks">\n%s\n</ul>],
       join "\n",
-        map { s|<br>||; sprintf qq[  <li><a target="_blank" href="%s">%s</a></li>], split " ", $_, 2 }
+        map { s|<br>||; sprintf qq[  <li><a class="out" rel="noreferrer noopener" href="%s">%s</a></li>], split " ", $_, 2 }
           split "\n", $_[0]
 }
 

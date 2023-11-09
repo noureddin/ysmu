@@ -112,10 +112,10 @@ a.other /* h2 in /link/index.html */
 
 /* make all links without underline,
    except outward links in page (not footer) */
-a:not([target]),       footer a,       li > a { text-decoration: none }
+a:not(.out),       footer a,       li > a { text-decoration: none }
 
-a:not([target]):hover, footer a:hover, li > a:hover,
-a:not([target]):focus, footer a:focus, li > a:focus,
+a:not(.out):hover, footer a:hover, li > a:hover,
+a:not(.out):focus, footer a:focus, li > a:focus,
 a.other
   { text-decoration: underline 1px }
 
@@ -127,7 +127,7 @@ h2>a:active { color: var(--ha) }
 .externallinks>li>a:hover  { color: var(--xh) }
 .externallinks>li>a:active { color: var(--xa) }
 
-a[target="_blank"]:not([dir])::after {  /* RTL */
+a.out:not([dir])::after {  /* RTL */
   /* content is preceded by NARROW NO-BREAK SPACE */
   content: ' [↖]';
   vertical-align: super;
@@ -135,7 +135,7 @@ a[target="_blank"]:not([dir])::after {  /* RTL */
   line-height: normal;
 }
 
-a[target="_blank"][dir="ltr"]::before {
+a.out[dir="ltr"]::before {
   /* content is followed by NARROW NO-BREAK SPACE */
   content: '[↖] ';
   vertical-align: super;
