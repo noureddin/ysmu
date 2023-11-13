@@ -73,7 +73,7 @@ sub make_header { my ($additional_title, $path, $base) = @_;
     =~ s,\Q{{header_title}}\E,$header_title,gr
     =~ s,\Q{{url}}\E,$url,gr
     =~ s,\Q{{root}}\E,$root,gr
-    =~ s,\Q href="$page"\E,,gr
+    =~ s,\Qhref="$page"\E,aria-current="page",gr
     =~ s,\n\Z,,r  # to use say with almost everything
     # ensure proper text direction for the page's title (TODO: only for <title> and not meta og:title?)
     =~ s,(?<=<title>),\N{RIGHT-TO-LEFT EMBEDDING},r
