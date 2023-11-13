@@ -10,7 +10,7 @@
   --hn: #000080;
   --hh: #0000e0;
   --ha: #0080d0;
-  /* color of .externallinks > li > a */
+  /* color of .ext > li > a */
   --xn: #000080;
   --xh: #0000e0;
   --xa: #0080d0;
@@ -43,7 +43,7 @@
   --hn: #daaaaa;
   --hh: #facaaa;
   --ha: #faeaaa;
-  /* color of .externallinks > li > a */
+  /* color of .ext > li > a */
   --xn: #dbbbbb;
   --xh: #facaaa;
   --xa: #faeaaa;
@@ -119,13 +119,13 @@ a:not(.out):focus, footer a:focus, li > a:focus,
 a.other
   { text-decoration: underline 1px }
 
-h2>a        { color: var(--hn) }
-h2>a:hover  { color: var(--hh) }
-h2>a:active { color: var(--ha) }
+h2 > a        { color: var(--hn) }
+h2 > a:hover  { color: var(--hh) }
+h2 > a:active { color: var(--ha) }
 
-.externallinks>li>a        { color: var(--xn) }
-.externallinks>li>a:hover  { color: var(--xh) }
-.externallinks>li>a:active { color: var(--xa) }
+.ext > li > a        { color: var(--xn) }
+.ext > li > a:hover  { color: var(--xh) }
+.ext > li > a:active { color: var(--xa) }
 
 a.out:not([dir])::after {  /* RTL */
   /* content is preceded by NARROW NO-BREAK SPACE */
