@@ -5,8 +5,11 @@ words = $(wildcard w/*) $(wildcard c/*) $(wildcard x/*) $(wildcard u/*)
 
 all: $(targets)
 
-$(targets): p/* w/ c/ x/ u/ $(words) notes/src longnames.tsv
+$(targets): p/* w/ c/ x/ u/ $(words) notes/src longnames.tsv etc/style.min.css
 	perl -Mutf8 -CDSA p/make.pl
+
+%.min.css: %.css
+	deno run --quiet --allow-read npm:clean-css-cli "$<" > "$@"
 
 .PHONY: clean force all
 

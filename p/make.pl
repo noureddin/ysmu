@@ -8,6 +8,10 @@ use lib $FindBin::RealBin;
 # change to the repo's root, regardless where we're called from.
 chdir "$FindBin::RealBin/../";
 
+# for hashing static files to cache-bust them on change
+use Digest::file qw[ digest_file_base64 ];
+sub hash(_) { digest_file_base64(shift, 'SHA-1') =~ tr[+/][-_]r }
+
 # load our libraries
 
 use Parser qw[
@@ -28,7 +32,7 @@ use constant HEADER => <<'END_OF_TEXT';
 <head>
   <meta charset="utf-8">
   <title>{{title}}</title>
-  <link rel="stylesheet" type="text/css" href="{{root}}etc/style.css">
+  <link rel="stylesheet" type="text/css" href="{{root}}etc/style.min.css?h={{stylehash}}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:locale" content="ar_AR">
   <meta property="og:type" content="website">
@@ -73,6 +77,7 @@ sub make_header { my ($additional_title, $path, $base) = @_;
     =~ s,\Q{{header_title}}\E,$header_title,gr
     =~ s,\Q{{url}}\E,$url,gr
     =~ s,\Q{{root}}\E,$root,gr
+    =~ s,\Q{{stylehash}}\E,hash('etc/style.min.css'),gre
     =~ s,\Qhref="$page"\E,aria-current="page",gr
     =~ s,\n\Z,,r  # to use say with almost everything
     # ensure proper text direction for the page's title (TODO: only for <title> and not meta og:title?)
