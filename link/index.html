@@ -29,7 +29,7 @@
 <a rel=help href="../notes/">موارد</a>
 </nav>
 </header>
-<input id="filter" type="text" dir="ltr" oninput="filter_terms(this.value)" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
+<input id="filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
 <section><h2><a class="other" href="../">المصطلحات المتفق عليها</a></h2>
 <section class="toc">
   <a href="../#check_in" title="‫في أنظمة إدارة النسخ: الاسم إيداع (ج: إيداعات)، والفعل أَوْدَع يُودِع إيدَاعا فهو مُودِع، والأمر أَوْدِع، والمفعول أُودِع يُودَع فهو مُودَع.‬">check in</a>
@@ -113,7 +113,9 @@
           ? 'block' : 'none'
     }
   }
-  onload = filter_terms(document.getElementById('filter').value)
+  onload = function () {
+    document.getElementById('filter').oninput = function () { filter_terms(this.value) }
+  }
 </script>
 </body>
 </html>

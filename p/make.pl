@@ -120,7 +120,9 @@ use constant FILTERING_SCRIPT => <<'END_OF_TEXT';
     }
     /***after*loop***/
   }
-  onload = filter_terms(document.getElementById('filter').value)
+  onload = function () {
+    document.getElementById('filter').oninput = function () { filter_terms(this.value) }
+  }
 </script>
 END_OF_TEXT
 
@@ -289,7 +291,6 @@ sub _make_entry { my ($file) = @_;
 
 use constant TOC_FILTER => sprintf "<input %s>\n", join ' ',
   'id="filter"', 'type="text"', 'dir="ltr"',
-  'oninput="filter_terms(this.value)"',
   'placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة"';
 
 sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
