@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>‫معجم يسمو — المصطلحات التجريبية‬</title>
-  <link rel="stylesheet" type="text/css" href="../etc/style.min.css?h=-KWKMG6cmeolWzgFYyRmZCj2Lj4">
+  <link rel="stylesheet" type="text/css" href="../etc/style.min.css?h=ju8Psn5fPlIMMpGe5VHzv_DiX-w">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:locale" content="ar_AR">
   <meta property="og:type" content="website">
@@ -34,7 +34,7 @@
   هذه المصطلحات تجريبية ولم تُناقش في المجتمع بعد؛
   انظر <a href="..">المصطلحات المتفق عليها</a>
 </aside>
-<input id="filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
+<input id="toc_filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
 <section class="toc">
   <a href="#chat" title="‫مُحَادَثَة (ج: مُحَادَثَات).‬">chat</a>
   <a href="#convenience" title="‫وسيلة راحة (ج: وسائل راحة).‬">convenience</a>
@@ -201,7 +201,7 @@ This is your one-time password (OTP) = هذه كلمة مرور الاستخدا
     document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
   }
   onload = function () {
-    document.getElementById('filter').oninput = function () { filter_terms(this.value) }
+    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
   }
 </script>
 </body>

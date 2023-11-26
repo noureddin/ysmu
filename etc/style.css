@@ -27,7 +27,7 @@
   --al: rgba(255,  32,  32, 0.1);   /* .alert's bg */
   --AL: rgba(255,  32,  32, 0.4);   /* .alert's border */
   --sp: rgba(  0, 128, 255, 0.05);  /* summary paragraph's bg */
-  --fl: rgba(255, 255, 255, 0.50);  /* filter's bg when active */
+  --fl: rgba(255, 255, 255, 0.50);  /* toc_filter's bg when active */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -60,7 +60,7 @@
   --al: rgba(255,  12,  12, 0.3);
   --AL: rgba(255,  12,  12, 0.8);
   --sp: rgba(255, 128,   0, 0.1);   /* summary paragraph's bg */
-  --fl: rgba(  0,   0,   0, 0.35);  /* filter's bg when active */
+  --fl: rgba(  0,   0,   0, 0.35);  /* toc_filter's bg when active */
 }
 }
 
@@ -223,7 +223,7 @@ footer {
   background: var(--ta);
 }
 
-#filter {
+#toc_filter {
   margin: 2em 0 0 0;
   width: 100%;
   box-sizing: border-box;
@@ -233,11 +233,11 @@ footer {
   border: 1px solid var(--hl);
   border-radius: 1em;
 }
-#filter:focus,
-#filter:active {
+#toc_filter:focus,
+#toc_filter:active {
   background: var(--fl);
 }
-#filter:placeholder-shown {
+#toc_filter:placeholder-shown {
   direction: rtl;
 }
 
