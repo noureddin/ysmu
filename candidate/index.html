@@ -34,9 +34,29 @@
   هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد؛
   انظر <a href="..">المصطلحات المتفق عليها</a>
 </aside>
-<article class="emptypage">لا توجد مصطلحات مرشحة حاليا</article>
+<input id="toc_filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
+<section class="toc">
+  <a href="#filter" title="‫الاسم تصفيَة (ج: تصفيات — أو لا يُجمع)، والفعل صَفَّى يُصَفِّي تصفيَة فهو مُصفِّي، والأمر صَفِّ، والمفعول صُفِّيَ يُصَفَّى فهو مُصَفَّى.‬">filter</a>
+  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
+</section>
+<article><h2 id="filter"><a dir="ltr" href="#filter">filter</a></h2>
+<p>الاسم تصفيَة (ج: تصفيات — أو لا يُجمع)، والفعل صَفَّى يُصَفِّي تصفيَة فهو مُصفِّي، والأمر صَفِّ، والمفعول صُفِّيَ يُصَفَّى فهو مُصَفَّى.</p>
+<p>تستخدم في خيارات البحث، وفي البرمجة.</p>
+<p>ويستخدم المصدر مفردا مكان الاسم filter دائما، وأحيانا يُجمع، فنقول:</p>
+<div style="margin: -1em"></div>
+<ul>
+<li>The <code dir="ltr">filter</code> function = دالة التصفية <code dir="ltr">filter</code></li>
+<li>Filters = تصفية (زر إظهار خيارات التصفية عند البحث في Invidious)</li>
+<li>Clear filters = أزل التصفية</li>
+<li>Apply selected filters = طبّق التصفيات المحددة</li>
+</ul>
+<hr>
+<p>لماذا ليس «ترشيح» و«مرشح»؟</p>
+<p>هذا اللفظ هو الشائع في معالجة الإشارات بالفعل، ويتبعه اللفظ في الإلكترونيات وفي معالجة الصور وفي البصريات. ولكن الأقدمين استخدموا جذر «رشح» بمعنى العرق، وفيه قال لسان العرب: «الرَّشْحُ: العَرَق لأَنه يخرج من البدن شيئًا فشيئًا كما يَرْشَحُ الإِناءُ المُتَخَلْخِلُ الأَجزاء»، والمعاني الأخرى لهذا الجذر بعيدة ولا يربط بينها إلا معنى «شيئا فشيئا» وليس معنى التصفية. فالأفضل استخدام لفظ أوضح وأثبت مثل «تصفية».<br>
+</p>
+</article>
 <footer>
-  <p>يمكنك رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
+  <p>يمكنك أيضا رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
   <p>يمكنك التواصل معنا عبر
     صفحة <a class="out" rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a class="out" rel="noreferrer noopener" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
@@ -44,5 +64,33 @@
   <p class="license blurred">الرخصة: <a class="out" rel="noreferrer noopener license" href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
   <p class="license blurred">الشارة من <a class="out" rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)</p>
 </footer>
+<script>
+  function normalize_text (t) {
+    return (t
+      .toLowerCase()
+      .replace(/[\u0640\u064B-\u065F]+/g, '')
+      .replace(/[-_\s,،.;؛?؟!()]+/g, ' ')
+      .replace(/^ /g, '').replace(/ $/g, ' ')
+      )
+  }
+  function filter_terms (q) {
+    var tocens = document.querySelectorAll('.toc > a')
+    var nonempty = false
+    for (var i = 0; i < tocens.length; ++i) {
+      var a = tocens[i]
+      var nq = normalize_text(q)
+      a.className
+       = normalize_text(a.textContent).indexOf(nq) === -1
+      && normalize_text(a.title).indexOf(nq) === -1
+          ? 'hidden'
+          : ''
+      if (a.className === '') { nonempty = true }
+    }
+    document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
+  }
+  onload = function () {
+    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+  }
+</script>
 </body>
 </html>
