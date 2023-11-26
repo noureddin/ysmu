@@ -24,4 +24,4 @@ force: clean all
 
 clean:
 	$(addprefix ${newline}rm -f ,${targets})
-	rm -fr link/
+	rm -fr etc/style.min.css link/
