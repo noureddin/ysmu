@@ -37,9 +37,19 @@
 
 ## الرخصة
 
-[المشاع الإبداعي الصفرية (CC0)](https://creativecommons.org/choose/zero/) (مكافئة للملكية العامة).
+ما لم يُذكر غير ذلك، فكل شيء (الكود والمحتوى) متاح ببنود رخصة [المشاع الإبداعي الصفرية (CC0)](https://creativecommons.org/choose/zero/) (مكافئة للملكية العامة).
+
+وعلى أي أي مشروع مشتق أن يستخدم اسمًا غير «يسمو» ولا يكون «يسمو» جزءًا منه.
 
 الشارة هي ملفا U+1F304 من [Twemoji](https://twemoji.twitter.com/) برخصة CC-BY 4.0.
+
+## License
+
+Unless mentioned otherwise, everything (code and content) is under the terms of [Creative Commons Zero (CC0)](https://creativecommons.org/choose/zero/) (equivalent to Public Domain).
+
+And a derivative project must use a name that isn't "Ysmu" and doesn't include "Ysmu".
+
+The logo is from the two U+1F304 files from [Twemoji](https://twemoji.twitter.com/) under the terms of CC-BY 4.0.
 
 ## مراحل المصطلحات
 
