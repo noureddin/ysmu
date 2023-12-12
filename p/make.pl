@@ -419,7 +419,7 @@ sub make_link { my ($id, $title, $parent) = @_;
   make_page "link/$id",
     make_header("توجيه إلى \N{LEFT-TO-RIGHT EMBEDDING}$title\N{POP DIRECTIONAL FORMATTING} آليا", "link/$id", ROOT_FOR_LINKS)
       =~ s,\n</head>,\n  <meta http-equiv="Refresh" content="0; url=$url">$&,r,
-    qq[<center class="redirect">ستوجه الآن إلى <a dir="rtl" href="$url">$title</a> آليا<br>(اضغط على الرابط أعلاه إن لم توجه)</center>];
+    qq[<center class="redirect">ستوجه الآن إلى <a dir="ltr" href="$url">$title</a> آليا<br>(اضغط على الرابط أعلاه إن لم توجه)</center>];
 }
 
 for my $id (keys %links) {
