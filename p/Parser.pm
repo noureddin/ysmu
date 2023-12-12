@@ -35,6 +35,7 @@ sub parse_line(_;$) {
     =~ s|``(.*?)``|<code dir="ltr">$1</code>|grx
     =~ s|\x02|&lt;|grx
     =~ s|\x03|&gt;|grx
+    =~ s|(?<=.)\+\+(?=.)|&nbsp;|gr
     =~ s|$|<br>|r  # no /g or it'd be triggered twice
     =~ s|\h+| |gr  # collapse all horizontal spaces into one normal ASCII space; also replaces \t (for ysmu.tsv)
 }
