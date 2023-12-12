@@ -112,13 +112,12 @@ a { text-underline-offset: 35% }
 a.other /* h2 in /link/index.html */
   { text-underline-offset: 45% }
 
-/* make all links without underline,
-   except outward links in page (not footer) */
-a:not(.out),       footer a,       li > a { text-decoration: none }
+/* make all links without underline */
+a { text-decoration: none }
 
-a:not(.out):hover, footer a:hover, li > a:hover,
-a:not(.out):focus, footer a:focus, li > a:focus,
-a.other
+a:hover,
+a:focus,
+a.other /* h2 in /link/index.html */
   { text-decoration: underline 1px }
 
 h2 > a        { color: var(--hn) }
@@ -128,22 +127,6 @@ h2 > a:active { color: var(--ha) }
 .ext > li > a        { color: var(--xn) }
 .ext > li > a:hover  { color: var(--xh) }
 .ext > li > a:active { color: var(--xa) }
-
-a.out:not([dir])::after {  /* RTL */
-  /* content is preceded by NARROW NO-BREAK SPACE */
-  content: ' [↖]';
-  vertical-align: super;
-  font-size: 50%;
-  line-height: normal;
-}
-
-a.out[dir="ltr"]::before {
-  /* content is followed by NARROW NO-BREAK SPACE */
-  content: '[↖] ';
-  vertical-align: super;
-  font-size: 50%;
-  line-height: normal;
-}
 
 blockquote {
   border-right: 2px solid var(--bq);

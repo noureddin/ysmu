@@ -29,8 +29,8 @@ sub parse_line(_;$) {
     =~ s|\*\*(.*?)\*\*|<strong>$1</strong>|grx
     =~ s|\x02\x02 ([^:>]+) :: ([^:>]+) \x03\x03|<a href="#$2">$1</a>|grx
     =~ s|\x02\x02          :: (.*?)    \x03\x03|qq[<a dir="ltr" href="#$1">].$title_of->($1).qq[</a>]|grxe
-    =~ s,\x02\x02 ([^|\x03]*) [|]{2} ([^|\x03]*) \x03\x03,<a class="out" rel="noreferrer noopener" href="$2">$1</a>,grx
-    =~ s|\x02\x02 (.*?) \x03\x03|<a dir="ltr" class="out" rel="noreferrer noopener" href="$1">$1</a>|grx
+    =~ s,\x02\x02 ([^|\x03]*) [|]{2} ([^|\x03]*) \x03\x03,<a rel="noreferrer noopener" href="$2">$1</a>,grx
+    =~ s|\x02\x02 (.*?) \x03\x03|<a dir="ltr" rel="noreferrer noopener" href="$1">$1</a>|grx
     =~ s|\{\{(.*?)\}\}|<span dir="ltr">$1</span>|grx
     =~ s|``(.*?)``|<code dir="ltr">$1</code>|grx
     =~ s|\x02|&lt;|grx
