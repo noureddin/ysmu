@@ -34,32 +34,9 @@
   هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد؛
   انظر <a href="..">المصطلحات المتفق عليها</a>
 </aside>
-<input id="toc_filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
-<section class="toc">
-  <a href="#crypto-" title="‫[صفة] تَعموِّي، تَعموِّية.‬">crypto-</a>
-  <a href="#cryptocurrency" title="‫عملة تعموية (ج: عملات تعموية).‬">cryptocurrency</a>
-  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
-</section>
-<article><h2 id="crypto-"><a dir="ltr" href="#crypto-">crypto-</a></h2>
-<p>[صفة] تَعموِّي، تَعموِّية.</p>
-<p>تعني البادئة <span dir="ltr"><a rel="noreferrer noopener" href="https://en.wiktionary.org/wiki/crypto-">crypto-</a></span> (١)&nbsp;«مخبّأ»/«مختفٍ»، أو&nbsp;(٢)&nbsp;«سري»، أو&nbsp;(٣)&nbsp;«تعموي» (نسبة إلى <a href="../link/encrypt/">علم التعمية</a>)، أو&nbsp;(٤)&nbsp;«متعلق بالعملات التعموية» (cryptocurrencies).</p>
-<p>فهي لا تعني ”encypted“.</p>
-<p>فالتعريب الصحيح لها «تعموي»/«تعموية»، وليس «معمّى»/«معمّاة».</p>
-<p>مثلما نقول «تنموي» في النسبة إلى «تنمية». ومثلما نقول «معنوي». ومثل اختيار المعاجم السورية «نسبوي» ترجمةً لـ”relativistic“ (نسبة إلى «النظرية النسبية»، تمييزا لها عن «نسبي» ترجمة ”relative“).</p>
-<p class="seealso">انظر أيضا:</p><ul>
-  <li><a dir="ltr" href="../link/encrypt/">encrypt</a></li>
-  <li><a dir="ltr" href="#cryptocurrency">cryptocurrency</a></li>
-</ul>
-</article>
-<article><h2 id="cryptocurrency"><a dir="ltr" href="#cryptocurrency">cryptocurrency</a></h2>
-<p>عملة تعموية (ج: عملات تعموية).</p>
-<p>وليست «عملة معماة» (أو «عملة مشفرة») لأن البادئة <span dir="ltr"><a rel="noreferrer noopener" href="https://en.wiktionary.org/wiki/crypto-">crypto-</a></span> تعني ”cryptographic“ (نسبة إلى <a href="../link/encrypt/">علم التعمية</a>) ولا تعني ”encypted“ («معمّى»).</p>
-<p class="seealso">انظر أيضا:</p><ul>
-  <li><a dir="ltr" href="#crypto-">crypto-</a></li>
-</ul>
-</article>
+<article class="emptypage">لا توجد مصطلحات مرشحة حاليا</article>
 <footer>
-  <p>يمكنك أيضا رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
+  <p>يمكنك رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
   <p>يمكنك التواصل معنا عبر
     صفحة <a rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a rel="noreferrer noopener" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
@@ -67,33 +44,5 @@
   <p class="license blurred">الرخصة: <a rel="noreferrer noopener license" href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
   <p class="license blurred">الشارة من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)</p>
 </footer>
-<script>
-  function normalize_text (t) {
-    return (t
-      .toLowerCase()
-      .replace(/[\u0640\u064B-\u065F]+/g, '')
-      .replace(/[-_\s,،.;؛?؟!()]+/g, ' ')
-      .replace(/^ /g, '').replace(/ $/g, ' ')
-      )
-  }
-  function filter_terms (q) {
-    var tocens = document.querySelectorAll('.toc > a')
-    var nonempty = false
-    for (var i = 0; i < tocens.length; ++i) {
-      var a = tocens[i]
-      var nq = normalize_text(q)
-      a.className
-       = normalize_text(a.textContent).indexOf(nq) === -1
-      && normalize_text(a.title).indexOf(nq) === -1
-          ? 'hidden'
-          : ''
-      if (a.className === '') { nonempty = true }
-    }
-    document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
-  }
-  onload = function () {
-    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
-  }
-</script>
 </body>
 </html>
