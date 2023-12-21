@@ -1,30 +1,36 @@
 # معجم يسمو للمصطلحات التقنية الحديثة
 
-- المصطلحات المتفق عليها مع شرح سبب اختيارها وأمثلة عليها:  
+<img align="left" width="80" height="80" alt="شارة معجم يسمو" src="etc/favicon.svg">
+
+<ul>
+
+<li>المصطلحات المتفق عليها مع شرح سبب اختيارها وأمثلة عليها:<br>
   https://noureddin.github.io/ysmu
 
-- المصطلحات المتفق عليها بغير شرح (للتطبيقات والمعاجم المجمعة):  
+<li>المصطلحات المتفق عليها بغير شرح (للتطبيقات والمعاجم المجمعة):<br>
   https://github.com/noureddin/ysmu/raw/main/ysmu.tsv
 
-- المصطلحات المرشحة للاتفاق، التي ستصير «متفق عليها» بعد ساعات غالبا:  
+<li>المصطلحات المرشحة للاتفاق، التي ستصير «متفق عليها» بعد ساعات أو أيام غالبا:<br>
   https://noureddin.github.io/ysmu/candidate
 
-- المصطلحات **التجريبية** التي لم يتفق المجتمع عليها بعد:  
+<li>المصطلحات التجريبية التي لم يتفق المجتمع عليها بعد<br>
   https://noureddin.github.io/ysmu/experimental
 
-- موارد وإرشادات وملاحظات عامة:  
+<li>موارد وإرشادات وملاحظات عامة:<br>
   https://noureddin.github.io/ysmu/notes
 
-- قائمة روابط جميع المصطلحات:  
+<li>قائمة روابط جميع المصطلحات:<br>
   https://noureddin.github.io/ysmu/link
+
+</ul>
 
 ## الرسالة
 
 ليس همّ المعجم مجرد سرد للمصطلحات العربية الشائعة؛ بل مهمته أمران:
 
-١. اختيار أفضل لفظ عربي مناسب للمصطلحات الإنجليزية التقنية المختلفة.
+&emsp;١. اختيار أفضل لفظ عربي مناسب للمصطلحات الإنجليزية التقنية المختلفة.
 
-٢. شرح لماذا هذا الاختيار هو الأنسب حتى تقتنع به وتطمئن إليه وتستخدمه.
+&emsp;٢. شرح لماذا هذا الاختيار هو الأنسب حتى تقتنع به وتطمئن إليه وتستخدمه.
 
 أما عن الأمر الأول، فدائما نحاول تخيّر لفظ استخدمه العرب الأقدمين بالمعنى المراد نفسه ويستخدمه المحدَثون أو يفهموه بغير شرح أو بأقل شرح ممكن.
 
@@ -39,9 +45,12 @@
 
 ما لم يُذكر غير ذلك، فكل شيء (الكود والمحتوى) متاح ببنود رخصة [المشاع الإبداعي الصفرية (CC0)](https://creativecommons.org/choose/zero/) (مكافئة للملكية العامة).
 
-وعلى أي أي مشروع مشتق أن يستخدم اسمًا غير «يسمو» ولا يكون «يسمو» جزءًا منه.
+وعلى أي مشروع مشتق أن يستخدم اسمًا غير «يسمو» ولا يكون «يسمو» جزءًا منه.
 
-الشارة هي ملفا U+1F304 من [Twemoji](https://twemoji.twitter.com/) برخصة CC-BY 4.0.
+الشارة هي ملفا U+1F304 من [Twemoji](https://twemoji.twitter.com/) برخصة CC-BY 4.0،
+مع حرف العين [بالخط الأميري](https://www.amirifont.org/).
+واُستعمل [ضاغط نانو من Vecta](https://vecta.io/nano) لتصغير حجم ملفها.
+
 
 ## License
 
@@ -49,7 +58,9 @@ Unless mentioned otherwise, everything (code and content) is under the terms of 
 
 And a derivative project must use a name that isn't "Ysmu" and doesn't include "Ysmu".
 
-The logo is from the two U+1F304 files from [Twemoji](https://twemoji.twitter.com/) under the terms of CC-BY 4.0.
+The logo is the two U+1F304 files from [Twemoji](https://twemoji.twitter.com/) under the terms of CC-BY 4.0,
+with the letter Ayin from [the Amiri font](https://www.amirifont.org/).
+And its file size is reduced with [Vecta's Nano compressor](https://vecta.io/nano).
 
 ## مراحل المصطلحات
 

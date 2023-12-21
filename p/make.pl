@@ -94,7 +94,7 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
   </p>
   <!--before-license-->
   <p class="license blurred">الرخصة: <a rel="noreferrer noopener license" href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
-  <p class="license blurred">الشارة من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)</p>
+  <p class="license blurred">الشارة من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)، مع حرف العين <a href="https://www.amirifont.org/">بالخط الأميري</a></p>
 </footer>
 </body>
 </html>
