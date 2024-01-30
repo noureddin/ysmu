@@ -270,7 +270,7 @@ sub toc_links {  # array of [$id, "#$id"]; returns a string '<section class="toc
           my $sum = "\N{RIGHT-TO-LEFT EMBEDDING}$summs{$_->[2]}\N{POP DIRECTIONAL FORMATTING}";
           qq[  <a href="$_->[1]" title="$sum">$_->[0]</a>\n]
         }
-        sort { $a->[0] cmp $b->[0] }
+        sort { $a->[1] cmp $b->[1] }
         map { [ human_title_of($_->[0]), $_->[1], $_->[0] ] }
           @_
     ) . qq[  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>\n</section>];
