@@ -34,9 +34,22 @@
   هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد؛
   انظر <a href="..">المصطلحات المتفق عليها</a>
 </aside>
-<article class="emptypage">لا توجد مصطلحات مرشحة حاليا</article>
+<input id="toc_filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
+<section class="toc">
+  <a href="#mount" title="‫ضَمَّ يَضُمُّ ضَمّا، فهو ضامّ، والأمر ضُمّ، والمفعول ضُمّ يُضَمّ فهو مضموم.‬">mount</a>
+  <a href="#verbose" title="‫إطْناب.‬">verbose</a>
+  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
+</section>
+<article><h2 id="mount"><a dir="ltr" href="#mount">mount</a></h2>
+<p>ضَمَّ يَضُمُّ ضَمّا، فهو ضامّ، والأمر ضُمّ، والمفعول ضُمّ يُضَمّ فهو مضموم.</p>
+</article>
+<article><h2 id="verbose"><a dir="ltr" href="#verbose">verbose</a></h2>
+<p>إطْناب.</p>
+<p>وهو خيار في بعض أدوات سطر الأوامر (command-line tools) ليخبر بالمزيد من المعلومات ولا يوجز. ويختصر <code dir="ltr">-v</code> غالبا.<br>
+</p>
+</article>
 <footer>
-  <p>يمكنك رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
+  <p>يمكنك أيضا رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
   <p>يمكنك التواصل معنا عبر
     صفحة <a rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a rel="noreferrer noopener" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
@@ -44,5 +57,33 @@
   <p class="license blurred">الرخصة: <a rel="noreferrer noopener license" href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
   <p class="license blurred">الشارة من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)، مع حرف العين <a href="https://www.amirifont.org/">بالخط الأميري</a></p>
 </footer>
+<script>
+  function normalize_text (t) {
+    return (t
+      .toLowerCase()
+      .replace(/[\u0640\u064B-\u065F]+/g, '')
+      .replace(/[-_\s,،.;؛?؟!()]+/g, ' ')
+      .replace(/^ /g, '').replace(/ $/g, ' ')
+      )
+  }
+  function filter_terms (q) {
+    var tocens = document.querySelectorAll('.toc > a')
+    var nonempty = false
+    for (var i = 0; i < tocens.length; ++i) {
+      var a = tocens[i]
+      var nq = normalize_text(q)
+      a.className
+       = normalize_text(a.textContent).indexOf(nq) === -1
+      && normalize_text(a.title).indexOf(nq) === -1
+          ? 'hidden'
+          : ''
+      if (a.className === '') { nonempty = true }
+    }
+    document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
+  }
+  onload = function () {
+    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+  }
+</script>
 </body>
 </html>
