@@ -64,7 +64,7 @@ sub make_header { my ($additional_title, $path, $base) = @_;
   my $root = $base ? $base :
              $additional_title ? '../' : '';
   my $desc = $additional_title ? ' — '.$additional_title : ' للمصطلحات التقنية الحديثة';
-  my $url  = "https://noureddin.github.io/ysmu/$path/" =~ s,/+$,/,r;
+  my $url  = "https://www.noureddin.dev/ysmu/$path/" =~ s,/+$,/,r;
   my $page = $path ? "$root$path/" : '';
   my $title = "معجم يسمو$desc";
   my $header_title = "معجم يسمو\n{{logo}}\n$desc" =~ s/ — //r
