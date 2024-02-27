@@ -1,6 +1,14 @@
 #!/usr/bin/env perl
+# vim: set foldmethod=marker foldmarker={{{,}}} :
 use v5.14; use warnings; use autodie; use utf8;
 use open qw[ :encoding(UTF-8) :std ];
+
+# static definitions {{{1
+
+sub slurp(_) { local $/; open my $f, '<', $_[0]; return scalar <$f> }
+
+use Time::Piece;  # for converting unix time to UTC ISO dates (git uses local TZ)
+use List::Util qw[ max maxstr ];  # for the Atom feed
 
 use FindBin;
 # allow loading our libraries from the script's directory
@@ -85,6 +93,12 @@ sub make_header { my ($additional_title, $path, $base) = @_;
     =~ s,(?=</title>),\N{POP DIRECTIONAL FORMATTING},r
 }
 
+my $feedicon = slurp 'etc/feed-icon.svg';
+# based on https://en.wikipedia.org/wiki/File:Feed-icon.svg
+# flipped & made monochrome with Inkscape,
+# then compressed with vecta.io/nano
+# then modified manually a bit.
+
 use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost everything
 <footer>
   <!--before-contact-->
@@ -92,6 +106,8 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
     صفحة <a rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a rel="noreferrer noopener" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
   </p>
+  <!--after-contact-->
+  <p class="blurred"><a href="{{root}}feed.atom.xml">تغذية Atom {{feedicon}}</a></p>
   <!--before-license-->
   <p class="license blurred">الرخصة: <a rel="noreferrer noopener license" href="https://creativecommons.org/choose/zero/">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
   <p class="license blurred">الشارة من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)، مع حرف العين <a href="https://www.amirifont.org/">بالخط الأميري</a></p>
@@ -162,68 +178,89 @@ sub make_footer { my ($s) = @_;
   if ($s eq 'stable') {
     return FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ rc_link ]}</p>|r
-      =~ s|<!--before-license-->|<p class="blurred">الترجمة المختصرة بصيغة TSV للتطبيقات والمعاجم: @{[ tsv_link ]}</p>|r
-      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r;
+      =~ s|<!--after-contact-->|<p class="blurred">الترجمة المختصرة بصيغة TSV للتطبيقات والمعاجم: @{[ tsv_link ]}</p>|r
+      =~ s| *<!--.*--> *\n||gr
+      =~ s,\Q{{root}}\E,,r
+      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
+      =~ s/\Q{{feedicon}}\E/$feedicon/r
   }
   elsif ($s eq 'empty stable') {
     return FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ rc_link ]}</p>|r
-      =~ s| *<!--before-license--> *\n||r
+      =~ s| *<!--.*--> *\n||gr
+      =~ s,\Q{{root}}\E,,r
+      =~ s/\Q{{feedicon}}\E/$feedicon/r
   }
   elsif ($s eq 'candidate') {
     return FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ exper_link '../' ]}</p>|r
-      =~ s| *<!--before-license--> *\n||r
-      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r;
+      =~ s| *<!--.*--> *\n||gr
+      =~ s,\Q{{root}}\E,../,r
+      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
+      =~ s/\Q{{feedicon}}\E/$feedicon/r
   }
   elsif ($s eq 'empty candidate') {
     return FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ exper_link '../' ]}</p>|r
-      =~ s| *<!--before-license--> *\n||r
+      =~ s| *<!--.*--> *\n||gr
+      =~ s,\Q{{root}}\E,../,r
+      =~ s/\Q{{feedicon}}\E/$feedicon/r
   }
   elsif ($s eq 'experimental') {
     return FOOTER
-      =~ s| *<!--before-contact--> *\n||r
-      =~ s|<!--before-license-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
-      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r;
+      =~ s|<!--after-contact-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
+      =~ s| *<!--.*--> *\n||gr
+      =~ s,\Q{{root}}\E,../,r
+      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
+      =~ s/\Q{{feedicon}}\E/$feedicon/r
   }
   elsif ($s eq 'empty experimental') {
     return FOOTER
-      =~ s| *<!--before-contact--> *\n||r
       =~ s|<!--before-license-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
+      =~ s| *<!--.*--> *\n||gr
+      =~ s,\Q{{root}}\E,../,r
+      =~ s/\Q{{feedicon}}\E/$feedicon/r
   }
   elsif ($s eq 'unstaged') {
     return FOOTER
-      =~ s| *<!--before-contact--> *\n||r
-      =~ s| *<!--before-license--> *\n||r
-      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r;
+      =~ s| *<!--.*--> *\n||gr
+      =~ s,\Q{{root}}\E,../,r
+      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
+      =~ s/\Q{{feedicon}}\E/$feedicon/r
   }
   elsif ($s eq 'empty unstaged') {
     return FOOTER
-      =~ s| *<!--before-contact--> *\n||r
-      =~ s| *<!--before-license--> *\n||r
+      =~ s| *<!--.*--> *\n||gr
+      =~ s,\Q{{root}}\E,../,r
+      =~ s/\Q{{feedicon}}\E/$feedicon/r
   }
   elsif ($s eq 'all') {
     return FOOTER
-      =~ s| *<!--before-contact--> *\n||r
-      =~ s| *<!--before-license--> *\n||r
-      =~ s,(?=</body>),@{[ MULTIPLE_FILTERING_SCRIPT ]},r;
+      =~ s| *<!--.*--> *\n||gr
+      =~ s,\Q{{root}}\E,../,r
+      =~ s,(?=</body>),@{[ MULTIPLE_FILTERING_SCRIPT ]},r
+      =~ s/\Q{{feedicon}}\E/$feedicon/r
   }
   elsif ($s eq 'link') {
     return FOOTER
-      =~ s| *<!--before-contact--> *\n||r
-      =~ s| *<!--before-license--> *\n||r
+      =~ s| *<!--.*--> *\n||gr
+      =~ s,\Q{{root}}\E,../../,r
+      =~ s/\Q{{feedicon}}\E/$feedicon/r
   }
   elsif ($s eq 'notes') {
     return FOOTER
       # =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ stable_link ]} أو @{[ exper_link '../' ]}</p>|r
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ all_link '../' ]}</p>|r
-      =~ s| *<!--before-license--> *\n||r
+      =~ s| *<!--.*--> *\n||gr
+      =~ s,\Q{{root}}\E,../,r
+      =~ s/\Q{{feedicon}}\E/$feedicon/r
   }
   else {
     die "\e[1;31m  make_footer received wrong argument: '$s'\e[m\n"
   }
 }
+
+# dynamic definitions {{{1
 
 my %long =
   map {
@@ -256,13 +293,13 @@ sub human_title_of(_) { my ($id) = @_;
 
 # for each term, we generate a link in link/TERM/ that redirects to it in
 # the agreed-upon, candidate, experimental, or unstaged page,
-# in that order, so it's easier to link to term before it's stabilized.
+# in that order, so it's easier to link to term before they're stabilized.
 my %links;
 
 # each entry has a summary. we keep it in the toc links for search.
 my %summs;
 
-sub toc_links {  # array of [$id, "#$id"]; returns a string '<section class="toc">...</section>' or undef
+sub toc_links {  # takes array of [$id, "#$id"]; returns a string '<section class="toc">...</section>' or undef
   if (@_) {
     return qq[<section class="toc">\n] . (
       join '',
@@ -324,14 +361,18 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   return $n;
 }
 
-# we generate these files (in addition to the links mentioned above):
-#   index.html, which contains the agreed-upon entries (in w/*)
-#   ysmu.tsv, which summarizes the agreed-upon entries (in w/*)
-#   candidate/index.html, which contains the "release candidate" entries (in c/*)
-#   experimental/index.html, which contains the experimental entries (in x/*)
-#   unstaged/index.html, which contains the unstaged entries (in u/*)
-#   notes/index.html from notes/src, which is general prose
+# page & TSV generation {{{1
+
+# we generate these files:
+#   index.html, which contains the agreed-upon entries (in w/*).
+#   ysmu.tsv, which summarizes the agreed-upon entries (in w/*).
+#   candidate/index.html, which contains the "release candidate" entries (in c/*).
+#   experimental/index.html, which contains the experimental entries (in x/*).
+#   unstaged/index.html, which contains the unstaged entries (in u/*).
+#   feed.atom.xml, which contains an Atom feed of all the terms with their summary definitions.
+#   notes/index.html from notes/src, which is general prose.
 #   link/index.html, which is an index of all terms in the four stages.
+#   link/TERM/index.html, that redirects to '#TERM' in the right page.
 
 # we start with the stable entries
 
@@ -462,4 +503,89 @@ make_page 'link',
       'unstaged/',     'المصطلحات المؤجلة',          toc_links(@u) // EMPTY_STAGE_LINKS, ""
   },
   'all';
+
+# the Atom feed {{{1
+
+# returns the latest modification time of the summary line of a concrete path.
+# ISO date in UTC; b/c git returns the date in the TZ of the commiter
+sub updated_from_path {
+  my $path = $_[0] =~ s|'|'\\''|gr;
+  my $unix = `git blame -L,1 --date=format:'<<<%s>>>' '$path'` =~ s/.*<<<([0-9]+)>>>.*\n/$1/r;
+  my $time = Time::Piece->new($unix);
+  my $date = ($time - $time->tzoffset)->datetime . 'Z';
+}
+
+# returns the earliest creation time of a term file in all stages.
+# ISO date in UTC; b/c git returns the date in the TZ of the commiter
+sub published_from_basename {
+  my $base = $_[0] =~ s|'|'\\''|gr;
+  my $unix = (split "\n", `git log --diff-filter=A --pretty=format:%cd --date=unix --reverse -- '?/$base'`)[0];
+  my $time = Time::Piece->new($unix);
+  my $date = ($time - $time->tzoffset)->datetime . 'Z';
+}
+
+my %tags = map { $_->[0] => sprintf '<link rel="alternate" href="%s/#"/><category scheme="https://www.noureddin.dev/ysmu/%s" term="%s" label="%s"/>', @{$_->[1]} } (
+  [w => [('')x2, 'stable',   'المصطلحات المتفق عليها']],
+  [c => [('candidate')x3,    'المصطلحات المرشحة للاتفاق']],
+  [x => [('experimental')x3, 'المصطلحات التجريبية']],
+  [u => [('unstaged')x3,     'المصطلحات المؤجلة']],
+);
+
+# this cannot give undef for a link; otherwise it would have died in the links index
+
+my %upd = map { $_ => updated_from_path $links{$_} .'/'. $_ } keys %links;
+
+my $updated = maxstr values %upd;
+
+open my $m, '>', 'feed.atom.xml';
+print { $m } <<"END_OF_TEXT" =~ s/>\s+</></gr;
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ar" dir="rtl">
+  <title>معجم يسمو للمصطلحات التقنية الحديثة</title>
+  <link rel="alternate" type="text/html" href="https://www.noureddin.dev/ysmu/" />
+  <link rel="self" type="application/atom+xml" href="https://www.noureddin.dev/ysmu/feed.atom" />
+  <icon>https://www.noureddin.dev/ysmu/etc/favicon-72x72.png</icon>
+  <updated>$updated</updated>
+  <id>tag:ysmu.noureddin.dev,2023:/feed.atom.xml</id>
+  <author>
+    <name>نور الدين | Noureddin</name>
+    <uri>https://www.noureddin.dev/</uri>
+  </author>
+END_OF_TEXT
+
+# https://www.ietf.org/archive/id/draft-snell-atompub-bidi-05.html
+# dir="rtl" is not widely supported, even https://validator.w3.org/feed/ warns about it,
+# so Unicode RTL embedding is still needed.
+
+use charnames ":full", ":alias" => {
+  LTR => "LEFT-TO-RIGHT EMBEDDING",
+  RTL => "RIGHT-TO-LEFT EMBEDDING",
+  POP => "POP DIRECTIONAL FORMATTING",
+};
+
+# ASSUMPTION: if the arg contains RTL or LTR EMBED, it must be balanced with POP DIR.
+sub RTL(_) { "\N{RTL}" . $_[0] . "\N{POP}" }
+
+# reverse chronological order of last update of the summary.
+# if more than one has the same update time (quite common),
+# sort by reverse ASCIIbetical order, so that it's in a regular ASCIIbetical order.
+for my $id (reverse sort { $upd{$a} cmp $upd{$b} || $b cmp $a } keys %upd) {
+  my $tag = $tags{ $links{$id} };
+  my $sum = $summs{$id};
+  my $upd = $upd{$id};
+  my $pub = published_from_basename $id;
+  print { $m }
+    '<entry>',
+    '<title>', $id, '</title>',
+    $tag =~ s/#/#$id/gr,
+    '<updated>', $upd, '</updated>',
+    '<published>', $pub, '</published>',
+    '<id>tag:ysmu.noureddin.dev,2023:/', $id, '</id>',
+    '<summary>', RTL($sum), '</summary>',
+    # TODO: content
+    '</entry>', "\n";
+}
+
+print { $m } '</feed>';
+close $m;
 

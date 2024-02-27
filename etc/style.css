@@ -117,8 +117,11 @@ a { text-decoration: none }
 
 a:hover,
 a:focus,
-a.other /* h2 in /link/index.html */
-  { text-decoration: underline 1px }
+a.other { /* h2 in /link/index.html */
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  /* thickness is included in shorthand only in 2019 (FF) and 2020 (the rest) */
+}
 
 h2 > a        { color: var(--hn) }
 h2 > a:hover  { color: var(--hh) }
@@ -290,6 +293,12 @@ nav > a:not([href]) {  /* current page in the navbar */
 
 .license {
   font-size: 75%;
+}
+
+footer svg {  /* feed icon; don't change width or height */
+  fill: currentColor;
+  vertical-align: -.05em;
+  /* TODO: text-underline => border */
 }
 
 code {
