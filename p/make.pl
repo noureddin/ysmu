@@ -175,89 +175,51 @@ sub tsv_link    { '<a rel=alternate type=text/tab-separated-values href="https:/
 sub stable_link { '<a href="..">المصطلحات المتفق عليها</a>' }
 
 sub make_footer { my ($s) = @_;
-  if ($s eq 'stable') {
-    return FOOTER
+  return
+  ( $s eq 'stable' ? FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ rc_link ]}</p>|r
       =~ s|<!--after-contact-->|<p class="blurred">الترجمة المختصرة بصيغة TSV للتطبيقات والمعاجم: @{[ tsv_link ]}</p>|r
-      =~ s| *<!--.*--> *\n||gr
       =~ s,\Q{{root}}\E,,r
       =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
-      =~ s/\Q{{feedicon}}\E/$feedicon/r
-  }
-  elsif ($s eq 'empty stable') {
-    return FOOTER
+
+  : $s eq 'empty stable' ? FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ rc_link ]}</p>|r
-      =~ s| *<!--.*--> *\n||gr
       =~ s,\Q{{root}}\E,,r
-      =~ s/\Q{{feedicon}}\E/$feedicon/r
-  }
-  elsif ($s eq 'candidate') {
-    return FOOTER
+
+  : $s eq 'candidate' ? FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ exper_link '../' ]}</p>|r
-      =~ s| *<!--.*--> *\n||gr
-      =~ s,\Q{{root}}\E,../,r
       =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
-      =~ s/\Q{{feedicon}}\E/$feedicon/r
-  }
-  elsif ($s eq 'empty candidate') {
-    return FOOTER
+
+  : $s eq 'empty candidate' ? FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ exper_link '../' ]}</p>|r
-      =~ s| *<!--.*--> *\n||gr
-      =~ s,\Q{{root}}\E,../,r
-      =~ s/\Q{{feedicon}}\E/$feedicon/r
-  }
-  elsif ($s eq 'experimental') {
-    return FOOTER
+
+  : $s eq 'experimental' ? FOOTER
       =~ s|<!--after-contact-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
-      =~ s| *<!--.*--> *\n||gr
-      =~ s,\Q{{root}}\E,../,r
       =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
-      =~ s/\Q{{feedicon}}\E/$feedicon/r
-  }
-  elsif ($s eq 'empty experimental') {
-    return FOOTER
+
+  : $s eq 'empty experimental' ? FOOTER
       =~ s|<!--before-license-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
-      =~ s| *<!--.*--> *\n||gr
-      =~ s,\Q{{root}}\E,../,r
-      =~ s/\Q{{feedicon}}\E/$feedicon/r
-  }
-  elsif ($s eq 'unstaged') {
-    return FOOTER
-      =~ s| *<!--.*--> *\n||gr
-      =~ s,\Q{{root}}\E,../,r
+
+  : $s eq 'unstaged' ? FOOTER
       =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
-      =~ s/\Q{{feedicon}}\E/$feedicon/r
-  }
-  elsif ($s eq 'empty unstaged') {
-    return FOOTER
-      =~ s| *<!--.*--> *\n||gr
-      =~ s,\Q{{root}}\E,../,r
-      =~ s/\Q{{feedicon}}\E/$feedicon/r
-  }
-  elsif ($s eq 'all') {
-    return FOOTER
-      =~ s| *<!--.*--> *\n||gr
-      =~ s,\Q{{root}}\E,../,r
+
+  : $s eq 'empty unstaged' ? FOOTER
+
+  : $s eq 'all' ? FOOTER
       =~ s,(?=</body>),@{[ MULTIPLE_FILTERING_SCRIPT ]},r
-      =~ s/\Q{{feedicon}}\E/$feedicon/r
-  }
-  elsif ($s eq 'link') {
-    return FOOTER
-      =~ s| *<!--.*--> *\n||gr
+
+  : $s eq 'link' ? FOOTER
       =~ s,\Q{{root}}\E,../../,r
-      =~ s/\Q{{feedicon}}\E/$feedicon/r
-  }
-  elsif ($s eq 'notes') {
-    return FOOTER
+
+  : $s eq 'notes' ? FOOTER
       # =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ stable_link ]} أو @{[ exper_link '../' ]}</p>|r
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ all_link '../' ]}</p>|r
-      =~ s| *<!--.*--> *\n||gr
-      =~ s,\Q{{root}}\E,../,r
-      =~ s/\Q{{feedicon}}\E/$feedicon/r
-  }
-  else {
-    die "\e[1;31m  make_footer received wrong argument: '$s'\e[m\n"
-  }
+
+  : die "\e[1;31m  make_footer received wrong argument: '$s'\e[m\n"
+  )
+    =~ s,\Q{{root}}\E,../,r
+    =~ s/\Q{{feedicon}}\E/$feedicon/r
+    =~ s| *<!--.*--> *\n||gr
 }
 
 # dynamic definitions {{{1
