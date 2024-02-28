@@ -5,22 +5,22 @@
 <ul>
 
 <li>المصطلحات المتفق عليها مع شرح سبب اختيارها وأمثلة عليها:<br>
-  https://noureddin.github.io/ysmu
+  https://www.noureddin.dev/ysmu
 
 <li>المصطلحات المتفق عليها بغير شرح (للتطبيقات والمعاجم المجمعة):<br>
   https://github.com/noureddin/ysmu/raw/main/ysmu.tsv
 
 <li>المصطلحات المرشحة للاتفاق، التي ستصير «متفق عليها» بعد ساعات أو أيام غالبا:<br>
-  https://noureddin.github.io/ysmu/candidate
+  https://www.noureddin.dev/ysmu/candidate
 
 <li>المصطلحات التجريبية التي لم يتفق المجتمع عليها بعد<br>
-  https://noureddin.github.io/ysmu/experimental
+  https://www.noureddin.dev/ysmu/experimental
 
 <li>موارد وإرشادات وملاحظات عامة:<br>
-  https://noureddin.github.io/ysmu/notes
+  https://www.noureddin.dev/ysmu/notes
 
 <li>قائمة روابط جميع المصطلحات:<br>
-  https://noureddin.github.io/ysmu/link
+  https://www.noureddin.dev/ysmu/link
 
 </ul>
 
@@ -64,10 +64,10 @@ And its file size is reduced with [Vecta's Nano compressor](https://vecta.io/nan
 
 ## مراحل المصطلحات
 
-- **المصطلحات المتفق عليها:** هي المصطلحات التي وافق عليها أعضاء غرفة الترجمة في مجتمع أسس بعد نقاش و/أو تصويت. ([صفحتها ⬉](https://noureddin.github.io/ysmu/))
-- **المصطلحات المرشحة للاتفاق:** هي المصطلحات التي في مرحلة التصويت، أو في آخر مرحلة النقاش. ([صفحتها ⬉](https://noureddin.github.io/ysmu/candidate/))
-- **المصطلحات التجريبية:** هي المصطلحات التي لم يتفق عليها المجتمع بعد، وقد يكون نقاشها في بدايته أو لم يبدأ بعد أصلا، أو رُشّحت للاتفاق ثم لم نتفق، فتحتاج بعض العمل. ([صفحتها ⬉](https://noureddin.github.io/ysmu/experimental/))
-- **المصطلحات المؤجلة:** هي المصطلحات التي لن يبدأ النقاش فيها قريبا ونريد إبعادها قليلا للتركيز على المصطلحات الأخرى. ([صفحتها ⬉](https://noureddin.github.io/ysmu/unstaged/))
+- **المصطلحات المتفق عليها:** هي المصطلحات التي وافق عليها أعضاء غرفة الترجمة في مجتمع أسس بعد نقاش و/أو تصويت. ([صفحتها ⬉](https://www.noureddin.dev/ysmu/))
+- **المصطلحات المرشحة للاتفاق:** هي المصطلحات التي في مرحلة التصويت، أو في آخر مرحلة النقاش. ([صفحتها ⬉](https://www.noureddin.dev/ysmu/candidate/))
+- **المصطلحات التجريبية:** هي المصطلحات التي لم يتفق عليها المجتمع بعد، وقد يكون نقاشها في بدايته أو لم يبدأ بعد أصلا، أو رُشّحت للاتفاق ثم لم نتفق، فتحتاج بعض العمل. ([صفحتها ⬉](https://www.noureddin.dev/ysmu/experimental/))
+- **المصطلحات المؤجلة:** هي المصطلحات التي لن يبدأ النقاش فيها قريبا ونريد إبعادها قليلا للتركيز على المصطلحات الأخرى. ([صفحتها ⬉](https://www.noureddin.dev/ysmu/unstaged/))
 
 وكل مجموعة من هذه المصطلحات تظهر في صفحة خاصة بها، والمصطلحات المتفق عليها فقط هي التي تصل إلى [ملف المعجم المختصر](https://github.com/noureddin/ysmu/raw/main/ysmu.tsv).
 
@@ -91,12 +91,12 @@ And its file size is reduced with [Vecta's Nano compressor](https://vecta.io/nan
 
 ### النواتج:
 
-- ملف `index.html`: صفحة ويب المصطلحات المتفق عليها. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/)
-- ملف `candidate/index.html`: صفحة ويب المصطلحات المرشحة للاتفاق. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/candidate/)
-- ملف `experimental/index.html`: صفحة ويب المصطلحات التجريبية. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/experimental/)
-- ملف `notes/index.html`:  ناتج تصيير `notes/src`، أي صفحة ويب الموارد والإرشادات. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/notes/)
+- ملف `index.html`: صفحة ويب المصطلحات المتفق عليها. [اذهب إليها ⬉](https://www.noureddin.dev/ysmu/)
+- ملف `candidate/index.html`: صفحة ويب المصطلحات المرشحة للاتفاق. [اذهب إليها ⬉](https://www.noureddin.dev/ysmu/candidate/)
+- ملف `experimental/index.html`: صفحة ويب المصطلحات التجريبية. [اذهب إليها ⬉](https://www.noureddin.dev/ysmu/experimental/)
+- ملف `notes/index.html`:  ناتج تصيير `notes/src`، أي صفحة ويب الموارد والإرشادات. [اذهب إليها ⬉](https://www.noureddin.dev/ysmu/notes/)
 - ملف `ysmu.tsv`: المصطلحات المتفق عليها بالترجمة المختصرة بغير شرح وبصيغة مناسبة للتطبيقات. [اذهب إليه ⬉](https://github.com/noureddin/ysmu/raw/main/ysmu.tsv)
-- ملف `link/index.html`: قائمة روابط جميع المصطلحات. [اذهب إليها ⬉](https://noureddin.github.io/ysmu/link/)
+- ملف `link/index.html`: قائمة روابط جميع المصطلحات. [اذهب إليها ⬉](https://www.noureddin.dev/ysmu/link/)
 - ملفات `link/*/index.html`: صفحات توجيه إلى المصطلح بغض النظر عن مرحلته الحالية (`*` هي اسم المصطلح الإنجليزي).
 
 ### السواكن:
