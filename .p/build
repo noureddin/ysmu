@@ -45,6 +45,11 @@ use constant HEADER => <<'END_OF_TEXT';
   <meta property="og:locale" content="ar_AR">
   <meta property="og:type" content="website">
   <meta property="og:title" content="{{title}}">
+  <meta property="og:image" content="{{base_url}}cover.png">
+  <meta property="og:image:width" content="1120"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:description" content="{{description}}">
+  <meta name="description" content="{{description}}">
   <link rel="canonical" href="{{url}}">
   <meta property="og:url" content="{{url}}">
   <link rel="icon" type="image/png" sizes="72x72" href="{{root}}etc/favicon-72x72.png">
@@ -72,7 +77,8 @@ sub make_header { my ($additional_title, $path, $base) = @_;
   my $root = $base ? $base :
              $additional_title ? '../' : '';
   my $desc = $additional_title ? ' — '.$additional_title : ' للمصطلحات التقنية الحديثة';
-  my $url  = "https://www.noureddin.dev/ysmu/$path/" =~ s,/+$,/,r;
+  my $base_url = "https://www.noureddin.dev/ysmu";
+  my $url  = "$base_url/$path/" =~ s,/+$,/,r;
   my $page = $path ? "$root$path/" : '';
   my $title = "معجم يسمو$desc";
   my $header_title = "معجم يسمو\n{{logo}}\n$desc" =~ s/ — //r
@@ -80,11 +86,15 @@ sub make_header { my ($additional_title, $path, $base) = @_;
     # this hack (with the associated css) is to use the img on css-enabled browsers,
     # but to use the unicode character in reader mode and browsers w/o css.
 
+  my $description = "معجم مجتمعي نتخير فيه أفضل مصطلح عربي فصيح سليم يجمع بين المعنى التقني والاستعمال الأصلي للكلمة العربية أو صحة اشتقاقها، ونشرح فيه أسباب اختيار هذا المصطلح والإعراض عن غيره.";  # the same the one in my home page
+
   return HEADER
     =~ s,\Q{{title}}\E,$title,gr
     =~ s,\Q{{header_title}}\E,$header_title,gr
     =~ s,\Q{{url}}\E,$url,gr
+    =~ s,\Q{{base_url}}\E,$base_url/,gr
     =~ s,\Q{{root}}\E,$root,gr
+    =~ s,\Q{{description}}\E,$description,gr
     =~ s,\Q{{stylehash}}\E,hash('etc/style.min.css'),gre
     =~ s,\Qhref="$page"\E,aria-current="page",gr
     =~ s,\n\Z,,r  # to use say with almost everything
