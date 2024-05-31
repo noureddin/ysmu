@@ -481,8 +481,11 @@ make_page 'link',
 # returns the latest modification time of the summary line of a concrete path.
 # ISO date in UTC; b/c git returns the date in the TZ of the commiter
 sub updated_from_path {
+  # must check if not in git yet.
   my $path = $_[0] =~ s|'|'\\''|gr;
-  my $unix = `git blame -L,1 --date=format:'<<<%s>>>' '$path'` =~ s/.*<<<([0-9]+)>>>.*\n/$1/r;
+  my $unix = `git ls-files '$path'` eq ''
+    ? undef  # not in git => updated = now
+    : `git blame -L,1 --date=format:'<<<%s>>>' '$path'` =~ s/.*<<<([0-9]+)>>>.*\n/$1/r;
   my $time = Time::Piece->new($unix);
   my $date = ($time - $time->tzoffset)->datetime . 'Z';
 }
@@ -490,6 +493,7 @@ sub updated_from_path {
 # returns the earliest creation time of a term file in all stages.
 # ISO date in UTC; b/c git returns the date in the TZ of the commiter
 sub published_from_basename {
+  # if not in git yet, git doesn't error, and Time::Piece gives us "now" (b/c $unix is undef).
   my $base = $_[0] =~ s|'|'\\''|gr;
   my $unix = (split "\n", `git log --diff-filter=A --pretty=format:%cd --date=unix --reverse -- '?/$base'`)[0];
   my $time = Time::Piece->new($unix);
@@ -548,7 +552,7 @@ for my $id (reverse sort { $upd{$a} cmp $upd{$b} || $b cmp $a } keys %upd) {
   my $pub = published_from_basename $id;
   print { $m }
     '<entry>',
-    '<title>', $id, '</title>',
+    '<title>', human_title_of($id), '</title>',
     $tag =~ s/#/#$id/gr,
     '<updated>', $upd, '</updated>',
     '<published>', $pub, '</published>',
