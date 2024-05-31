@@ -39,9 +39,32 @@
   هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد؛
   انظر <a href="..">المصطلحات المتفق عليها</a>
 </aside>
-<article class="emptypage">لا توجد مصطلحات مرشحة حاليا</article>
+<input id="toc_filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
+<section class="toc">
+  <a href="#ai" title="‫ذكاء مصطَنع.‬">artificial intelligence (AI)</a>
+  <a href="#artificial" title="‫[صفة] مُصْطَنَع.‬">artificial</a>
+  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
+</section>
+<article><h2 id="ai"><a id="artificial_intelligence" dir="ltr" href="#ai">artificial intelligence (AI)</a></h2>
+<p>ذكاء مصطَنع.</p>
+<p class="seealso">انظر أيضا:</p><ul>
+  <li><a dir="ltr" href="#artificial">artificial</a></li>
+</ul>
+</article>
+<article><h2 id="artificial"><a dir="ltr" href="#artificial">artificial</a></h2>
+<p>[صفة] مُصْطَنَع.</p>
+<ul style="list-style-type:'– '">
+<li><p>«صناعي» هي النسبة إلى الصناعة (=”industrial“)، وهذا خلط غير مرغوب فيه، خصوصا مع ظهور ”industrial AI“.</p></li>
+<li><p>«صَنْعي» اختيار المعجم السوري، هي النسبة إلى الصنعة (أي الحرفة)، وهي كلمة جديدة على الناس بغير داعٍ.</p></li>
+<li><p>«اصطناعي» هي النسبة إلى فعل الاصطناع أي التقليد، فهي قريبة، لكن الأدق الوصف بالاصطناع مباشرةً، وليس النسبة إليه.</p></li>
+</ul>
+<p>فأدق تعبير هو اسم المفعول «مصطنع» أي «مقلَّد» ضد «طبيعي».</p>
+<p class="seealso">انظر أيضا:</p><ul>
+  <li><a dir="ltr" href="#ai">artificial intelligence (AI)</a></li>
+</ul>
+</article>
 <footer>
-  <p>يمكنك رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
+  <p>يمكنك أيضا رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
   <p>يمكنك التواصل معنا عبر
     صفحة <a rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a rel="noreferrer noopener" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
@@ -51,5 +74,33 @@
   <p class="license blurred">الرخصة: <a rel="noreferrer noopener license" href="https://creativecommons.org/publicdomain/zero/1.0/deed.ar">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
   <p class="license blurred">الشارة من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)، مع حرف العين <a href="https://www.amirifont.org/">بالخط الأميري</a></p>
 </footer>
+<script>
+  function normalize_text (t) {
+    return (t
+      .toLowerCase()
+      .replace(/[\u0640\u064B-\u065F]+/g, '')
+      .replace(/[-_\s,،.;؛?؟!()]+/g, ' ')
+      .replace(/^ /g, '').replace(/ $/g, ' ')
+      )
+  }
+  function filter_terms (q) {
+    var tocens = document.querySelectorAll('.toc > a')
+    var nonempty = false
+    for (var i = 0; i < tocens.length; ++i) {
+      var a = tocens[i]
+      var nq = normalize_text(q)
+      a.className
+       = normalize_text(a.textContent).indexOf(nq) === -1
+      && normalize_text(a.title).indexOf(nq) === -1
+          ? 'hidden'
+          : ''
+      if (a.className === '') { nonempty = true }
+    }
+    document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
+  }
+  onload = function () {
+    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+  }
+</script>
 </body>
 </html>
