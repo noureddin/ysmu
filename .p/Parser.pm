@@ -7,7 +7,7 @@ our @EXPORT_OK = qw[
   filepath_to_html
   html_to_summary
   word_title_of
-  acronym_title_of
+  short_title_of
 ];
 
 sub word_title_of(_) {
@@ -16,9 +16,11 @@ sub word_title_of(_) {
   # =~ s/^c\+\+$/C++/gr
 }
 
-sub acronym_title_of(_) {
-  return (uc word_title_of($_[0]))
-  # add here special cases for mixed-case acronyms
+sub short_title_of(_) {
+  my $w = word_title_of($_[0]);
+  return $w =~ /admin/ ? $w  # admin & sysadmin are abbreviations not acronyms
+    : uc $w
+  # add here special cases for mixed-case acronyms or other kinds of abbreviations
 }
 
 sub parse_line(_;$) {

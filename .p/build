@@ -26,7 +26,7 @@ use Parser qw[
   filepath_to_html
   html_to_summary
   word_title_of
-  acronym_title_of
+  short_title_of
 ];
 
 use BigParser qw[
@@ -245,9 +245,9 @@ my %long =
 my %short = reverse %long;
 
 sub long_title_of(_) { my ($id) = @_;
-  my $ttl = word_title_of($long{$id});
-  my $acr = acronym_title_of($id);
-  return "$ttl ($acr)";
+  my $full = word_title_of($long{$id});
+  my $abbr = short_title_of($id);
+  return "$full ($abbr)";
 }
 
 sub human_title_of(_) { my ($id) = @_;
@@ -441,8 +441,8 @@ for my $id (keys %links) {
              : $links{$id} eq 'x' ? 'experimental/'
              : $links{$id} eq 'u' ? 'unstaged/'
              : die "\e[1;31m  bad parent for '$id' in link/\e[m\n";
-  if (exists $long{$id}) {  # if $id is an acronym
-    make_link $id, acronym_title_of($id), $parent;
+  if (exists $long{$id}) {  # if $id is an acronym or abbreviation
+    make_link $id, short_title_of($id), $parent;
     make_link $long{$id}, word_title_of($long{$id}), $parent;
   }
   else {
