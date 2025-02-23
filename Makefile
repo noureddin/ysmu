@@ -3,11 +3,15 @@ targets = index.html ysmu.tsv candidate/index.html experimental/index.html unsta
 words = $(wildcard w/*) $(wildcard c/*) $(wildcard x/*) $(wildcard u/*)
 # $(wildcard) becomes empty if no files match
 
-$(targets): .p/* w/ c/ x/ u/ $(words) notes/src longnames.tsv etc/style.min.css
+$(targets): .p/* w/ c/ x/ u/ $(words) notes/src .longnamesfixed etc/style.min.css
 	perl -Mutf8 -CDSA .p/build
 
 %.min.css: %.css
 	deno run --quiet --allow-read npm:clean-css-cli "$<" > "$@"
+
+.longnamesfixed: longnames.tsv
+	perl -Mutf8 -CDSA .p/fixlongnames.pl longnames.tsv
+	touch .longnamesfixed
 
 .PHONY: clean force all
 

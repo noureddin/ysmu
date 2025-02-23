@@ -39,27 +39,9 @@
   هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد؛
   انظر <a href="..">المصطلحات المتفق عليها</a>
 </aside>
-<input id="toc_filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
-<section class="toc">
-  <a href="#sandbox" title="‫مَعْزِل (ج: مَعَازِل).‬">sandbox</a>
-  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
-</section>
-<article><h2 id="sandbox"><a dir="ltr" href="#sandbox">sandbox</a></h2>
-<p>مَعْزِل (ج: مَعَازِل).</p>
-<p>هي آلية لتحديد وصول التطبيقات إلى الأجزاء الأخرى من النظام، فهي وسيلة لحماية النظام وما فيه من بعض التطبيقات التي قد تسبب له الضرر.</p>
-<p>وهي اسم مكان من الفعل عَزَل يَعْزِل.</p>
-<p>ويقول عن هذه الكلمة معجمُ الغني:</p>
-<blockquote>
-[ع ز ل] <strong>مَعْزِلُ الْمَرْضَى:</strong> مَوْضِعٌ يُعْزَلُ فِيهِ الْمَرْضَى عَنِ الأَصِحَّاءِ <strong>كَانَ بِمَعْزِلٍ عَنْ كُلِّ الْمَزَالِقِ:</strong> بَعِيدًا عَنْ… <strong>هُوَ عَنِ الْحَقِّ بِمَعْزِلٍ:</strong> مُجَانِبٌ لَهُ.
-</blockquote>
-<p>ويقول معجم مقاييس اللغة:</p>
-<blockquote>
-تقول: عزَل الإنسانُ الشَّيءَ يعزِلُه، إذا نحَّاه في جانبٍ.<br>
-وهو بمَعْزِلٍ وفي مَعزِل من أصحابه، أي في ناحيةٍ عنهم.
-</blockquote>
-</article>
+<article class="emptypage">لا توجد مصطلحات مرشحة حاليا</article>
 <footer>
-  <p>يمكنك أيضا رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
+  <p>يمكنك رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
   <p>يمكنك التواصل معنا عبر
     صفحة <a rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a rel="noreferrer noopener" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
@@ -69,33 +51,5 @@
   <p class="license blurred">الرخصة: <a rel="noreferrer noopener license" href="https://creativecommons.org/publicdomain/zero/1.0/deed.ar">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
   <p class="license blurred">الشارة من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)، مع حرف العين <a href="https://www.amirifont.org/">بالخط الأميري</a></p>
 </footer>
-<script>
-  function normalize_text (t) {
-    return (t
-      .toLowerCase()
-      .replace(/[\u0640\u064B-\u065F]+/g, '')
-      .replace(/[-_\s,،.;؛?؟!()]+/g, ' ')
-      .replace(/^ /g, '').replace(/ $/g, ' ')
-      )
-  }
-  function filter_terms (q) {
-    var tocens = document.querySelectorAll('.toc > a')
-    var nonempty = false
-    for (var i = 0; i < tocens.length; ++i) {
-      var a = tocens[i]
-      var nq = normalize_text(q)
-      a.className
-       = normalize_text(a.textContent).indexOf(nq) === -1
-      && normalize_text(a.title).indexOf(nq) === -1
-          ? 'hidden'
-          : ''
-      if (a.className === '') { nonempty = true }
-    }
-    document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
-  }
-  onload = function () {
-    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
-  }
-</script>
 </body>
 </html>

@@ -17,9 +17,10 @@ sub word_title_of(_) {
 }
 
 sub short_title_of(_) {
-  my $w = word_title_of($_[0]);
-  return $w =~ /admin/ ? $w  # admin & sysadmin are abbreviations not acronyms
-    : uc $w
+  local $_ = word_title_of($_[0]);
+  return /admin/ ? $_  # admin & sysadmin are abbreviations not acronyms
+    : /voip/ ? 'VoIP'
+    : uc  # otherwise, uppercase it all
   # add here special cases for mixed-case acronyms or other kinds of abbreviations
 }
 
@@ -96,7 +97,7 @@ sub filepath_to_html(_;$) {
 sub html_to_summary(_) {
   # get only the first paragraph, and collapse it into a single line
   local $_ = $_[0] =~ s|<p>(.*?)</p>.*|$1|sr;  # /s makes . match any char, including \n
-  if (/[^.](?:<br>\n?|<\/p>|\Z)/) {
+  unless (/[.]<br>\n?|[.]<\/p>|[.]\Z/) {
     die "\e[1;31m  summary has line(s) that don't end in a fullstop.\e[m\n"
       . join '', map { "\e[1;31m    $_\e[m\n" } split "\n";
   }
