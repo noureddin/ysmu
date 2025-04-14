@@ -2,14 +2,14 @@ Inline formatting (in a single line, not across lines):
 - `{{just some ltr text}}`: forces some part of the text to be LTR.
 - `**strong emphasis**`: use sparingly.
 - ```` ``LTR code`` ````: an inline code span, always LTR.
-- `<<::term>>`: link a term (may be in a different stage) (shows as LTR)
-- `<<altname::term>>`: like the above but with alternative title, and thus doesn't force LTR; use `{{` and `}}`.
+- `<<::term>>`: link to a term (may be in a different stage) (shows as LTR)
+- `<<altname::term>>`: like the above but with an alternative title, and thus doesn't force LTR; use `{{` and `}}`.
 - `<<https://link>>`: an external link (shows as LTR)
 - `<<altname||https://link>>`: like the above but with alternative title, and thus doesn't force LTR; use `{{` and `}}`.
-- No fancy Unicode transformations are done whatsoever; bring your own fancy quotes, ellipses, dashes, and so.
+- No fancy Unicode transformations are done whatsoever; bring your own fancy quotes, ellipses, dashes, and so on.
 
 Line formatting:
-- Newline at the end means a line break (ie hard line breaks). (Use a text editor that supports soft wrapping.)
+- Newlines are rendered as line breaks (ie hard line breaks). (Use a text editor that supports soft wrapping.)
 
 Block formatting:
 - Blank lines delimit paragraphs.
@@ -31,9 +31,11 @@ Lists (other than "see-also" term lists):
   - Start a line with `--` then a space, to make a `<li>` without inner `<p>`.
   - Put `****` in its own paragraph, to enclose in a `<li>` everything till the next item mark or list closing mark.
 
+---
+
 That's for entries (under `w/`, `c/`, and `x/`); notes (`notes/src`) has the same syntax plus these additions:
-- `!!!!` followed by a list of "https://link long mandatory title" lines to make a list of external links.
-- Starting a para with `== title` makes that a `h2`, and preceding that with `[[id]]` on a separate line in the same
+- `!!!!` followed by a list of "`https://link` long mandatory title" lines to make a list of external links.
+- Starting a paragraph with `== title` makes that a `h2`, and preceding that with `[[id]]` on a separate line in the same
   paragraph gives it an id and makes it a link.
 
 Other notes:
