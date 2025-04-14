@@ -138,9 +138,19 @@
           ? 'block' : 'none'
     }
   }
+  // redirect on nonpermalinks (eg, /#term) that aren't in this page
+  const tl = {
+    /***term*links***/
+  }
+  function goto_link () {
+    const lnk = tl[location.hash]  // a term starts with '#'; tl only has terms that aren't in this page
+    if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
+  }
   onload = function () {
     document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+    goto_link()
   }
+  onhashchange = goto_link
 </script>
 </body>
 </html>

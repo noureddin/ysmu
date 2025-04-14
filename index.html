@@ -352,9 +352,40 @@
     }
     document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
   }
+  // redirect on nonpermalinks (eg, /#term) that aren't in this page
+  const tl = {
+    '#ai': 'experimental/#ai',
+    '#artificial': 'experimental/#artificial',
+    '#artificial_intelligence': 'experimental/#ai',
+    '#chat': 'experimental/#chat',
+    '#convenience': 'experimental/#convenience',
+    '#convenient': 'experimental/#convenient',
+    '#download': 'experimental/#download',
+    '#filter': 'experimental/#filter',
+    '#immutability': 'experimental/#immutability',
+    '#immutable': 'experimental/#immutable',
+    '#load': 'experimental/#load',
+    '#mount': 'experimental/#mount',
+    '#one-time': 'experimental/#one-time',
+    '#upload': 'experimental/#upload',
+    '#verbose': 'experimental/#verbose',
+    '#binary': 'unstaged/#binary',
+    '#blob': 'unstaged/#blob',
+    '#chroot': 'unstaged/#chroot',
+    '#cursor': 'unstaged/#cursor',
+    '#hook': 'unstaged/#hook',
+    '#pointer': 'unstaged/#pointer',
+    '#reference': 'unstaged/#reference',
+  }
+  function goto_link () {
+    const lnk = tl[location.hash]  // a term starts with '#'; tl only has terms that aren't in this page
+    if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
+  }
   onload = function () {
     document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+    goto_link()
   }
+  onhashchange = goto_link
 </script>
 </body>
 </html>

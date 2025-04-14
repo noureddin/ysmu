@@ -245,9 +245,56 @@ This is your one-time password (OTP) = هذه كلمة مرور الاستخدا
     }
     document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
   }
+  // redirect on nonpermalinks (eg, /#term) that aren't in this page
+  const tl = {
+    '#2fa': '../#2fa',
+    '#admin': '../#admin',
+    '#administrator': '../#admin',
+    '#authenticate': '../#authenticate',
+    '#authentication': '../#authentication',
+    '#check_in': '../#check_in',
+    '#clone': '../#clone',
+    '#color_scheme': '../#color_scheme',
+    '#commit': '../#commit',
+    '#contrast': '../#contrast',
+    '#crypto-': '../#crypto-',
+    '#cryptocurrency': '../#cryptocurrency',
+    '#encrypt': '../#encrypt',
+    '#encryption': '../#encryption',
+    '#federated': '../#federated',
+    '#federation': '../#federation',
+    '#firewall': '../#firewall',
+    '#high_contrast': '../#high_contrast',
+    '#instance': '../#instance',
+    '#mfa': '../#mfa',
+    '#mode': '../#mode',
+    '#moderator': '../#moderator',
+    '#multi-factor_authentication': '../#mfa',
+    '#protocol': '../#protocol',
+    '#proxy': '../#proxy',
+    '#repository': '../#repository',
+    '#sandbox': '../#sandbox',
+    '#sysadmin': '../#sysadmin',
+    '#system_administrator': '../#sysadmin',
+    '#theme': '../#theme',
+    '#two-factor_authentication': '../#2fa',
+    '#binary': '../unstaged/#binary',
+    '#blob': '../unstaged/#blob',
+    '#chroot': '../unstaged/#chroot',
+    '#cursor': '../unstaged/#cursor',
+    '#hook': '../unstaged/#hook',
+    '#pointer': '../unstaged/#pointer',
+    '#reference': '../unstaged/#reference',
+  }
+  function goto_link () {
+    const lnk = tl[location.hash]  // a term starts with '#'; tl only has terms that aren't in this page
+    if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
+  }
   onload = function () {
     document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+    goto_link()
   }
+  onhashchange = goto_link
 </script>
 </body>
 </html>

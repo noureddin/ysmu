@@ -126,7 +126,7 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
 </html>
 END_OF_TEXT
 
-use constant FILTERING_SCRIPT => <<'END_OF_TEXT';
+use constant SCRIPT => <<'END_OF_TEXT';
 <script>
   function normalize_text (t) {
     return (t
@@ -151,20 +151,45 @@ use constant FILTERING_SCRIPT => <<'END_OF_TEXT';
     }
     /***after*loop***/
   }
+  // redirect on nonpermalinks (eg, /#term) that aren't in this page
+  const tl = {
+    /***term*links***/
+  }
+  function goto_link () {
+    const lnk = tl[location.hash]  // a term starts with '#'; tl only has terms that aren't in this page
+    if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
+  }
   onload = function () {
     document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+    goto_link()
   }
+  onhashchange = goto_link
 </script>
 END_OF_TEXT
 
-use constant SINGLE_FILTERING_SCRIPT => FILTERING_SCRIPT
+use constant EMPTY_SCRIPT => <<'END_OF_TEXT';
+<script>
+  // redirect on nonpermalinks (eg, /#term) that aren't in this page
+  const tl = {
+    /***term*links***/
+  }
+  function goto_link () {
+    const lnk = tl[location.hash]  // a term starts with '#'; tl only has terms that aren't in this page
+    if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
+  }
+  onload = goto_link
+  onhashchange = goto_link
+</script>
+END_OF_TEXT
+
+use constant SINGLE_STAGE_SCRIPT => SCRIPT
   =~ s{\Q/***before*loop***/\E}{var nonempty = false}r
   =~ s{\Q/***end*of*loop***/\E}{if (a.className === '') { nonempty = true }}r
   =~ s{\Q/***after*loop***/\E}
     {document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'}r
   ;
 
-use constant MULTIPLE_FILTERING_SCRIPT => FILTERING_SCRIPT
+use constant MULTIPLE_STAGE_SCRIPT => SCRIPT
   =~ s{^ *\Q/***before*loop***/\E\n}{}mr
   =~ s{^ *\Q/***end*of*loop***/\E\n}{}mr
   =~ s{^( *)\Q/***after*loop***/\E\n}
@@ -190,33 +215,37 @@ sub make_footer { my ($s) = @_;
       =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ rc_link ]}</p>|r
       =~ s|<!--after-contact-->|<p class="blurred">الترجمة المختصرة بصيغة TSV للتطبيقات والمعاجم: @{[ tsv_link ]}</p>|r
       =~ s,\Q{{root}}\E,,r
-      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
+      =~ s,(?=</body>),@{[ SINGLE_STAGE_SCRIPT ]},r
 
   : $s eq 'empty stable' ? FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ rc_link ]}</p>|r
       =~ s,\Q{{root}}\E,,r
+      =~ s,(?=</body>),@{[ EMPTY_SCRIPT ]},r
 
   : $s eq 'candidate' ? FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ exper_link '../' ]}</p>|r
-      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
+      =~ s,(?=</body>),@{[ SINGLE_STAGE_SCRIPT ]},r
 
   : $s eq 'empty candidate' ? FOOTER
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ exper_link '../' ]}</p>|r
+      =~ s,(?=</body>),@{[ EMPTY_SCRIPT ]},r
 
   : $s eq 'experimental' ? FOOTER
       =~ s|<!--after-contact-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
-      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
+      =~ s,(?=</body>),@{[ SINGLE_STAGE_SCRIPT ]},r
 
   : $s eq 'empty experimental' ? FOOTER
       =~ s|<!--before-license-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
+      =~ s,(?=</body>),@{[ EMPTY_SCRIPT ]},r
 
   : $s eq 'unstaged' ? FOOTER
-      =~ s,(?=</body>),@{[ SINGLE_FILTERING_SCRIPT ]},r
+      =~ s,(?=</body>),@{[ SINGLE_STAGE_SCRIPT ]},r
 
   : $s eq 'empty unstaged' ? FOOTER
+      =~ s,(?=</body>),@{[ EMPTY_SCRIPT ]},r
 
   : $s eq 'all' ? FOOTER
-      =~ s,(?=</body>),@{[ MULTIPLE_FILTERING_SCRIPT ]},r
+      =~ s,(?=</body>),@{[ MULTIPLE_STAGE_SCRIPT ]},r
 
   : $s eq 'link' ? FOOTER
       =~ s,\Q{{root}}\E,../../,r
@@ -419,11 +448,15 @@ make_page 'notes',
   make_header('موارد وإرشادات', 'notes'),
   basic_html_to_big_html(filepath_to_html 'notes/src');
 
-# and finally the links...
+# links and redirections {{{1
+# finally, because the links were not collected in full until processing all stages
 
 use File::Path qw[ remove_tree ];
 remove_tree 'link' if -d 'link';
 mkdir 'link';
+
+# for redirecting on nonpermalinks
+my %fixlinks = ( w => {}, c => {}, x => {}, u => {} );
 
 use constant ROOT_FOR_LINKS => '../../';
 sub make_link { my ($id, $title, $parent) = @_;
@@ -444,9 +477,18 @@ for my $id (keys %links) {
   if (exists $long{$id}) {  # if $id is an acronym or abbreviation
     make_link $id, short_title_of($id), $parent;
     make_link $long{$id}, word_title_of($long{$id}), $parent;
+    # for redirecting nonpermalinks; examples:
+    #   $fixlinks{w}{mfa} = "#mfa"
+    #   $fixlinks{w}{multi-factor_authentication} = "#mfa"
+    #   $fixlinks{u}{binary} = "unstaged/#binary"
+    my $c = $links{$id};
+    $fixlinks{$c}{$id} = "$parent#$id";
+    $fixlinks{$c}{$long{$id}} = "$parent#$id";
+  #
   }
   else {
     make_link $id, word_title_of($id), $parent;
+    $fixlinks{$links{$id}}{$id} = "$parent#$id";
   }
 }
 
@@ -475,6 +517,37 @@ make_page 'link',
       'unstaged/',     'المصطلحات المؤجلة',          toc_links(@u) // EMPTY_STAGE_LINKS, ""
   },
   'all';
+
+# redirect nonexistent nonpermalinks to their proper page
+
+sub replace_link { my ($filepath, $line_regex, $replacement) = @_;
+  open my $fh, '+<', $filepath;
+  my ($line, $curpos);
+  do { $curpos = tell $fh } while defined ($line = <$fh>) && $line !~ $line_regex;
+  if (!defined $line) {  # reached end-of-file before finding your match: die
+    die "replace_link failed to find your match in file '$filepath'\n"
+  }
+  my @rest = <$fh>;
+  seek $fh, $curpos, 0;  # the position in bytes at the start of the matching line => replace
+  print { $fh }
+    $replacement,
+    ($replacement =~ /\n\Z/ ? "" : "\n"),
+    @rest;
+  close $fh;
+}
+
+sub fix_nonpermalinks { my ($cat, $pagefile) = @_;
+  replace_link $pagefile, qr|\Q/***term*links***/\E|, join "", map {
+      my %L = $cat eq 'w' ? %{$fixlinks{$_}} : map s,^.*#,../$&,r, %{$fixlinks{$_}};
+      $cat eq $_ ? () :
+        join "", map { "    '#$_': '$L{$_}',\n" } sort keys %L;
+    } qw[ w c x u ]
+}
+
+fix_nonpermalinks w => 'index.html';
+fix_nonpermalinks c => 'candidate/index.html';
+fix_nonpermalinks x => 'experimental/index.html';
+fix_nonpermalinks u => 'unstaged/index.html';
 
 # the Atom feed {{{1
 

@@ -51,5 +51,69 @@
   <p class="license blurred">الرخصة: <a rel="noreferrer noopener license" href="https://creativecommons.org/publicdomain/zero/1.0/deed.ar">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
   <p class="license blurred">الشارة من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)، مع حرف العين <a href="https://www.amirifont.org/">بالخط الأميري</a></p>
 </footer>
+<script>
+  // redirect on nonpermalinks (eg, /#term) that aren't in this page
+  const tl = {
+    '#2fa': '../#2fa',
+    '#admin': '../#admin',
+    '#administrator': '../#admin',
+    '#authenticate': '../#authenticate',
+    '#authentication': '../#authentication',
+    '#check_in': '../#check_in',
+    '#clone': '../#clone',
+    '#color_scheme': '../#color_scheme',
+    '#commit': '../#commit',
+    '#contrast': '../#contrast',
+    '#crypto-': '../#crypto-',
+    '#cryptocurrency': '../#cryptocurrency',
+    '#encrypt': '../#encrypt',
+    '#encryption': '../#encryption',
+    '#federated': '../#federated',
+    '#federation': '../#federation',
+    '#firewall': '../#firewall',
+    '#high_contrast': '../#high_contrast',
+    '#instance': '../#instance',
+    '#mfa': '../#mfa',
+    '#mode': '../#mode',
+    '#moderator': '../#moderator',
+    '#multi-factor_authentication': '../#mfa',
+    '#protocol': '../#protocol',
+    '#proxy': '../#proxy',
+    '#repository': '../#repository',
+    '#sandbox': '../#sandbox',
+    '#sysadmin': '../#sysadmin',
+    '#system_administrator': '../#sysadmin',
+    '#theme': '../#theme',
+    '#two-factor_authentication': '../#2fa',
+    '#ai': '../experimental/#ai',
+    '#artificial': '../experimental/#artificial',
+    '#artificial_intelligence': '../experimental/#ai',
+    '#chat': '../experimental/#chat',
+    '#convenience': '../experimental/#convenience',
+    '#convenient': '../experimental/#convenient',
+    '#download': '../experimental/#download',
+    '#filter': '../experimental/#filter',
+    '#immutability': '../experimental/#immutability',
+    '#immutable': '../experimental/#immutable',
+    '#load': '../experimental/#load',
+    '#mount': '../experimental/#mount',
+    '#one-time': '../experimental/#one-time',
+    '#upload': '../experimental/#upload',
+    '#verbose': '../experimental/#verbose',
+    '#binary': '../unstaged/#binary',
+    '#blob': '../unstaged/#blob',
+    '#chroot': '../unstaged/#chroot',
+    '#cursor': '../unstaged/#cursor',
+    '#hook': '../unstaged/#hook',
+    '#pointer': '../unstaged/#pointer',
+    '#reference': '../unstaged/#reference',
+  }
+  function goto_link () {
+    const lnk = tl[location.hash]  // a term starts with '#'; tl only has terms that aren't in this page
+    if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
+  }
+  onload = goto_link
+  onhashchange = goto_link
+</script>
 </body>
 </html>
