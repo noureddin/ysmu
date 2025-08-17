@@ -39,9 +39,44 @@
   هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد؛
   انظر <a href="..">المصطلحات المتفق عليها</a>
 </aside>
-<article class="emptypage">لا توجد مصطلحات مرشحة حاليا</article>
+<input id="toc_filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة">
+<section class="toc">
+  <a href="#computer" title="‫حاسوب (ج: حواسيب)؛ أو حاسب [آلي] (ج: حاسبات [آلية]).‬">computer</a>
+  <a href="#laptop" title="‫حاسوب محمول (ج: حواسيب محمولة).‬">laptop</a>
+  <a href="#server" title="‫خادوم (ج: خواديم)؛ أو خادم (ج: خوادم).‬">server</a>
+  <a href="#telephone" title="‫هاتف (ج: هواتف).‬">telephone</a>
+  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
+</section>
+<article><h2 id="computer"><a dir="ltr" href="#computer">computer</a></h2>
+<p>حاسوب (ج: حواسيب)؛ أو حاسب [آلي] (ج: حاسبات [آلية]).</p>
+<p>الأفضل «حاسوب» لأنها اسم آلة، مثل «جاروف» و«ساطور» و«شاكوش».</p>
+<p>و«حاسوب» وجمعها «حواسيب» كلاهما ممنوعان من الصرف، أي لا ينوّنان قَط، فنقول «رأيت حاسوبَ» وليس <s>«رأيت حاسوبًا»</s>.</p>
+<p class="seealso">انظر أيضا:</p><ul>
+  <li><a dir="ltr" href="#laptop">laptop</a></li>
+  <li><a dir="ltr" href="#server">server</a></li>
+</ul>
+</article>
+<article><h2 id="laptop"><a dir="ltr" href="#laptop">laptop</a></h2>
+<p>حاسوب محمول (ج: حواسيب محمولة).</p>
+<p class="seealso">انظر أيضا:</p><ul>
+  <li><a dir="ltr" href="#computer">computer</a></li>
+</ul>
+</article>
+<article><h2 id="server"><a dir="ltr" href="#server">server</a></h2>
+<p>خادوم (ج: خواديم)؛ أو خادم (ج: خوادم).</p>
+<p>الأفضل «خادوم» لأنها اسم آلة، مثل «جاروف» و«ساطور» و«شاكوش»، تمييزًا لها عن الإنسان.</p>
+<p>وليس «مُخدِّمًا» كما يذكر المعجم السوري، لأن الأشهر «خادم» و«خادوم»، وكلها صحيحة، والفعل المضعَّف نادر قديمًا وحديثًا، فالأشهر أوْلى.</p>
+<p>و«خادوم» وجمعها «خواديم» كلاهما ممنوعان من الصرف، أي لا ينوّنان قَط، فنقول «رأيت خادومَ» وليس <s>«رأيت خادومًا»</s>.</p>
+<p class="seealso">انظر أيضا:</p><ul>
+  <li><a dir="ltr" href="#computer">computer</a></li>
+</ul>
+</article>
+<article><h2 id="telephone"><a dir="ltr" href="#telephone">telephone</a></h2>
+<p>هاتف (ج: هواتف).<br>
+</p>
+</article>
 <footer>
-  <p>يمكنك رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
+  <p>يمكنك أيضا رؤية <a href="../experimental/">المصطلحات التجريبية</a></p>
   <p>يمكنك التواصل معنا عبر
     صفحة <a rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a rel="noreferrer noopener" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
@@ -52,6 +87,29 @@
   <p class="license blurred">الشارة من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)، مع حرف العين <a href="https://www.amirifont.org/">بالخط الأميري</a></p>
 </footer>
 <script>
+  function normalize_text (t) {
+    return (t
+      .toLowerCase()
+      .replace(/[\u0640\u064B-\u065F]+/g, '')
+      .replace(/[-_\s,،.;؛?؟!()]+/g, ' ')
+      .replace(/^ /g, '').replace(/ $/g, ' ')
+      )
+  }
+  function filter_terms (q) {
+    var tocens = document.querySelectorAll('.toc > a')
+    var nonempty = false
+    for (var i = 0; i < tocens.length; ++i) {
+      var a = tocens[i]
+      var nq = normalize_text(q)
+      a.className
+       = normalize_text(a.textContent).indexOf(nq) === -1
+      && normalize_text(a.title).indexOf(nq) === -1
+          ? 'hidden'
+          : ''
+      if (a.className === '') { nonempty = true }
+    }
+    document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
+  }
   // redirect on nonpermalinks (eg, /#term) that aren't in this page
   const tl = {
     '#2fa': '../#2fa',
@@ -112,7 +170,10 @@
     const lnk = tl[location.hash]  // a term starts with '#'; tl only has terms that aren't in this page
     if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
   }
-  onload = goto_link
+  onload = function () {
+    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+    goto_link()
+  }
   onhashchange = goto_link
 </script>
 </body>
