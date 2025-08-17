@@ -6,6 +6,7 @@ Inline formatting (in a single line, not across lines):
 - `<<altname::term>>`: like the above but with an alternative title, and thus doesn't force LTR; use `{{` and `}}`.
 - `<<https://link>>`: an external link (shows as LTR)
 - `<<altname||https://link>>`: like the above but with alternative title, and thus doesn't force LTR; use `{{` and `}}`.
+- `~~strokeout~~`: to strike out or delete some text, for instance to show bad examples of usage.
 - No fancy Unicode transformations are done whatsoever; bring your own fancy quotes, ellipses, dashes, and so on.
 
 Line formatting:

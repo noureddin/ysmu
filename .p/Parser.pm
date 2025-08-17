@@ -36,6 +36,7 @@ sub parse_line(_;$) {
     =~ s|\x02\x02 (.*?) \x03\x03|<a dir="ltr" rel="noreferrer noopener" href="$1">$1</a>|grx
     =~ s|\{\{(.*?)\}\}|<span dir="ltr">$1</span>|grx
     =~ s|``(.*?)``|<code dir="ltr">$1</code>|grx
+    =~ s|~~(.*?)~~|<s>$1</s>|grx
     =~ s|\x02|&lt;|grx
     =~ s|\x03|&gt;|grx
     =~ s|(?<=.)\+\+(?=.)|&nbsp;|gr
