@@ -302,8 +302,20 @@ my %summs;
 
 sub toc_links {  # takes array of [$id, "#$id"]; returns a string '<section class="toc">...</section>' or undef
   if (@_) {
+    my %ltrs;
     return qq[<section class="toc">\n] . (
       join '',
+        map {
+          /href="[^#]*#(.)/;
+          my $c = $1;
+          $c = $c =~ /[0-9a-d]/ ? '0–9 A B C'
+             : $c =~ /[d-n]/
+               ? 'D E F G H I J K L M N'
+               : 'O P Q R S T U V W X Y Z';
+          ++$ltrs{$c};
+          if (@_ > 17 && $ltrs{$c} == 1) { $_ = "<h3>$c</h3>\n$_" }
+          $_
+        }
         map {
           my $sum = "\N{RIGHT-TO-LEFT EMBEDDING}$summs{$_->[2]}\N{POP DIRECTIONAL FORMATTING}";
           qq[  <a href="$_->[1]" title="$sum">$_->[0]</a>\n]

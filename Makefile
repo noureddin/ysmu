@@ -7,7 +7,7 @@ $(targets): .p/* w/ c/ x/ u/ $(words) notes/src .longnamesfixed etc/style.min.cs
 	perl -Mutf8 -CDSA .p/build
 
 %.min.css: %.css
-	deno run --quiet --allow-read npm:clean-css-cli "$<" > "$@"
+	deno run --quiet --allow-read --allow-env=HTTP_PROXY,http_proxy npm:clean-css-cli "$<" > "$@"
 
 .longnamesfixed: longnames.tsv
 	perl -Mutf8 -CDSA .p/fixlongnames.pl longnames.tsv

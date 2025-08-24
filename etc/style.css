@@ -6,6 +6,8 @@
   --an: #009;  /* normal */
   --ah: #00f;  /* hover */
   --aa: #08f;  /* active */
+  /* color of h3 */
+  --h3: #575786;  /* equiv to --hn with 0.35 opacity on a bg of --bg */
   /* color of h2 > a */
   --hn: #000080;
   --hh: #0000e0;
@@ -40,6 +42,8 @@
   --an: #daa;
   --ah: #fba;
   --aa: #ffa;
+  /* color of h3 */
+  --h3: #866666;  /* equiv to --hn with 0.50 opacity on a bg of --bg */
   /* color of h2 > a */
   --hn: #daaaaa;
   --hh: #facaaa;
@@ -102,6 +106,10 @@ h2:after, h2:before {
 }
 h2:before { margin-left:  0.5em }
 h2:after  { margin-right: 0.5em }
+
+h3 {
+  color: var(--h3);
+}
 
 a        { color: var(--an) }
 a:hover  { color: var(--ah) }
