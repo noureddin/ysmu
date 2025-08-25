@@ -1,5 +1,6 @@
 :root {  /* light mode */
   /* body */
+  --fs: #222; /* text color of the summary (highlighted) paragraph */
   --fg: #222;
   --bg: #f8f8ff;
   /* color of a */
@@ -36,7 +37,8 @@
 @media (prefers-color-scheme: dark) {
 :root {
   /* body */
-  --fg: #eee;
+  --fs: #ddd; /* text color of the summary (highlighted) paragraph */
+  --fg: #d0d0d0;
   --bg: #322;
   /* color of a */
   --an: #daa;
@@ -97,6 +99,7 @@ h2 {
   text-align: center;
   color: navy;
 }
+
 h2:after, h2:before {
   content: '';
   flex-grow: 1;
@@ -242,6 +245,7 @@ footer {
 }
 
 h2 + p {
+  color: var(--fs);
   background: var(--sp);
 }
 
