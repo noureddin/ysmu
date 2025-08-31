@@ -113,7 +113,7 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
 <footer>
   <!--before-contact-->
   <p>يمكنك التواصل معنا عبر
-    صفحة <a rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل GitHub</a><br>
+    صفحة <a rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل جت‌هب</a><br>
     أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a rel="noreferrer noopener" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
   </p>
   <!--after-contact-->
@@ -207,7 +207,7 @@ sub notes_link  { '<a rel=help href="'.($_[0] // '').'notes/">موارد وإر�
 sub rc_link     { '<a href="'.($_[0] // '').'candidate/">المصطلحات المرشحة للاتفاق</a>' }
 sub exper_link  { '<a href="'.($_[0] // '').'experimental/">المصطلحات التجريبية</a>' }
 sub tsv_link    { '<a rel=alternate type=text/tab-separated-values href="https://github.com/noureddin/ysmu/raw/main/ysmu.tsv">ysmu.tsv</a>' }
-sub stable_link { '<a href="..">المصطلحات المتفق عليها</a>' }
+sub stable_link { '<a href="..">المصطلحات المتفق&nbsp;عليها</a>' }
 
 sub make_footer { my ($s) = @_;
   return
@@ -407,7 +407,11 @@ close $summary;
 
 # all other stages have an identical structure
 
+use constant LAMMA =>
+  qq[<a href="https://www.m-a-arabia.com/vb/showpost.php?s=b5f485336008816282cd7dfc5411d5ef&p=64761&postcount=3">ل\N{ZERO WIDTH JOINER}مّا</a>];
+
 sub make_stage { my ($words_dir, $name, $title, $alert, $emptymsg) = @_;
+  $alert = $alert =~ s|~|&nbsp;|gr =~ s/(\bو|\b)لمّا\b/$1@{[ LAMMA ]}/r;
   mkdir $name unless -d $name;
   open my $fh, '>', $name.'/index.html';
   #
@@ -445,15 +449,15 @@ sub make_page { my ($name, $header, $content, $footername) = @_;
 #################################################
 
 make_stage 'c', 'candidate', 'المصطلحات المرشحة للاتفاق',
-  'هذه المصطلحات مرشحة للاتفاق لكن غير متفق عليها بعد',
+  'هذه المصطلحات مرشحة للاتفاق لكن لمّا يُتفقْ~عليها',
   'لا توجد مصطلحات مرشحة حاليا';
 
 make_stage 'x', 'experimental', 'المصطلحات التجريبية',
-  'هذه المصطلحات تجريبية ولم تُناقش في المجتمع بعد',
+  'هذه المصطلحات تجريبية ولمّا يُجمِع عليها المجتمع',
   'لا توجد مصطلحات تجريبية حاليا';
 
 make_stage 'u', 'unstaged', 'المصطلحات المؤجلة',
-  'هذه المصطلحات مؤجلة، فليست حتى معروضة للنقاش في المجتمع',
+  'هذه المصطلحات مؤجلة ولمّا تُناقش في المجتمع',
   'لا توجد مصطلحات مؤجلة حاليا';
 
 make_page 'notes',
