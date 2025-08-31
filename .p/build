@@ -631,10 +631,8 @@ use charnames ":full", ":alias" => {
 # ASSUMPTION: if the arg contains RTL or LTR EMBED, it must be balanced with POP DIR.
 sub RTL(_) { "\N{RTL}" . $_[0] . "\N{POP}" }
 
-# reverse chronological order of last update of the summary.
-# if more than one has the same update time (quite common),
-# sort by reverse ASCIIbetical order, so that it's in a regular ASCIIbetical order.
-for my $id (reverse sort { $upd{$a} cmp $upd{$b} || $b cmp $a } keys %upd) {
+# ASCIIbetical sort, to keep the diffs low when changing summary translations or moving terms between stages
+for my $id (sort keys %upd) {
   my $tag = $tags{ $links{$id} };
   my $sum = $summs{$id};
   my $upd = $upd{$id};
