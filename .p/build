@@ -3,6 +3,9 @@
 use v5.14; use warnings; use autodie; use utf8;
 use open qw[ :encoding(UTF-8) :std ];
 
+my $debug_release = grep /^-$/, @ARGV;
+# if debug_release, skip the Atom feed generation, because it's the slowest part, because of the movetime detection operation.
+
 # static definitions {{{1
 
 sub slurp(_) { local $/; open my $f, '<', $_[0]; return scalar <$f> }
@@ -567,15 +570,20 @@ fix_nonpermalinks u => 'unstaged/index.html';
 
 # the Atom feed {{{1
 
-# returns the latest modification time of the summary line of a concrete path.
-# ISO date in UTC; b/c git returns the date in the TZ of the commiter
+exit if $debug_release;
+
+# returns the latest modification time of the summary line of a concrete path,
+#   or the time the term is moved between stages, whichever is later.
+# ISO date in UTC; b/c git returns the date in the TZ of the commiter.
 sub updated_from_path {
   # must check if not in git yet.
   my $path = $_[0] =~ s|'|'\\''|gr;
-  my $unix = `git ls-files '$path'` eq ''
-    ? undef  # not in git => updated = now
+  my $edittime = `git ls-files '$path'` eq ''
+    ? 0  # not in git => updated = now
     : `git blame -L,1 --date=format:'<<<%s>>>' '$path'` =~ s/.*<<<([0-9]+)>>>.*\n/$1/r;
-  my $time = Time::Piece->new($unix);
+  my $movetime = $edittime > 0 ? `bash .p/movetime.sh '@{[ $path =~ s,.*/,,r ]}'` : '';
+  my $unix = $movetime eq '' ? $edittime : max 0+$movetime, $edittime;
+  my $time = Time::Piece->new($unix == 0 ? undef : $unix);
   my $date = ($time - $time->tzoffset)->datetime . 'Z';
 }
 
