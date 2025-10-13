@@ -102,7 +102,7 @@ sub html_to_summary(_) {
     die "\e[1;31m  summary has line(s) that don't end in a fullstop.\e[m\n"
       . join '', map { "\e[1;31m    $_\e[m\n" } split "\n";
   }
-  return s/<br>\n/ /gr =~ s/ \Z//gr;
+  return s/<br>\n/  /gr =~ s/ +\Z//gr;
 }
 
 1;

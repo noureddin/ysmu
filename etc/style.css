@@ -244,9 +244,16 @@ footer {
   display: none;
 }
 
-h2 + p {
+h2 + p { /* the summary paragraph; highlighted differently */
   color: var(--fs);
   background: var(--sp);
+}
+
+h2 + p br { /* separate the different translations of a single term */
+  /* https://stackoverflow.com/a/31633969 - may not work on Safari, but that's not a big issue */
+  display: block; /* makes it have a width */
+  content: ""; /* clears default height */
+  margin-top: 0.5em; /* change the height */
 }
 
 center.redirect {

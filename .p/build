@@ -320,7 +320,7 @@ sub toc_links {  # takes array of [$id, "#$id"]; returns a string '<section clas
           $_
         }
         map {
-          my $sum = "\N{RIGHT-TO-LEFT EMBEDDING}$summs{$_->[2]}\N{POP DIRECTIONAL FORMATTING}";
+          my $sum = "\N{RIGHT-TO-LEFT EMBEDDING}$summs{$_->[2]}\N{POP DIRECTIONAL FORMATTING}" =~ s/  +/ /gr;  # multi-translation summaries have double-spaces
           qq[  <a href="$_->[1]" title="$sum">$_->[0]</a>\n]
         }
         sort { $a->[1] cmp $b->[1] }
