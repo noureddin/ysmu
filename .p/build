@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # vim: set foldmethod=marker foldmarker={{{,}}} :
-use v5.14; use warnings; use autodie; use utf8;
+use v5.16; use warnings; use utf8;
 use open qw[ :encoding(UTF-8) :std ];
 
 my $debug_release = grep /^-$/, @ARGV;
@@ -8,7 +8,21 @@ my $debug_release = grep /^-$/, @ARGV;
 
 # static definitions {{{1
 
-sub slurp(_) { local $/; open my $f, '<', $_[0]; return scalar <$f> }
+sub openfile { my ($mode, $fpath) = @_;
+  state $modes = {qw[
+    r reading  w writing   a appending
+    < reading  > writing  >> appending
+    r+ read-writing  w+ write-reading   a+ read-appending
+    +< read-writing  +> write-reading  +>> read-appending
+  ]};
+  my @caller = caller; my $trace = "at $caller[1] line $caller[2]";
+  my $mode_desc = $modes->{$mode =~ s/b//gr};  # binary (b) is irrelevant and ignored on POSIX systems
+  defined $mode_desc or die "bad open mode '$mode' for «$fpath», $trace\n";
+  open my $fh, $mode, $fpath or die "Couldn’t open «$fpath» for $mode_desc: $!, $trace\n";
+  return $fh;
+}
+
+sub slurp(_) { local $/; my $f = openfile '<', $_[0]; return scalar <$f> }
 
 use Time::Piece;  # for converting unix time to UTC ISO dates (git uses local TZ)
 use List::Util qw[ max maxstr ];  # for the Atom feed
@@ -272,7 +286,7 @@ my %long =
     /^[^\t]+\t[^\t]+$/ ? split "\t" : ()
   }
   map { s,[ \r\n]+,,gr }  # spaces are not allowed; use underscores between words
-  do { open my $fh, '<', 'longnames.tsv'; <$fh> };  # read as an array of lines
+  do { my $fh = openfile '<', 'longnames.tsv'; <$fh> };  # is read as an array of lines
 
 my %short = reverse %long;
 
@@ -392,8 +406,8 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
 
 # we start with the stable entries
 
-open my $index, '>', 'index.html';
-open my $summary, '>', 'ysmu.tsv';
+my $index = openfile '>', 'index.html';
+my $summary = openfile '>', 'ysmu.tsv';
 
 say { $index } make_header;
 
@@ -416,7 +430,7 @@ use constant LAMMA =>
 sub make_stage { my ($words_dir, $name, $title, $alert, $emptymsg) = @_;
   $alert = $alert =~ s|~|&nbsp;|gr =~ s/(\bو|\b)لمّا\b/$1@{[ LAMMA ]}/r;
   mkdir $name unless -d $name;
-  open my $fh, '>', $name.'/index.html';
+  my $fh = openfile '>', $name.'/index.html';
   #
   say { $fh } make_header $title, $name;
   #
@@ -442,7 +456,7 @@ sub make_stage { my ($words_dir, $name, $title, $alert, $emptymsg) = @_;
 sub make_page { my ($name, $header, $content, $footername) = @_;
   $footername //= $name =~ s,/.*,,r;
   mkdir $name unless -d $name;
-  open my $fh, '>', $name.'/index.html';
+  my $fh = openfile '>', $name.'/index.html';
   say { $fh } $header;
   say { $fh } $content;
   say { $fh } make_footer $footername;
@@ -540,7 +554,7 @@ make_page 'link',
 # redirect nonexistent nonpermalinks to their proper page
 
 sub replace_link { my ($filepath, $line_regex, $replacement) = @_;
-  open my $fh, '+<', $filepath;
+  my $fh = openfile '+<', $filepath;
   my ($line, $curpos);
   do { $curpos = tell $fh } while defined ($line = <$fh>) && $line !~ $line_regex;
   if (!defined $line) {  # reached end-of-file before finding your match: die
@@ -610,7 +624,7 @@ my %upd = map { $_ => updated_from_path $links{$_} .'/'. $_ } keys %links;
 
 my $updated = maxstr values %upd;
 
-open my $m, '>', 'feed.atom.xml';
+my $m = openfile '>', 'feed.atom.xml';
 print { $m } <<"END_OF_TEXT" =~ s/>\s+</></gr;
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ar" dir="rtl">
@@ -630,14 +644,8 @@ END_OF_TEXT
 # dir="rtl" is not widely supported, even https://validator.w3.org/feed/ warns about it,
 # so Unicode RTL embedding is still needed.
 
-use charnames ":full", ":alias" => {
-  LTR => "LEFT-TO-RIGHT EMBEDDING",
-  RTL => "RIGHT-TO-LEFT EMBEDDING",
-  POP => "POP DIRECTIONAL FORMATTING",
-};
-
 # ASSUMPTION: if the arg contains RTL or LTR EMBED, it must be balanced with POP DIR.
-sub RTL(_) { "\N{RTL}" . $_[0] . "\N{POP}" }
+sub RTL(_) { "\N{RIGHT-TO-LEFT EMBEDDING}" . $_[0] . "\N{POP DIRECTIONAL FORMATTING}" }
 
 # ASCIIbetical sort, to keep the diffs low when changing summary translations or moving terms between stages
 for my $id (sort keys %upd) {

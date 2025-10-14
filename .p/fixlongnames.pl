@@ -1,8 +1,23 @@
 #!/usr/bin/env perl
-use v5.14; use warnings; use autodie; use utf8;
+use v5.16; use warnings; ; use utf8;
 use open qw[ :encoding(UTF-8) :std ];
 
-open my $fileread, '<', $ARGV[0];
+sub openfile { my ($mode, $fpath) = @_;
+  state $modes = {qw[
+    r reading  w writing   a appending
+    < reading  > writing  >> appending
+    r+ read-writing  w+ write-reading   a+ read-appending
+    +< read-writing  +> write-reading  +>> read-appending
+  ]};
+  my @caller = caller; my $trace = "at $caller[1] line $caller[2]";
+  my $mode_desc = $modes->{$mode =~ s/b//gr};  # binary (b) is irrelevant and ignored on POSIX systems
+  defined $mode_desc or die "bad open mode '$mode' for «$fpath», $trace\n";
+  open my $fh, $mode, $fpath or die "Couldn’t open «$fpath» for $mode_desc: $!, $trace\n";
+  return $fh;
+}
+
+
+my $fileread = openfile '<', $ARGV[0];
 my @t = map {
   # trim lines and collapse spaces
   s/^\s+//g;
@@ -35,6 +50,6 @@ if (my @notab = grep /^[^\t]+$/, @t) {
   map { [s/.*?([^\t_]+)$/$1/r, $_] } @t;
   # last word (before the underscore), then short name
 
-open my $filewrite, '>', $ARGV[0];
+my $filewrite = openfile '>', $ARGV[0];
 print { $filewrite } "$_\n" for @t;
 close $filewrite;

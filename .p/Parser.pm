@@ -1,6 +1,20 @@
 package Parser;
-use v5.14; use warnings; use autodie; use utf8;
+use v5.16; use warnings; use utf8;
 use open qw[ :encoding(UTF-8) :std ];
+
+sub openfile { my ($mode, $fpath) = @_;
+  state $modes = {qw[
+    r reading  w writing   a appending
+    < reading  > writing  >> appending
+    r+ read-writing  w+ write-reading   a+ read-appending
+    +< read-writing  +> write-reading  +>> read-appending
+  ]};
+  my @caller = caller; my $trace = "at $caller[1] line $caller[2]";
+  my $mode_desc = $modes->{$mode =~ s/b//gr};  # binary (b) is irrelevant and ignored on POSIX systems
+  defined $mode_desc or die "bad open mode '$mode' for «$fpath», $trace\n";
+  open my $fh, $mode, $fpath or die "Couldn’t open «$fpath» for $mode_desc: $!, $trace\n";
+  return $fh;
+}
 
 use parent 'Exporter';
 our @EXPORT_OK = qw[
@@ -88,7 +102,7 @@ sub transform_para(_;$) {
 
 sub filepath_to_html(_;$) {
   my $ret = '';
-  open my $f, '<', $_[0];
+  my $f = openfile '<', $_[0];
   while (<$f>) {
     $ret .= parse_line $_, $_[1];
   }
