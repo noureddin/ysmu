@@ -363,7 +363,7 @@ sub _make_entry { my ($file) = @_;
 
 use constant TOC_FILTER => sprintf "<input %s>\n", join ' ',
   'id="toc_filter"', 'type="text"', 'dir="ltr"',
-  'placeholder="🔍 اكتب لتصفية روابط المصطلحات المعروضة"';
+  'placeholder="🔍 اكتب لتصفية روابط المصطلحات"';
 
 sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   my $n = 0;
