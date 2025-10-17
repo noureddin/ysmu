@@ -232,6 +232,7 @@ footer {
   color: inherit;
   background: inherit;
   border: 1px solid var(--hl);
+  line-height: 2;
   border-radius: 1em;
 }
 #toc_filter:focus,
