@@ -233,7 +233,7 @@ footer {
   background: inherit;
   border: 1px solid var(--hl);
   line-height: 2;
-  border-radius: 1em;
+  border-radius: 5em;  /* make left and right sides a single arc each */
 }
 #toc_filter:focus,
 #toc_filter:active {
