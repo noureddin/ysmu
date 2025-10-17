@@ -32,6 +32,7 @@
   --sp: rgba(  0, 128, 255, 0.05);  /* summary paragraph's bg */
   --fl: rgba(255, 255, 255, 0.50);  /* toc_filter's bg when active */
   --cd: #efefff;  /* inline code */
+  --op: 0.5;  /* .blurred's opacity */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -69,6 +70,7 @@
   --sp: rgba(255, 128,   0, 0.1);   /* summary paragraph's bg */
   --fl: rgba(  0,   0,   0, 0.35);  /* toc_filter's bg when active */
   --cd: #503030;  /* inline code */
+  --op: 0.35;  /* .blurred's opacity */
 }
 }
 
@@ -191,10 +193,10 @@ footer {
 }
 
 .blurred {
-  opacity: 33%;
+  opacity: var(--op);
   transition: 0.5s;
 }
-.blurred:hover { opacity: 100% }
+.blurred:hover { opacity: 1 }
 
 .toc {
   margin-top: 1em;
