@@ -177,7 +177,9 @@ use constant SCRIPT => <<'END_OF_TEXT';
     if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
   }
   onload = function () {
-    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+    var f = document.getElementById('toc_filter')
+    f.oninput = function () { filter_terms(this.value) }
+    if (f.value) { filter_terms(f.value) }  // filter onreload
     goto_link()
   }
   onhashchange = goto_link
@@ -340,7 +342,7 @@ sub toc_links {  # takes array of [$id, "#$id"]; returns a string '<section clas
         sort { $a->[1] cmp $b->[1] }
         map { [ human_title_of($_->[0]), $_->[1], $_->[0] ] }
           @_
-    ) . qq[  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>\n</section>];
+    ) . qq[  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>\n</section>];
   }
   return;  # undef if empty
 }
@@ -362,8 +364,8 @@ sub _make_entry { my ($file) = @_;
 }
 
 use constant TOC_FILTER => sprintf "<input %s>\n", join ' ',
-  'id="toc_filter"', 'type="text"', 'dir="ltr"',
-  'placeholder="🔍 اكتب لتصفية روابط المصطلحات"';
+  'id="toc_filter"', 'type="search"', 'dir="ltr"',
+  'placeholder="اكتب لتصفية روابط المصطلحات"';
 
 sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   my $n = 0;

@@ -31,6 +31,7 @@
   --AL: rgba(255,  32,  32, 0.4);   /* .alert's border */
   --sp: rgba(  0, 128, 255, 0.05);  /* summary paragraph's bg */
   --fl: rgba(255, 255, 255, 0.50);  /* toc_filter's bg when active */
+  --ll: #808080;  /* toc_filter's placeholder text */
   --cd: #efefff;  /* inline code */
   --op: 0.5;  /* .blurred's opacity */
 }
@@ -69,6 +70,7 @@
   --AL: rgba(255,  12,  12, 0.8);
   --sp: rgba(255, 128,   0, 0.1);   /* summary paragraph's bg */
   --fl: rgba(  0,   0,   0, 0.35);  /* toc_filter's bg when active */
+  --ll: #807070;  /* toc_filter's placeholder text */
   --cd: #503030;  /* inline code */
   --op: 0.35;  /* .blurred's opacity */
 }
@@ -193,10 +195,10 @@ footer {
 }
 
 .blurred {
-  opacity: var(--op);
+  filter: opacity(var(--op));
   transition: 0.5s;
 }
-.blurred:hover { opacity: 1 }
+.blurred:hover { filter: opacity(1) }
 
 .toc {
   margin-top: 1em;
@@ -241,6 +243,13 @@ footer {
 }
 #toc_filter:placeholder-shown {
   direction: rtl;
+}
+#toc_filter::placeholder {
+  opacity: 1;
+  color: var(--ll);
+}
+#toc_filter:focus::placeholder {
+  opacity: 0;
 }
 
 .toc > a.hidden {

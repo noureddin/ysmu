@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>‫معجم يسمو — المصطلحات المرشحة للاتفاق‬</title>
-  <link rel="stylesheet" type="text/css" href="../etc/style.min.css?h=TbK_m1-49-95zEOFQZ2Wr-031x4">
+  <link rel="stylesheet" type="text/css" href="../etc/style.min.css?h=Au-ms5cLE2lwLSjuXWclDhXBdGQ">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:locale" content="ar_AR">
   <meta property="og:type" content="website">
@@ -39,10 +39,10 @@
   هذه المصطلحات مرشحة للاتفاق لكن <a href="https://www.m-a-arabia.com/vb/showpost.php?s=b5f485336008816282cd7dfc5411d5ef&p=64761&postcount=3">ل‍مّا</a> يُتفقْ&nbsp;عليها؛
   انظر <a href="..">المصطلحات المتفق&nbsp;عليها</a>
 </aside>
-<input id="toc_filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات">
+<input id="toc_filter" type="search" dir="ltr" placeholder="اكتب لتصفية روابط المصطلحات">
 <section class="toc">
   <a href="#stable" title="‫في إصدارات البرمجيات: [صفة] مستقِّر. [اسم] إصدارة مستقرة، نسخة مستقرة، إصدار مستقر.‬">stable</a>
-  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
+  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
 </section>
 <article><h2 id="stable"><a dir="ltr" href="#stable">stable</a></h2>
 <p>في إصدارات البرمجيات: [صفة] مستقِّر. [اسم] إصدارة مستقرة، نسخة مستقرة، إصدار مستقر.</p>
@@ -154,7 +154,9 @@
     if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
   }
   onload = function () {
-    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+    var f = document.getElementById('toc_filter')
+    f.oninput = function () { filter_terms(this.value) }
+    if (f.value) { filter_terms(f.value) }  // filter onreload
     goto_link()
   }
   onhashchange = goto_link

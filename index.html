@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>‫معجم يسمو للمصطلحات التقنية الحديثة‬</title>
-  <link rel="stylesheet" type="text/css" href="etc/style.min.css?h=TbK_m1-49-95zEOFQZ2Wr-031x4">
+  <link rel="stylesheet" type="text/css" href="etc/style.min.css?h=Au-ms5cLE2lwLSjuXWclDhXBdGQ">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:locale" content="ar_AR">
   <meta property="og:type" content="website">
@@ -34,7 +34,7 @@
 <a rel=help href="notes/">موارد</a>
 </nav>
 </header>
-<input id="toc_filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات">
+<input id="toc_filter" type="search" dir="ltr" placeholder="اكتب لتصفية روابط المصطلحات">
 <section class="toc">
 <h3>0–9 A B C</h3>
   <a href="#2fa" title="‫استيثاق ثنائي.‬">two-factor authentication (2FA)</a>
@@ -70,7 +70,7 @@
   <a href="#sysadmin" title="‫مدير النظام (ج: مديرو النظام).‬">system administrator (sysadmin)</a>
   <a href="#telephone" title="‫هاتف (ج: هواتف).‬">telephone</a>
   <a href="#theme" title="‫نَسَق (ج: أنساق).‬">theme</a>
-  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
+  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
 </section>
 <article><h2 id="2fa"><a id="two-factor_authentication" dir="ltr" href="#2fa">two-factor authentication (2FA)</a></h2>
 <p>استيثاق ثنائي.</p>
@@ -426,7 +426,9 @@
     if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
   }
   onload = function () {
-    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+    var f = document.getElementById('toc_filter')
+    f.oninput = function () { filter_terms(this.value) }
+    if (f.value) { filter_terms(f.value) }  // filter onreload
     goto_link()
   }
   onhashchange = goto_link

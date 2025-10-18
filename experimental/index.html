@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>‫معجم يسمو — المصطلحات التجريبية‬</title>
-  <link rel="stylesheet" type="text/css" href="../etc/style.min.css?h=TbK_m1-49-95zEOFQZ2Wr-031x4">
+  <link rel="stylesheet" type="text/css" href="../etc/style.min.css?h=Au-ms5cLE2lwLSjuXWclDhXBdGQ">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:locale" content="ar_AR">
   <meta property="og:type" content="website">
@@ -39,7 +39,7 @@
   هذه المصطلحات تجريبية و<a href="https://www.m-a-arabia.com/vb/showpost.php?s=b5f485336008816282cd7dfc5411d5ef&p=64761&postcount=3">ل‍مّا</a> يُجمِع عليها المجتمع؛
   انظر <a href="..">المصطلحات المتفق&nbsp;عليها</a>
 </aside>
-<input id="toc_filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات">
+<input id="toc_filter" type="search" dir="ltr" placeholder="اكتب لتصفية روابط المصطلحات">
 <section class="toc">
   <a href="#ai" title="‫ذكاء مصطَنع.‬">artificial intelligence (AI)</a>
   <a href="#alpha" title="‫في الرسوميات: [اسم] عتامة. (أو «شفافية» في الأسماء المضافة.) في إصدارات البرمجيات: [صفة] أوّلي. [اسم] إصدارة أولية، نسخة أولية، إصدار أولي.‬">alpha</a>
@@ -58,7 +58,7 @@
   <a href="#server" title="‫خادوم (ج: خواديم)؛ أو خادم (ج: خوادم).‬">server</a>
   <a href="#upload" title="‫الاسم مرفوع (ج: مرفوعات)، والفعل رَفَع يَرفَع رفعا، فهو رافع، والأمر ارفَع، والمفعول رُفِع يُرفَع فهو مرفوع.‬">upload</a>
   <a href="#verbose" title="‫إطْناب.‬">verbose</a>
-  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
+  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
 </section>
 <article><h2 id="ai"><a id="artificial_intelligence" dir="ltr" href="#ai">artificial intelligence (AI)</a></h2>
 <p>ذكاء مصطَنع.</p>
@@ -322,7 +322,9 @@ This is your one-time password (OTP) = هذه كلمة مرور الاستخدا
     if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
   }
   onload = function () {
-    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+    var f = document.getElementById('toc_filter')
+    f.oninput = function () { filter_terms(this.value) }
+    if (f.value) { filter_terms(f.value) }  // filter onreload
     goto_link()
   }
   onhashchange = goto_link

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>‫معجم يسمو — روابط جميع المصطلحات‬</title>
-  <link rel="stylesheet" type="text/css" href="../etc/style.min.css?h=TbK_m1-49-95zEOFQZ2Wr-031x4">
+  <link rel="stylesheet" type="text/css" href="../etc/style.min.css?h=Au-ms5cLE2lwLSjuXWclDhXBdGQ">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:locale" content="ar_AR">
   <meta property="og:type" content="website">
@@ -34,7 +34,7 @@
 <a rel=help href="../notes/">موارد</a>
 </nav>
 </header>
-<input id="toc_filter" type="text" dir="ltr" placeholder="🔍 اكتب لتصفية روابط المصطلحات">
+<input id="toc_filter" type="search" dir="ltr" placeholder="اكتب لتصفية روابط المصطلحات">
 <section><h2><a class="other" href="../">المصطلحات المتفق عليها</a></h2>
 <section class="toc">
 <h3>0–9 A B C</h3>
@@ -71,13 +71,13 @@
   <a href="../#sysadmin" title="‫مدير النظام (ج: مديرو النظام).‬">system administrator (sysadmin)</a>
   <a href="../#telephone" title="‫هاتف (ج: هواتف).‬">telephone</a>
   <a href="../#theme" title="‫نَسَق (ج: أنساق).‬">theme</a>
-  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
+  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
 </section>
 </section>
 <section><h2><a class="other" href="../candidate/">المصطلحات المرشحة للاتفاق</a></h2>
 <section class="toc">
   <a href="../candidate/#stable" title="‫في إصدارات البرمجيات: [صفة] مستقِّر. [اسم] إصدارة مستقرة، نسخة مستقرة، إصدار مستقر.‬">stable</a>
-  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
+  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
 </section>
 </section>
 <section><h2><a class="other" href="../experimental/">المصطلحات التجريبية</a></h2>
@@ -99,7 +99,7 @@
   <a href="../experimental/#server" title="‫خادوم (ج: خواديم)؛ أو خادم (ج: خوادم).‬">server</a>
   <a href="../experimental/#upload" title="‫الاسم مرفوع (ج: مرفوعات)، والفعل رَفَع يَرفَع رفعا، فهو رافع، والأمر ارفَع، والمفعول رُفِع يُرفَع فهو مرفوع.‬">upload</a>
   <a href="../experimental/#verbose" title="‫إطْناب.‬">verbose</a>
-  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
+  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
 </section>
 </section>
 <section><h2><a class="other" href="../unstaged/">المصطلحات المؤجلة</a></h2>
@@ -111,7 +111,7 @@
   <a href="../unstaged/#hook" title="‫خُطَّاف (ج: خَطاطيف).‬">hook</a>
   <a href="../unstaged/#pointer" title="‫للفأرة: مُؤَشِّر (ج: مُؤَشِّرَات). في البرمجة: مُشِير (ج: مُشِيرَات).‬">pointer</a>
   <a href="../unstaged/#reference" title="‫في البرمجة: مُحِيل (ج: مُحِيلَات).‬">reference</a>
-  <div class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</div>
+  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
 </section>
 </section>
 <footer>
@@ -160,7 +160,9 @@
     if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
   }
   onload = function () {
-    document.getElementById('toc_filter').oninput = function () { filter_terms(this.value) }
+    var f = document.getElementById('toc_filter')
+    f.oninput = function () { filter_terms(this.value) }
+    if (f.value) { filter_terms(f.value) }  // filter onreload
     goto_link()
   }
   onhashchange = goto_link
