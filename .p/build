@@ -137,7 +137,7 @@ use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost e
   <p class="blurred"><a href="{{root}}feed.atom.xml">تغذية Atom {{feedicon}}</a></p>
   <!--before-license-->
   <p class="license blurred">الرخصة: <a rel="noreferrer noopener license" href="https://creativecommons.org/publicdomain/zero/1.0/deed.ar">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
-  <p class="license blurred">الشارة من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)، مع حرف العين <a href="https://www.amirifont.org/">بالخط الأميري</a></p>
+  <p class="license blurred">الشعار من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)، مع حرف العين <a href="https://www.amirifont.org/">بالخط الأميري</a></p>
 </footer>
 </body>
 </html>

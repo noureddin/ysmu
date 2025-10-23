@@ -1,6 +1,6 @@
 # معجم يسمو للمصطلحات التقنية الحديثة
 
-<img align="left" width="80" height="80" alt="شارة معجم يسمو" src="etc/favicon.svg">
+<img align="left" width="80" height="80" alt="شعار معجم يسمو" src="etc/favicon.svg">
 
 <ul>
 
@@ -47,7 +47,7 @@
 
 وعلى أي مشروع مشتق أن يستخدم اسمًا غير «يسمو» ولا يكون «يسمو» جزءًا منه.
 
-الشارة هي ملفا U+1F304 من [Twemoji](https://twemoji.twitter.com/) برخصة CC-BY 4.0،
+الشعار هي ملفا U+1F304 من [Twemoji](https://twemoji.twitter.com/) برخصة CC-BY 4.0،
 مع حرف العين [بالخط الأميري](https://www.amirifont.org/).
 واُستعمل [ضاغط نانو من Vecta](https://vecta.io/nano) لتصغير حجم ملفها.
 
@@ -101,7 +101,7 @@ And its file size is reduced with [Vecta's Nano compressor](https://vecta.io/nan
 
 ### السواكن:
 
-- ملفات <code dir="ltr">etc/favicon*</code>: ملفات شارة الموقع وأيقونة التفضيل.
+- ملفات <code dir="ltr">etc/favicon*</code>: ملفات شعار الموقع وأيقونة التفضيل.
 - ملف `etc/style.css`: ضبط شكل صفحات الوب.
 - ملف `MARK.md`: وصف إنساني للغة التنسيق المستعملة في هذا المشروع.
 - ملف `LICENSE`: نص رخصة المشاع الإبداعي الصفرية باللغة الإنجليزية.
