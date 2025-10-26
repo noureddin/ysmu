@@ -209,8 +209,10 @@ END_OF_TEXT
 use constant SINGLE_STAGE_SCRIPT => SCRIPT
   =~ s{\Q/***before*loop***/\E}{var nonempty = false}r
   =~ s{\Q/***end*of*loop***/\E}{if (a.className === '') { nonempty = true }}r
-  =~ s{\Q/***after*loop***/\E}
-    {document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'}r
+  =~ s{^( *)\Q/***after*loop***/\E}
+{$1document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
+$1var hv = nonempty ? 'block' : 'none'
+$1document.querySelectorAll('.toc h3').forEach(function (e) { e.style.display = hv })}mr
   ;
 
 use constant MULTIPLE_STAGE_SCRIPT => SCRIPT
@@ -219,9 +221,10 @@ use constant MULTIPLE_STAGE_SCRIPT => SCRIPT
   =~ s{^( *)\Q/***after*loop***/\E\n}
 {$1var tocs = document.querySelectorAll('.toc')
 $1for (var i = 0; i < tocs.length; ++i) {
-$1  tocs[i].querySelector('.emptytoc').style.display =
-$1    tocs[i].querySelector('a:not(.hidden)') == null
-$1      ? 'block' : 'none'
+$1  var empty = tocs[i].querySelector('a:not(.hidden)') == null
+$1  tocs[i].querySelector('.emptytoc').style.display = empty ? 'block' : 'none'
+$1  var hv = empty ? 'none' : 'block'
+$1  tocs[i].querySelectorAll('h3').forEach(function (e) { e.style.display = hv })
 $1}
 }mr
   ;

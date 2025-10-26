@@ -182,9 +182,10 @@
     }
     var tocs = document.querySelectorAll('.toc')
     for (var i = 0; i < tocs.length; ++i) {
-      tocs[i].querySelector('.emptytoc').style.display =
-        tocs[i].querySelector('a:not(.hidden)') == null
-          ? 'block' : 'none'
+      var empty = tocs[i].querySelector('a:not(.hidden)') == null
+      tocs[i].querySelector('.emptytoc').style.display = empty ? 'block' : 'none'
+      var hv = empty ? 'none' : 'block'
+      tocs[i].querySelectorAll('h3').forEach(function (e) { e.style.display = hv })
     }
   }
   // redirect on nonpermalinks (eg, /#term) that aren't in this page

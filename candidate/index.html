@@ -282,6 +282,8 @@
       if (a.className === '') { nonempty = true }
     }
     document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
+    var hv = nonempty ? 'block' : 'none'
+    document.querySelectorAll('.toc h3').forEach(function (e) { e.style.display = hv })
   }
   // redirect on nonpermalinks (eg, /#term) that aren't in this page
   const tl = {
