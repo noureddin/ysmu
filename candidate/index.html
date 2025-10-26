@@ -39,7 +39,10 @@
   هذه المصطلحات مرشحة للاتفاق لكن <a href="https://www.m-a-arabia.com/vb/showpost.php?s=b5f485336008816282cd7dfc5411d5ef&p=64761&postcount=3">ل‍مّا</a> يُتفقْ&nbsp;عليها؛
   انظر <a href="..">المصطلحات المتفق&nbsp;عليها</a>
 </aside>
-<input id="toc_filter" type="search" dir="ltr" placeholder="اكتب لتصفية روابط المصطلحات">
+<form action="/ysmu/candidate/" method="GET">
+<input id="toc_filter" name="q" type="search" dir="ltr" lang="en" placeholder="اكتب لتصفية روابط المصطلحات" aria-label="اكتب لتصفية روابط المصطلحات">
+<button id="sub" type="submit" style="visibility:hidden;font-size:1pt;position:absolute;top:0">Search</button>
+</form>
 <section class="toc">
 <h3>0–9 A B C</h3>
   <a href="#accuracy" title="‫صِحّة.‬">accuracy</a>
@@ -74,7 +77,7 @@
   <a href="#software" title="‫برمجيات (تستعمل بالجمع غالبا. وعند الضرورة مفردها: بَرْمَجِيّة).‬">software</a>
   <a href="#terminal" title="‫طرَفِيّة (ج: طرفيات).‬">terminal</a>
   <a href="#variable" title="‫مُتَغَيِّر (ج: متغيرات).‬">variable</a>
-  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
+  <p class="emptytoc blurred" style="display:none">ما من مصطلحات توافق تصفيتك</p>
 </section>
 <article><h2 id="accuracy"><a dir="ltr" href="#accuracy">accuracy</a></h2>
 <p>صِحّة.</p>
@@ -351,7 +354,12 @@
   onload = function () {
     var f = document.getElementById('toc_filter')
     f.oninput = function () { filter_terms(this.value) }
-    if (f.value) { filter_terms(f.value) }  // filter onreload
+    document.getElementById('sub').onsubmit = function () { filter_terms(f.value) }
+    if (location.search) {
+      const vals = location.search.split(/[?&]/).filter(kv => kv.startsWith('q='))
+      if (vals.length) { f.value = decodeURI(vals[0].split('=')[1]) }
+    }
+    if (f.value) { filter_terms(f.value) }
     goto_link()
   }
   onhashchange = goto_link

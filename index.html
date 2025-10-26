@@ -34,7 +34,10 @@
 <a rel=help href="notes/">موارد</a>
 </nav>
 </header>
-<input id="toc_filter" type="search" dir="ltr" placeholder="اكتب لتصفية روابط المصطلحات">
+<form action="/ysmu/" method="GET">
+<input id="toc_filter" name="q" type="search" dir="ltr" lang="en" placeholder="اكتب لتصفية روابط المصطلحات" aria-label="اكتب لتصفية روابط المصطلحات">
+<button id="sub" type="submit" style="visibility:hidden;font-size:1pt;position:absolute;top:0">Search</button>
+</form>
 <section class="toc">
 <h3>0–9 A B C</h3>
   <a href="#2fa" title="‫استيثاق ثنائي.‬">two-factor authentication (2FA)</a>
@@ -71,7 +74,7 @@
   <a href="#sysadmin" title="‫مدير النظام (ج: مديرو النظام).‬">system administrator (sysadmin)</a>
   <a href="#telephone" title="‫هاتف (ج: هواتف).‬">telephone</a>
   <a href="#theme" title="‫نَسَق (ج: أنساق).‬">theme</a>
-  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
+  <p class="emptytoc blurred" style="display:none">ما من مصطلحات توافق تصفيتك</p>
 </section>
 <article><h2 id="2fa"><a id="two-factor_authentication" dir="ltr" href="#2fa">two-factor authentication (2FA)</a></h2>
 <p>استيثاق ثنائي.</p>
@@ -467,7 +470,12 @@
   onload = function () {
     var f = document.getElementById('toc_filter')
     f.oninput = function () { filter_terms(this.value) }
-    if (f.value) { filter_terms(f.value) }  // filter onreload
+    document.getElementById('sub').onsubmit = function () { filter_terms(f.value) }
+    if (location.search) {
+      const vals = location.search.split(/[?&]/).filter(kv => kv.startsWith('q='))
+      if (vals.length) { f.value = decodeURI(vals[0].split('=')[1]) }
+    }
+    if (f.value) { filter_terms(f.value) }
     goto_link()
   }
   onhashchange = goto_link

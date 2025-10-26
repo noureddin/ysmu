@@ -39,7 +39,10 @@
   هذه المصطلحات تجريبية و<a href="https://www.m-a-arabia.com/vb/showpost.php?s=b5f485336008816282cd7dfc5411d5ef&p=64761&postcount=3">ل‍مّا</a> يُجمِع عليها المجتمع؛
   انظر <a href="..">المصطلحات المتفق&nbsp;عليها</a>
 </aside>
-<input id="toc_filter" type="search" dir="ltr" placeholder="اكتب لتصفية روابط المصطلحات">
+<form action="/ysmu/experimental/" method="GET">
+<input id="toc_filter" name="q" type="search" dir="ltr" lang="en" placeholder="اكتب لتصفية روابط المصطلحات" aria-label="اكتب لتصفية روابط المصطلحات">
+<button id="sub" type="submit" style="visibility:hidden;font-size:1pt;position:absolute;top:0">Search</button>
+</form>
 <section class="toc">
   <a href="#ai" title="‫ذكاء مصطَنع.‬">artificial intelligence (AI)</a>
   <a href="#alpha" title="‫في الرسوميات: [اسم] عتامة. (أو «شفافية» في الأسماء المضافة.) في إصدارات البرمجيات: [صفة] أوّلي. [اسم] إصدارة أولية، نسخة أولية، إصدار أولي.‬">alpha</a>
@@ -58,7 +61,7 @@
   <a href="#server" title="‫خادوم (ج: خواديم)؛ أو خادم (ج: خوادم).‬">server</a>
   <a href="#upload" title="‫الاسم مرفوع (ج: مرفوعات)، والفعل رَفَع يَرفَع رفعا، فهو رافع، والأمر ارفَع، والمفعول رُفِع يُرفَع فهو مرفوع.‬">upload</a>
   <a href="#verbose" title="‫إطْناب.‬">verbose</a>
-  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
+  <p class="emptytoc blurred" style="display:none">ما من مصطلحات توافق تصفيتك</p>
 </section>
 <article><h2 id="ai"><a id="artificial_intelligence" dir="ltr" href="#ai">artificial intelligence (AI)</a></h2>
 <p>ذكاء مصطَنع.</p>
@@ -359,7 +362,12 @@ This is your one-time password (OTP) = هذه كلمة مرور الاستخدا
   onload = function () {
     var f = document.getElementById('toc_filter')
     f.oninput = function () { filter_terms(this.value) }
-    if (f.value) { filter_terms(f.value) }  // filter onreload
+    document.getElementById('sub').onsubmit = function () { filter_terms(f.value) }
+    if (location.search) {
+      const vals = location.search.split(/[?&]/).filter(kv => kv.startsWith('q='))
+      if (vals.length) { f.value = decodeURI(vals[0].split('=')[1]) }
+    }
+    if (f.value) { filter_terms(f.value) }
     goto_link()
   }
   onhashchange = goto_link

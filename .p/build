@@ -179,7 +179,12 @@ use constant SCRIPT => <<'END_OF_TEXT';
   onload = function () {
     var f = document.getElementById('toc_filter')
     f.oninput = function () { filter_terms(this.value) }
-    if (f.value) { filter_terms(f.value) }  // filter onreload
+    document.getElementById('sub').onsubmit = function () { filter_terms(f.value) }
+    if (location.search) {
+      const vals = location.search.split(/[?&]/).filter(kv => kv.startsWith('q='))
+      if (vals.length) { f.value = decodeURI(vals[0].split('=')[1]) }
+    }
+    if (f.value) { filter_terms(f.value) }
     goto_link()
   }
   onhashchange = goto_link
@@ -342,7 +347,7 @@ sub toc_links {  # takes array of [$id, "#$id"]; returns a string '<section clas
         sort { $a->[1] cmp $b->[1] }
         map { [ human_title_of($_->[0]), $_->[1], $_->[0] ] }
           @_
-    ) . qq[  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>\n</section>];
+    ) . qq[  <p class="emptytoc blurred" style="display:none">ما من مصطلحات توافق تصفيتك</p>\n</section>];
   }
   return;  # undef if empty
 }
@@ -363,9 +368,12 @@ sub _make_entry { my ($file) = @_;
   );
 }
 
-use constant TOC_FILTER => sprintf "<input %s>\n", join ' ',
-  'id="toc_filter"', 'type="search"', 'dir="ltr"',
-  'placeholder="اكتب لتصفية روابط المصطلحات"';
+use constant TOC_FILTER => <<'END_OF_TEXT' =~ s/\Q{{L}}\E/اكتب لتصفية روابط المصطلحات/gr;
+<form action="/ysmu/{{stage}}" method="GET">
+<input id="toc_filter" name="q" type="search" dir="ltr" lang="en" placeholder="{{L}}" aria-label="{{L}}">
+<button id="sub" type="submit" style="visibility:hidden;font-size:1pt;position:absolute;top:0">Search</button>
+</form>
+END_OF_TEXT
 
 sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   my $n = 0;
@@ -382,13 +390,18 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   my $toc = toc_links(@toc) // '';
   my $parent = !defined $_[0]   ? undef : ($_[0] =~ s,/.*,,r);
   my $root   = !defined $parent ? undef : $parent eq 'w' ? '' : '..';
+  my $stage = $parent eq 'w' ? ''
+            : $parent eq 'c' ? 'candidate/'
+            : $parent eq 'x' ? 'experimental/'
+            : $parent eq 'u' ? 'unstaged/'
+            : die "\e[1;31m  bad stage for '$parent' in make_entries/\e[m\n";
   my @links = ($body =~ /<a\b[^>]* href="#([^"]*)"/g);
   for my $term (@links) {
     if (!-f "$parent/$term") {  # not in this stage; make it a /link/
       $body =~ s,(<a\b[^>]* href=")#$term",$1$root/link/$term/",g
     }
   }
-  print { $out_html } ($toc ? TOC_FILTER.$toc."\n" : '') . $body;
+  print { $out_html } ($toc ? (TOC_FILTER =~ s/\Q{{stage}}\E/$stage/gr).$toc."\n" : '') . $body;
   print { $out_tsv } $summary  if $out_tsv;
   return $n;
 }
@@ -544,7 +557,7 @@ make_page 'link',
       else { die "\e[1;31m  bad parent for '$id' in link/\e[m\n"; }
     }
     # return
-    TOC_FILTER .
+    TOC_FILTER =~ s|\Q{{stage}}\E|link/|gr .
     sprintf qq[<section><h2><a class="other" href="../%s">%s</a></h2>\n%s\n</section>%s] x 4,
       '',              'المصطلحات المتفق عليها',     toc_links(@w) // EMPTY_STAGE_LINKS, "\n",
       'candidate/',    'المصطلحات المرشحة للاتفاق',  toc_links(@c) // EMPTY_STAGE_LINKS, "\n",

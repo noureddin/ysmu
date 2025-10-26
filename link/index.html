@@ -34,7 +34,10 @@
 <a rel=help href="../notes/">موارد</a>
 </nav>
 </header>
-<input id="toc_filter" type="search" dir="ltr" placeholder="اكتب لتصفية روابط المصطلحات">
+<form action="/ysmu/link/" method="GET">
+<input id="toc_filter" name="q" type="search" dir="ltr" lang="en" placeholder="اكتب لتصفية روابط المصطلحات" aria-label="اكتب لتصفية روابط المصطلحات">
+<button id="sub" type="submit" style="visibility:hidden;font-size:1pt;position:absolute;top:0">Search</button>
+</form>
 <section><h2><a class="other" href="../">المصطلحات المتفق عليها</a></h2>
 <section class="toc">
 <h3>0–9 A B C</h3>
@@ -72,7 +75,7 @@
   <a href="../#sysadmin" title="‫مدير النظام (ج: مديرو النظام).‬">system administrator (sysadmin)</a>
   <a href="../#telephone" title="‫هاتف (ج: هواتف).‬">telephone</a>
   <a href="../#theme" title="‫نَسَق (ج: أنساق).‬">theme</a>
-  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
+  <p class="emptytoc blurred" style="display:none">ما من مصطلحات توافق تصفيتك</p>
 </section>
 </section>
 <section><h2><a class="other" href="../candidate/">المصطلحات المرشحة للاتفاق</a></h2>
@@ -110,7 +113,7 @@
   <a href="../candidate/#software" title="‫برمجيات (تستعمل بالجمع غالبا. وعند الضرورة مفردها: بَرْمَجِيّة).‬">software</a>
   <a href="../candidate/#terminal" title="‫طرَفِيّة (ج: طرفيات).‬">terminal</a>
   <a href="../candidate/#variable" title="‫مُتَغَيِّر (ج: متغيرات).‬">variable</a>
-  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
+  <p class="emptytoc blurred" style="display:none">ما من مصطلحات توافق تصفيتك</p>
 </section>
 </section>
 <section><h2><a class="other" href="../experimental/">المصطلحات التجريبية</a></h2>
@@ -132,7 +135,7 @@
   <a href="../experimental/#server" title="‫خادوم (ج: خواديم)؛ أو خادم (ج: خوادم).‬">server</a>
   <a href="../experimental/#upload" title="‫الاسم مرفوع (ج: مرفوعات)، والفعل رَفَع يَرفَع رفعا، فهو رافع، والأمر ارفَع، والمفعول رُفِع يُرفَع فهو مرفوع.‬">upload</a>
   <a href="../experimental/#verbose" title="‫إطْناب.‬">verbose</a>
-  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
+  <p class="emptytoc blurred" style="display:none">ما من مصطلحات توافق تصفيتك</p>
 </section>
 </section>
 <section><h2><a class="other" href="../unstaged/">المصطلحات المؤجلة</a></h2>
@@ -144,7 +147,7 @@
   <a href="../unstaged/#hook" title="‫خُطَّاف (ج: خَطاطيف).‬">hook</a>
   <a href="../unstaged/#pointer" title="‫للفأرة: مُؤَشِّر (ج: مُؤَشِّرَات). في البرمجة: مُشِير (ج: مُشِيرَات).‬">pointer</a>
   <a href="../unstaged/#reference" title="‫في البرمجة: مُحِيل (ج: مُحِيلَات).‬">reference</a>
-  <p class="emptytoc blurred" style="display:none">لا توجد مصطلحات متطابقة</p>
+  <p class="emptytoc blurred" style="display:none">ما من مصطلحات توافق تصفيتك</p>
 </section>
 </section>
 <footer>
@@ -195,7 +198,12 @@
   onload = function () {
     var f = document.getElementById('toc_filter')
     f.oninput = function () { filter_terms(this.value) }
-    if (f.value) { filter_terms(f.value) }  // filter onreload
+    document.getElementById('sub').onsubmit = function () { filter_terms(f.value) }
+    if (location.search) {
+      const vals = location.search.split(/[?&]/).filter(kv => kv.startsWith('q='))
+      if (vals.length) { f.value = decodeURI(vals[0].split('=')[1]) }
+    }
+    if (f.value) { filter_terms(f.value) }
     goto_link()
   }
   onhashchange = goto_link
