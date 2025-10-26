@@ -1,0 +1,6 @@
+بحث تنصيفي.
+
+
+يُستعمل للبحث في بيانات متقطعة (discrete)، ويسمى بأسماء أشهرها: ”<<binary search||https://en.wikipedia.org/wiki/Binary_search>>“ و”half-interval search“ و”logarithmic search“ و”binary chop“.
+
+وعند البحث عن جذور دالة متصلة (continuous) فإنه يسمى ”<<bisection method||https://en.wikipedia.org/wiki/Bisection_method>>“ و”interval halving method“ و”dichotomy method“ بل و”binary search method“ كذلك.

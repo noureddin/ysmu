@@ -89,3 +89,7 @@
 وانظر أيضا: <<https://github.com/castrojo/awesome-immutable>>.
 
 إذًا في أنظمة التشغيل مثل التوزيعات ثَبيتة الجذر، يمكننا أن نصطلح على لفظ آخر.
+
+::::
+constant
+variable
