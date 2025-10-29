@@ -347,7 +347,7 @@ sub toc_links {  # takes array of [$id, "#$id"]; returns a string '<section clas
           my $sum = "\N{RIGHT-TO-LEFT EMBEDDING}$summs{$_->[2]}\N{POP DIRECTIONAL FORMATTING}" =~ s/  +/ /gr;  # multi-translation summaries have double-spaces
           qq[  <a href="$_->[1]" title="$sum">$_->[0]</a>\n]
         }
-        sort { $a->[1] cmp $b->[1] }
+        sort { fc $a->[1] cmp fc $b->[1] }
         map { [ human_title_of($_->[0]), $_->[1], $_->[0] ] }
           @_
     ) . qq[  <p class="emptytoc blurred" style="display:none">ما من مصطلحات توافق تصفيتك</p>\n</section>];
@@ -392,7 +392,7 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
   }
   my $toc = toc_links(@toc) // '';
   my $parent = !defined $_[0]   ? undef : ($_[0] =~ s,/.*,,r);
-  my $root   = !defined $parent ? undef : $parent eq 'w' ? '' : '..';
+  my $link   = !defined $parent ? 'link' : $parent eq 'w' ? 'link' : '../link';
   my $stage = $parent eq 'w' ? ''
             : $parent eq 'c' ? 'candidate/'
             : $parent eq 'x' ? 'experimental/'
@@ -400,8 +400,8 @@ sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
             : die "\e[1;31m  bad stage for '$parent' in make_entries/\e[m\n";
   my @links = ($body =~ /<a\b[^>]* href="#([^"]*)"/g);
   for my $term (@links) {
-    if (!-f "$parent/$term") {  # not in this stage; make it a /link/
-      $body =~ s,(<a\b[^>]* href=")#$term",$1$root/link/$term/",g
+    if (!-f "$parent/$term" && (!exists $short{$term} || !-f "$parent/$short{$term}")) {  # not in this stage; make it a /link/
+      $body =~ s,(<a\b[^>]* href=")#$term",$1$link/$term/",g
     }
   }
   print { $out_html } ($toc ? (TOC_FILTER =~ s/\Q{{stage}}\E/$stage/gr).$toc."\n" : '') . $body;
