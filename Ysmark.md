@@ -1,5 +1,8 @@
+# Ysmark (Ysmu Markup Language)
+
 Inline formatting (in a single line, not across lines):
 - `{{just some ltr text}}`: forces some part of the text to be LTR.
+- `{{##SmallCaps##}}`: LTR & smallcaps.
 - `**strong emphasis**`: use sparingly.
 - ```` ``LTR code`` ````: an inline code span, always LTR.
 - `<<::term>>`: link to a term (may be in a different stage) (shows as LTR)
@@ -14,14 +17,20 @@ Line formatting:
 
 Block formatting:
 - Blank lines delimit paragraphs.
-- `""""` on a line by its own, preceding a paragraph, makes it a blockquote.
+- `""""` on a line by its own, preceding a paragraph, makes it an Arabic (RTL) blockquote.
+- `''''` on a line by its own, preceding a paragraph, makes it an English (LTR) blockquote.
 - `::::` on a line by its own, makes every line till the end of paragraph a see-also linked term. It should be used at the end.
+- `####` on a line by its own, makes every line till the end of paragraph variant spellings of the same term (e.g., -ise/-ize, colour/color, and commonly used conjucations). It must come last (after the see-also paragraph-list).
 - `----` in a paragraph by its own makes a `<hr>` (thematic break); use sparingly.
 - `@@@@` in a paragraph by its own makes a negative paragraph space; can be used between paragraph and following tight lists
   (ie, lists whose all items are lines, never a block element like a paragraph).
+- `!!!!` followed by a list of "`https://link` long mandatory title" lines to make a list of external links.
+- Starting a paragraph with `== title` makes that a `h2`, and preceding that with `[[id]]` on a separate line in the same
+  paragraph gives it an id and makes it a link.
 
 Big blockquotes:
-- Start it by `>>>>` in a paragraph by its own, and end it by `<<<<` in a paragraph on its own.
+- Start an Arabic (RTL) blockquote by `>>>>` in a paragraph by its own, and end it by `<<<<` in a paragraph on its own.
+- Start an English (LTR) blockquote by `}}}}` in a paragraph by its own, and end it by `{{{{` in a paragraph on its own.
 
 Lists (other than "see-also" term lists):
 - Start an ordered list with `##((` in a paragraph by its own, and end it by `))##` in a paragraph by its own. (Think number = "#".)
@@ -29,15 +38,12 @@ Lists (other than "see-also" term lists):
 - `[[type]]` can precede a list opening mark in a line by its own, to mark this list with a CSS `list-style-type`;
   eg `[[arabic-indic]]\n##((` or `[['* ']]\n++((`.
 - Each item can be defined in two ways:
-  - Start a line with `--` then a space, to make a `<li>` without inner `<p>`.
+  - Start a line with `--` then a space, to make a `<li>` without inner `<p>`. (But each item still needs to be its own paragraph.)
   - Put `****` in its own paragraph, to enclose in a `<li>` everything till the next item mark or list closing mark.
 
----
+(A convention is to use the default bullet for an unordered list of paragraph items, but an endash (`[['– ']]`) for tight lists.)
 
-That's for entries (under `w/`, `c/`, and `x/`); notes (`notes/src`) has the same syntax plus these additions:
-- `!!!!` followed by a list of "`https://link` long mandatory title" lines to make a list of external links.
-- Starting a paragraph with `== title` makes that a `h2`, and preceding that with `[[id]]` on a separate line in the same
-  paragraph gives it an id and makes it a link.
+---
 
 Other notes:
 - Files' names in `w/`, `c/`, and `x/` must not contain spaces; use underscores instead.

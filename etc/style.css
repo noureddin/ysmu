@@ -64,7 +64,7 @@
   --ta: rgba(255, 128,   0, 0.6);
   /* others */
   --hl: #faa;
-  --bq: #cbb;
+  --bq: #877;
   --ft: rgba(255, 128, 128, 0.15);
   --al: rgba(255,  12,  12, 0.3);
   --AL: rgba(255,  12,  12, 0.8);
@@ -77,7 +77,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   font-size: 20px;
 }
 
@@ -162,6 +162,21 @@ blockquote:before {
   right: -24px;
 }
 
+blockquote[lang="en"] {
+  direction: ltr;
+  border-right: initial;
+  padding-right: initial;
+  margin-right: initial;
+  border-left: 2px solid var(--bq);
+  padding-left: 10px;
+  margin-left: 40px;
+}
+blockquote[lang="en"]:before {
+  content: '“';
+  right: initial;
+  left: -24px;
+}
+
 .seealso {
   margin-bottom: -1em;
 }
@@ -195,10 +210,10 @@ footer {
 }
 
 .blurred {
-  filter: opacity(var(--op));
+  opacity: var(--op);
   transition: 0.5s;
 }
-.blurred:hover { filter: opacity(1) }
+.blurred:hover { opacity: 1 }
 
 .toc {
   margin-top: 1em;
@@ -256,16 +271,16 @@ footer {
   display: none;
 }
 
-h2 + p { /* the summary paragraph; highlighted differently */
+p.main { /* the summary paragraph; highlighted differently */
   color: var(--fs);
   background: var(--sp);
 }
 
-h2 + p br { /* separate the different translations of a single term */
+p.main br { /* separate the different translations of a single term */
   /* https://stackoverflow.com/a/31633969 - may not work on Safari, but that's not a big issue */
   display: block; /* makes it have a width */
   content: ""; /* clears default height */
-  margin-top: 0.5em; /* change the height */
+  margin-top: 0.25em; /* change the height */
 }
 
 center.redirect {
@@ -287,6 +302,20 @@ hr:after {
   /* content: '٭٭٭'; */
   position: relative;
   top: -0.75em;
+}
+
+hr.rm { display: none }  /* show only in reader-mode and in browsers without CSS */
+
+p.main + hr.rm:after { content: "" }
+p.main + hr.rm {
+  display: block;
+  height: 0.5em;
+  margin: 0 15% -0.5em;
+  /* https://stackoverflow.com/a/53408182 */
+  background-image: radial-gradient(circle, var(--bq) 0.04em, transparent 0.08em);
+  background-position: bottom;
+  background-size: 1em;
+  background-repeat: repeat-x;
 }
 
 li {
@@ -335,4 +364,8 @@ footer svg {  /* feed icon; don't change width or height */
 code {
   background: var(--cd);
   border-radius: 0.75em / 0.5em;
+}
+
+span.anch {
+  display: content;
 }

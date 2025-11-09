@@ -1,4 +1,5 @@
-[صفة] ثَبِيت، ثَبِيتَة، والمصدر ثَبِيتِيَّة.
+الصفة: ثَبِيت، ثَبِيتَة.
+الاسم: ثَبِيتِيَّة.
 
 تعني immutable أن الموصوف لا يتغير ما في داخله،
 
@@ -81,8 +82,8 @@
 
 ركز الكلام السابق على معنى immutable في البرمجة، لكن ظهرت حديثا ”immutable Linux distributions“، ومنها <<Nitrux||https://nxos.org/english/nx/>> التي تذكر في ميزاتها، تحت عنوان ”Exceptional system integrity“:
 
-""""
-‪Nitrux is an <<immutable||https://blog.verbum.org/2020/08/22/immutable-%E2%86%92-reprovisionable-anti-hysteresis/>> Linux distribution, meaning no changes occur to the content of the root directory by default. […] An immutable operating system is a system that, once installed, cannot be modified. On Nitrux, the root directory is default set to be immutable, meaning no changes occur to its contents. […]‬
+''''
+Nitrux is an <<immutable||https://blog.verbum.org/2020/08/22/immutable-%E2%86%92-reprovisionable-anti-hysteresis/>> Linux distribution, meaning no changes occur to the content of the root directory by default. […] An immutable operating system is a system that, once installed, cannot be modified. On Nitrux, the root directory is default set to be immutable, meaning no changes occur to its contents. […]‬
 
 وكلمة ”immutable“ تشير إلى مقالة تشرح لماذا كلمتا immutable وread-only خادعتان عند استعمالهما لوصف أنظمة التشغيل وتقدم اقتراحات أخرى.
 

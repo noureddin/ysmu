@@ -1,12 +1,11 @@
 #!/usr/bin/env perl
 # vim: set foldmethod=marker foldmarker={{{,}}} :
+# preamble {{{
 use v5.16; use warnings; use utf8;
 use open qw[ :encoding(UTF-8) :std ];
 
 my $debug_release = grep /^-$/, @ARGV;
 # if debug_release, skip the Atom feed generation, because it's the slowest part, because of the movetime detection operation.
-
-# static definitions {{{1
 
 sub openfile { my ($mode, $fpath) = @_;
   state $modes = {qw[
@@ -24,9 +23,6 @@ sub openfile { my ($mode, $fpath) = @_;
 
 sub slurp(_) { local $/; my $f = openfile '<', $_[0]; return scalar <$f> }
 
-use Time::Piece;  # for converting unix time to UTC ISO dates (git uses local TZ)
-use List::Util qw[ max maxstr ];  # for the Atom feed
-
 use FindBin;
 # allow loading our libraries from the script's directory
 use lib $FindBin::RealBin;
@@ -39,55 +35,25 @@ sub hash(_) { digest_file_base64(shift, 'SHA-1') =~ tr[+/][-_]r }
 
 # load our libraries
 
+use Terms qw[
+  get_terms
+  get_links
+];
+
+my %terms = get_terms;
+my %links = get_links;
+
 use Parser qw[
   filepath_to_html
-  html_to_summary
-  word_title_of
-  short_title_of
 ];
 
-use BigParser qw[
-  basic_html_to_big_html
+use GenAtom qw[
+  gen_atom
 ];
-# a single function that reads the output of Parser's filepath_to_html on a big file
 
-use constant HEADER => <<'END_OF_TEXT';
-<!doctype html>
-<html dir="rtl" lang="ar">
-<head>
-  <meta charset="utf-8">
-  <title>{{title}}</title>
-  <link rel="stylesheet" type="text/css" href="{{root}}etc/style.min.css?h={{stylehash}}">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta property="og:locale" content="ar_AR">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="{{title}}">
-  <meta property="og:image" content="{{base_url}}cover.png">
-  <meta property="og:image:width" content="1120"/>
-  <meta property="og:image:height" content="630"/>
-  <meta property="og:description" content="{{description}}">
-  <meta name="description" content="{{description}}">
-  <link rel="canonical" href="{{url}}">
-  <meta property="og:url" content="{{url}}">
-  <link rel="icon" type="image/png" sizes="72x72" href="{{root}}etc/favicon-72x72.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{root}}etc/favicon-16x16.png">
-  <link rel="icon" type="image/svg+xml" sizes="any" href="{{root}}etc/favicon.svg">
-  <!-- icon is U+1F304 from Twemoji (https://twemoji.twitter.com/) CC-BY 4.0 -->
-</head>
-<body>
-<header>
-<p class="title">
-{{header_title}}
-</p>
-<nav>
-<a href="{{root}}">المصطلحات المتفق عليها</a> |
-<a href="{{root}}candidate/">المصطلحات المرشحة للاتفاق</a> |
-<a rel=index href="{{root}}link/">روابط جميع المصطلحات</a> |
-<a rel=help href="{{root}}notes/">موارد</a>
-</nav>
-</header>
-END_OF_TEXT
+# }}}
 
+use constant HEADER => slurp '.t/head.html';
 
 sub make_header { my ($additional_title, $path, $base) = @_;
   $path //= '';
@@ -106,6 +72,7 @@ sub make_header { my ($additional_title, $path, $base) = @_;
   my $description = "معجم مجتمعي نتخير فيه أفضل مصطلح عربي فصيح سليم يجمع بين المعنى التقني والاستعمال الأصلي للكلمة العربية أو صحة اشتقاقها، ونشرح فيه أسباب اختيار هذا المصطلح والإعراض عن غيره.";  # the same the one in my home page
 
   return HEADER
+    =~ s,\s+\z,,r
     =~ s,\Q{{title}}\E,$title,gr
     =~ s,\Q{{header_title}}\E,$header_title,gr
     =~ s,\Q{{url}}\E,$url,gr
@@ -126,70 +93,9 @@ my $feedicon = slurp 'etc/feed-icon.svg';
 # then compressed with vecta.io/nano
 # then modified manually a bit.
 
-use constant FOOTER => <<'END_OF_TEXT' =~ s,\n\Z,,r;  # to use say with almost everything
-<footer>
-  <!--before-contact-->
-  <p>يمكنك التواصل معنا عبر
-    صفحة <a rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل جت‌هب</a><br>
-    أو غرفة الترجمة في مجتمع أسس على شبكة ماتركس: <a rel="noreferrer noopener" dir="ltr" href="https://matrix.to/#/#localization:aosus.org">#localization:aosus.org</a>
-  </p>
-  <!--after-contact-->
-  <p class="blurred"><a href="{{root}}feed.atom.xml">تغذية Atom {{feedicon}}</a></p>
-  <!--before-license-->
-  <p class="license blurred">الرخصة: <a rel="noreferrer noopener license" href="https://creativecommons.org/publicdomain/zero/1.0/deed.ar">Creative Commons Zero (CC0)</a> (مكافئة للملكية العامة)</p>
-  <p class="license blurred">الشعار من <a rel="noreferrer noopener" href="https://twemoji.twitter.com/">Twemoji</a> (بترخيص CC-BY 4.0)، مع حرف العين <a href="https://www.amirifont.org/">بالخط الأميري</a></p>
-</footer>
-</body>
-</html>
-END_OF_TEXT
+use constant FOOTER => slurp('.t/foot.html') =~ s/\n\z//r;
 
-use constant SCRIPT => <<'END_OF_TEXT';
-<script>
-  function normalize_text (t) {
-    return (t
-      .toLowerCase()
-      .replace(/[\u0640\u064B-\u065F]+/g, '')
-      .replace(/[-_\s,،.;؛?؟!()]+/g, ' ')
-      .replace(/^ /g, '').replace(/ $/g, ' ')
-      )
-  }
-  function filter_terms (q) {
-    var tocens = document.querySelectorAll('.toc > a')
-    /***before*loop***/
-    for (var i = 0; i < tocens.length; ++i) {
-      var a = tocens[i]
-      var nq = normalize_text(q)
-      a.className
-       = normalize_text(a.textContent).indexOf(nq) === -1
-      && normalize_text(a.title).indexOf(nq) === -1
-          ? 'hidden'
-          : ''
-      /***end*of*loop***/
-    }
-    /***after*loop***/
-  }
-  // redirect on nonpermalinks (eg, /#term) that aren't in this page
-  const tl = {
-    /***term*links***/
-  }
-  function goto_link () {
-    const lnk = tl[location.hash]  // a term starts with '#'; tl only has terms that aren't in this page
-    if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
-  }
-  onload = function () {
-    var f = document.getElementById('toc_filter')
-    f.oninput = function () { filter_terms(this.value) }
-    document.getElementById('sub').onsubmit = function () { filter_terms(f.value) }
-    if (location.search) {
-      const vals = location.search.split(/[?&]/).filter(kv => kv.startsWith('q='))
-      if (vals.length) { f.value = decodeURI(vals[0].split('=')[1]) }
-    }
-    if (f.value) { filter_terms(f.value) }
-    goto_link()
-  }
-  onhashchange = goto_link
-</script>
-END_OF_TEXT
+use constant SCRIPT => slurp '.t/script.js';
 
 use constant EMPTY_SCRIPT => <<'END_OF_TEXT';
 <script>
@@ -207,27 +113,49 @@ use constant EMPTY_SCRIPT => <<'END_OF_TEXT';
 END_OF_TEXT
 
 use constant SINGLE_STAGE_SCRIPT => SCRIPT
-  =~ s{\Q/***before*loop***/\E}{var nonempty = false}r
-  =~ s{\Q/***end*of*loop***/\E}{if (a.className === '') { nonempty = true }}r
-  =~ s{^( *)\Q/***after*loop***/\E}
-{$1document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
+  =~ s{^}{  }mgr
+  =~ s{^}{<script>\n}r
+  =~ s{$}{\n</script>}r
+  =~ s{\Q/***before*loop***/\E\n}{var nonempty = false\n}r
+  =~ s{\Q/***end*of*loop***/\E\n}{if (a.className === '') { nonempty = true }\n}r
+  =~ s{\n( *)\Q/***after*loop***/\E\n}{
+$1document.querySelector('.emptytoc').style.display = nonempty ? 'none' : 'block'
 $1var hv = nonempty ? 'block' : 'none'
-$1document.querySelectorAll('.toc h3').forEach(function (e) { e.style.display = hv })}mr
-  ;
+$1document.querySelectorAll('.toc h3').forEach(function (e) { e.style.display = hv })
+}r;
 
 use constant MULTIPLE_STAGE_SCRIPT => SCRIPT
-  =~ s{^ *\Q/***before*loop***/\E\n}{}mr
-  =~ s{^ *\Q/***end*of*loop***/\E\n}{}mr
-  =~ s{^( *)\Q/***after*loop***/\E\n}
-{$1var tocs = document.querySelectorAll('.toc')
+  =~ s{^}{  }mgr
+  =~ s{^}{<script>\n}r
+  =~ s{$}{\n</script>}r
+  =~ s{\n *\Q/***before*loop***/\E\n}{\n}r
+  =~ s{\n *\Q/***end*of*loop***/\E\n}{\n}r
+  =~ s{\n( *)\Q/***after*loop***/\E\n}{
+$1var tocs = document.querySelectorAll('.toc')
 $1for (var i = 0; i < tocs.length; ++i) {
 $1  var empty = tocs[i].querySelector('a:not(.hidden)') == null
 $1  tocs[i].querySelector('.emptytoc').style.display = empty ? 'block' : 'none'
 $1  var hv = empty ? 'none' : 'block'
 $1  tocs[i].querySelectorAll('h3').forEach(function (e) { e.style.display = hv })
 $1}
-}mr
-  ;
+}r;
+
+# where to redirect if the used a hash-url with a term that doesn't exist in the current page?
+sub nonpermalinks_redirect { my ($cat, $ind) = @_;
+  $ind //= "";
+  # sort here is irrelevant; it's just to reduce unnecessary diffs between each build.
+  # the '?' in the url is just a hint to the browser to re-request the html file
+  #   not to used the cached (normally visited) page, to avoid potential infinite redirects
+  #   between two old & new pages when a term is moved between them.
+  my $root  = $cat eq 'w' ? "" : '../';
+  return
+    join '',
+    map { my $t = $_; map { "$ind'#".lc."': '$root$terms{$t}{stage}?#$t',\n" } @{$terms{$t}{terms}} }
+    # Note: {terms} (with lc) not {allterms}; lowering the case is handled is JS for this.
+    sort
+    grep { $terms{$_}{cat} ne $cat }
+      keys %terms;
+}
 
 sub all_link    { '<a rel=index href="'.($_[0] // '').'link/">قائمة روابط جميع المصطلحات</a>' }
 sub notes_link  { '<a rel=help href="'.($_[0] // '').'notes/">موارد وإرشادات</a>' }
@@ -237,47 +165,53 @@ sub tsv_link    { '<a rel=alternate type=text/tab-separated-values href="https:/
 sub stable_link { '<a href="..">المصطلحات المتفق&nbsp;عليها</a>' }
 
 sub make_footer { my ($s) = @_;
+  my $foot = FOOTER;
+  if ($s !~ /stable/) { $foot =~ s|\n.* TSV .*\n|\n|g }
+  my $cat = $s =~ /stable/ ? 'w'
+          : $s =~ /candidate/ ? 'c'
+          : $s =~ /experimental/ ? 'x'
+          : $s =~ /unstaged/ ? 'u'
+            : "";
   return
-  ( $s eq 'stable' ? FOOTER
+  ( $s eq 'stable' ? $foot
       =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ rc_link ]}</p>|r
-      =~ s|<!--after-contact-->|<p class="blurred">الترجمة المختصرة بصيغة TSV للتطبيقات والمعاجم: @{[ tsv_link ]}</p>|r
       =~ s,\Q{{root}}\E,,r
       =~ s,(?=</body>),@{[ SINGLE_STAGE_SCRIPT ]},r
 
-  : $s eq 'empty stable' ? FOOTER
+  : $s eq 'empty stable' ? $foot
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ rc_link ]}</p>|r
       =~ s,\Q{{root}}\E,,r
       =~ s,(?=</body>),@{[ EMPTY_SCRIPT ]},r
 
-  : $s eq 'candidate' ? FOOTER
+  : $s eq 'candidate' ? $foot
       =~ s|<!--before-contact-->|<p>يمكنك أيضا رؤية @{[ exper_link '../' ]}</p>|r
       =~ s,(?=</body>),@{[ SINGLE_STAGE_SCRIPT ]},r
 
-  : $s eq 'empty candidate' ? FOOTER
+  : $s eq 'empty candidate' ? $foot
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ exper_link '../' ]}</p>|r
       =~ s,(?=</body>),@{[ EMPTY_SCRIPT ]},r
 
-  : $s eq 'experimental' ? FOOTER
+  : $s eq 'experimental' ? $foot
       =~ s|<!--after-contact-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
       =~ s,(?=</body>),@{[ SINGLE_STAGE_SCRIPT ]},r
 
-  : $s eq 'empty experimental' ? FOOTER
+  : $s eq 'empty experimental' ? $foot
       =~ s|<!--before-license-->|<p class="blurred">انظر أيضا: @{[ notes_link '../' ]}</p>|r
       =~ s,(?=</body>),@{[ EMPTY_SCRIPT ]},r
 
-  : $s eq 'unstaged' ? FOOTER
+  : $s eq 'unstaged' ? $foot
       =~ s,(?=</body>),@{[ SINGLE_STAGE_SCRIPT ]},r
 
-  : $s eq 'empty unstaged' ? FOOTER
+  : $s eq 'empty unstaged' ? $foot
       =~ s,(?=</body>),@{[ EMPTY_SCRIPT ]},r
 
-  : $s eq 'all' ? FOOTER
+  : $s eq 'all' ? $foot
       =~ s,(?=</body>),@{[ MULTIPLE_STAGE_SCRIPT ]},r
 
-  : $s eq 'link' ? FOOTER
+  : $s eq 'link' ? $foot
       =~ s,\Q{{root}}\E,../../,r
 
-  : $s eq 'notes' ? FOOTER
+  : $s eq 'notes' ? $foot
       # =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ stable_link ]} أو @{[ exper_link '../' ]}</p>|r
       =~ s|<!--before-contact-->|<p>يمكنك رؤية @{[ all_link '../' ]}</p>|r
 
@@ -285,49 +219,13 @@ sub make_footer { my ($s) = @_;
   )
     =~ s,\Q{{root}}\E,../,r
     =~ s/\Q{{feedicon}}\E/$feedicon/r
+    =~ s{\n( *)\Q/***term*links***/\E\n}{ "\n".nonpermalinks_redirect($cat, $1) }re
     =~ s| *<!--.*--> *\n||gr
 }
 
 # dynamic definitions {{{1
 
-my %long =
-  map {
-    # if this line contains exactly one tab, with entries on both sides
-    /^[^\t]+\t[^\t]+$/ ? split "\t" : ()
-  }
-  map { s,[ \r\n]+,,gr }  # spaces are not allowed; use underscores between words
-  do { my $fh = openfile '<', 'longnames.tsv'; <$fh> };  # is read as an array of lines
-
-my %short = reverse %long;
-
-sub long_title_of(_) { my ($id) = @_;
-  my $full = word_title_of($long{$id});
-  my $abbr = short_title_of($id);
-  return "$full ($abbr)";
-}
-
-sub human_title_of(_) { my ($id) = @_;
-  $id = $id =~ s,^\s*,,r =~ s,\s*$,,r =~ s,\s+,_,gr;
-  if (exists $long{$id}) {
-    return long_title_of($id)
-  }
-  elsif (exists $short{$id}) {
-    return long_title_of($short{$id});
-  }
-  else {
-    return word_title_of($id);
-  }
-}
-
-# for each term, we generate a link in link/TERM/ that redirects to it in
-# the agreed-upon, candidate, experimental, or unstaged page,
-# in that order, so it's easier to link to term before they're stabilized.
-my %links;
-
-# each entry has a summary. we keep it in the toc links for search.
-my %summs;
-
-sub toc_links {  # takes array of [$id, "#$id"]; returns a string '<section class="toc">...</section>' or undef
+sub toc_links {  # takes array of [ $id, "#$id" ]; returns a string '<section class="toc">...</section>' or undef
   if (@_) {
     my %ltrs;
     return qq[<section class="toc">\n] . (
@@ -344,31 +242,16 @@ sub toc_links {  # takes array of [$id, "#$id"]; returns a string '<section clas
           $_
         }
         map {
-          my $sum = "\N{RIGHT-TO-LEFT EMBEDDING}$summs{$_->[2]}\N{POP DIRECTIONAL FORMATTING}" =~ s/  +/ /gr;  # multi-translation summaries have double-spaces
-          qq[  <a href="$_->[1]" title="$sum">$_->[0]</a>\n]
+          my $sum = "\N{RIGHT-TO-LEFT EMBEDDING}$terms{$_->[0]}{summary}\N{POP DIRECTIONAL FORMATTING}";
+            # =~ s/  +/ /gr;  # multi-translation summaries have double-spaces
+          my $spell = join ' ', @{$terms{$_->[0]}{spellings}};
+          qq[  <a href="$_->[1]" title="$sum" data-spell="$spell">$terms{$_->[0]}{title}</a>\n]
         }
-        sort { fc $a->[1] cmp fc $b->[1] }
-        map { [ human_title_of($_->[0]), $_->[1], $_->[0] ] }
+        sort { fc $a->[0] cmp fc $b->[0] }
           @_
     ) . qq[  <p class="emptytoc blurred" style="display:none">ما من مصطلحات توافق تصفيتك</p>\n</section>];
   }
   return;  # undef if empty
-}
-
-sub _make_entry { my ($file) = @_;
-  my $id = $file =~ s,^.*/,,r;
-  my $h_id = qq[ id="$id"];
-  my $a_id = exists $long{$id} ? qq[ id="$long{$id}"] : '';
-  my $title = human_title_of($id);
-  my $html = filepath_to_html $file, \&human_title_of;
-  $links{$id} = $file =~ s,/.*,,r unless exists $links{$id};
-  $summs{$id} = html_to_summary $html;
-  # NOTE: files MUST use the short name
-  return (
-    toclinkpair => [ $id, '#'.$id ],
-    entry => qq[<article><h2$h_id><a$a_id dir="ltr" href="#$id">$title</a></h2>\n$html\n</article>],
-    summary => (join "\t", $title, $summs{$id}),
-  );
 }
 
 use constant TOC_FILTER => <<'END_OF_TEXT' =~ s/\Q{{L}}\E/اكتب لتصفية روابط المصطلحات/gr;
@@ -378,34 +261,60 @@ use constant TOC_FILTER => <<'END_OF_TEXT' =~ s/\Q{{L}}\E/اكتب لتصفية 
 </form>
 END_OF_TEXT
 
-sub make_entries { my ($out_html, $out_tsv) = (shift, shift);
+sub make_entries { my ($parent, $out_html, $out_tsv) = @_;
   my $n = 0;
   my @toc;
-  my $body = '';
-  my $summary = '';
-  for my $file (@_) {
+  my $body = "";
+  my $tsv = "";
+  for my $file (<$parent/*>) {
     ++$n;
-    my %e = _make_entry($file);
-    push @toc, $e{toclinkpair};
-    $body .= $e{entry}."\n";
-    $summary .= $e{summary}."\n"  if $out_tsv;
+    my ($t) = $file =~ m#/([^,]+)(?=,|$)#g;
+    push @toc, [ $t, '#'.$t ];
+    $body .= $terms{$t}{entry}."\n";
+    if ($out_tsv) {
+      my $has_explanation = $terms{$t}{entry} =~ m|<hr class="rm">\n<p>|;
+      #
+      my ($related_terms_html) =
+        $terms{$t}{entry} =~ m|<p class="seealso">انظر أيضا:</p><ul>([^\0]*?)</ul>|;
+      my @related_terms = map { $links{$_} } ($related_terms_html // '') =~ m|#([^"]+)"|g;
+      #
+      $tsv .= join "\t",
+        $terms{$t}{title},
+        $terms{$t}{summary} =~ s|\N{LEFT DOUBLE PARENTHESIS}(.*?)\N{RIGHT DOUBLE PARENTHESIS}|{{$1}}|gr,
+        (join " ", ($has_explanation ? '@' : ()), @related_terms),
+        (join " ", @{$terms{$t}{terms}}),
+        (join " ", @{$terms{$t}{spellings}}),
+        "\n";  # the preceding \t is removed after the loop
+    }
   }
-  my $toc = toc_links(@toc) // '';
-  my $parent = !defined $_[0]   ? undef : ($_[0] =~ s,/.*,,r);
-  my $link   = !defined $parent ? 'link' : $parent eq 'w' ? 'link' : '../link';
-  my $stage = $parent eq 'w' ? ''
+  $tsv =~ s/\t\n/\n/g;
+  my $toc = toc_links(@toc) // "";
+  my $root  = $parent eq 'w' ? "" : '../';
+  my $stage = $parent eq 'w' ? ""
             : $parent eq 'c' ? 'candidate/'
             : $parent eq 'x' ? 'experimental/'
             : $parent eq 'u' ? 'unstaged/'
             : die "\e[1;31m  bad stage for '$parent' in make_entries/\e[m\n";
   my @links = ($body =~ /<a\b[^>]* href="#([^"]*)"/g);
-  for my $term (@links) {
-    if (!-f "$parent/$term" && (!exists $short{$term} || !-f "$parent/$short{$term}")) {  # not in this stage; make it a /link/
-      $body =~ s,(<a\b[^>]* href=")#$term",$1$link/$term/",g
+  for my $lnk (@links) {
+    if (!exists $links{$lnk}) {
+      warn "Non-existent term: $lnk\n";
+      $body =~ s,<a\b[^>]* href="#$lnk">(.*?)</a>,$1,g
+    }
+    else {
+      my $t = $links{$lnk};
+      if ($terms{$t}{stage} ne $stage) {  # not in this stage
+        $body =~ s,(<a\b[^>]* href=")#$lnk",$1$root$terms{$t}{stage}#$t",g
+      }
+      elsif ($t ne $lnk) {  # normalize the term
+        $body =~ s,(<a\b[^>]* href=")#$lnk",$1#$t",g
+      }
     }
   }
-  print { $out_html } ($toc ? (TOC_FILTER =~ s/\Q{{stage}}\E/$stage/gr).$toc."\n" : '') . $body;
-  print { $out_tsv } $summary  if $out_tsv;
+  print { $out_html }
+    ($toc ? (TOC_FILTER =~ s/\Q{{stage}}\E/$stage/gr).$toc."\n" : ""),
+    "<main>\n".$body."</main>\n";
+  print { $out_tsv } $tsv if $out_tsv;
   return $n;
 }
 
@@ -429,7 +338,7 @@ my $summary = openfile '>', 'ysmu.tsv';
 
 say { $index } make_header;
 
-if (make_entries($index, $summary, <w/*>)) {  # if non-empty
+if (make_entries('w', $index, $summary)) {  # if non-empty
   say { $index } make_footer 'stable';
 }
 else {  # if empty
@@ -460,11 +369,11 @@ sub make_stage { my ($words_dir, $name, $title, $alert, $emptymsg) = @_;
   </aside>
   END_OF_TEXT
   #
-  if (make_entries($fh, undef, <$words_dir/*>)) {  # if non-empty
+  if (make_entries($words_dir, $fh, undef)) {  # if non-empty
     say { $fh } make_footer $name;
   }
   else {  # if empty
-    say { $fh } qq[<article class="emptypage">$emptymsg</article>];
+    say { $fh } qq[<main><article class="emptypage">$emptymsg</article></main>];
     say { $fh } make_footer "empty $name";
   }
   #
@@ -497,17 +406,13 @@ make_stage 'u', 'unstaged', 'المصطلحات المؤجلة',
 
 make_page 'notes',
   make_header('موارد وإرشادات', 'notes'),
-  basic_html_to_big_html(filepath_to_html 'notes/src');
+  filepath_to_html('notes/src') =~ s|<p class="seealso">[^<>]+</p>(?=<ul class="ext">)||gr;
 
 # links and redirections {{{1
-# finally, because the links were not collected in full until processing all stages
 
 use File::Path qw[ remove_tree ];
-remove_tree 'link' if -d 'link';
+remove_tree 'link' if -e 'link';
 mkdir 'link';
-
-# for redirecting on nonpermalinks
-my %fixlinks = ( w => {}, c => {}, x => {}, u => {} );
 
 use constant ROOT_FOR_LINKS => '../../';
 sub make_link { my ($id, $title, $parent) = @_;
@@ -519,28 +424,9 @@ sub make_link { my ($id, $title, $parent) = @_;
     qq[<center class="redirect">ستوجه الآن إلى <a dir="ltr" href="$url">$title</a> آليا<br>(اضغط على الرابط أعلاه إن لم توجه)</center>];
 }
 
-for my $id (keys %links) {
-  my $parent = $links{$id} eq 'w' ? ''
-             : $links{$id} eq 'c' ? 'candidate/'
-             : $links{$id} eq 'x' ? 'experimental/'
-             : $links{$id} eq 'u' ? 'unstaged/'
-             : die "\e[1;31m  bad parent for '$id' in link/\e[m\n";
-  if (exists $long{$id}) {  # if $id is an acronym or abbreviation
-    make_link $id, short_title_of($id), $parent;
-    make_link $long{$id}, word_title_of($long{$id}), $parent;
-    # for redirecting nonpermalinks; examples:
-    #   $fixlinks{w}{mfa} = "#mfa"
-    #   $fixlinks{w}{multi-factor_authentication} = "#mfa"
-    #   $fixlinks{u}{binary} = "unstaged/#binary"
-    my $c = $links{$id};
-    $fixlinks{$c}{$id} = "$parent#$id";
-    $fixlinks{$c}{$long{$id}} = "$parent#$id";
-  #
-  }
-  else {
-    make_link $id, word_title_of($id), $parent;
-    $fixlinks{$links{$id}}{$id} = "$parent#$id";
-  }
+for my $word (keys %links) {
+  my $info = $terms{$links{$word}};
+  make_link $word, $info->{title}, $info->{stage};
 }
 
 # ...and the links index
@@ -550,139 +436,21 @@ use constant EMPTY_STAGE_LINKS => qq[  <center class="blurred">لا توجد م�
 make_page 'link',
   make_header('روابط جميع المصطلحات', 'link'),
   do {
-    my (@w, @c, @x, @u);
-    for my $id (keys %links) {
-      # %links sorting is not enough, b/c if an acronym exists it's used for sorting (eg, 2FA).
-      if    ($links{$id} eq 'w') { push @w, [ $id,              "../#$id" ] }
-      elsif ($links{$id} eq 'c') { push @c, [ $id,    "../candidate/#$id" ] }
-      elsif ($links{$id} eq 'x') { push @x, [ $id, "../experimental/#$id" ] }
-      elsif ($links{$id} eq 'u') { push @u, [ $id,     "../unstaged/#$id" ] }
-      else { die "\e[1;31m  bad parent for '$id' in link/\e[m\n"; }
+    my %toc;
+    for my $t (keys %terms) {
+      my $cat = $terms{$t}{cat};  # w, c, x, u
+      push @{$toc{$cat}}, [ $t, "../$terms{$t}{stage}#$t" ]
     }
     # return
     TOC_FILTER =~ s|\Q{{stage}}\E|link/|gr .
     sprintf qq[<section><h2><a class="other" href="../%s">%s</a></h2>\n%s\n</section>%s] x 4,
-      '',              'المصطلحات المتفق عليها',     toc_links(@w) // EMPTY_STAGE_LINKS, "\n",
-      'candidate/',    'المصطلحات المرشحة للاتفاق',  toc_links(@c) // EMPTY_STAGE_LINKS, "\n",
-      'experimental/', 'المصطلحات التجريبية',        toc_links(@x) // EMPTY_STAGE_LINKS, "\n",
-      'unstaged/',     'المصطلحات المؤجلة',          toc_links(@u) // EMPTY_STAGE_LINKS, ""
+      '',              'المصطلحات المتفق عليها',     toc_links(@{$toc{w}}) // EMPTY_STAGE_LINKS, "\n",
+      'candidate/',    'المصطلحات المرشحة للاتفاق',  toc_links(@{$toc{c}}) // EMPTY_STAGE_LINKS, "\n",
+      'experimental/', 'المصطلحات التجريبية',        toc_links(@{$toc{x}}) // EMPTY_STAGE_LINKS, "\n",
+      'unstaged/',     'المصطلحات المؤجلة',          toc_links(@{$toc{u}}) // EMPTY_STAGE_LINKS, ""
   },
   'all';
 
-# redirect nonexistent nonpermalinks to their proper page
+# finally the atom feed
 
-sub replace_link { my ($filepath, $line_regex, $replacement) = @_;
-  my $fh = openfile '+<', $filepath;
-  my ($line, $curpos);
-  do { $curpos = tell $fh } while defined ($line = <$fh>) && $line !~ $line_regex;
-  if (!defined $line) {  # reached end-of-file before finding your match: die
-    die "replace_link failed to find your match in file '$filepath'\n"
-  }
-  my @rest = <$fh>;
-  seek $fh, $curpos, 0;  # the position in bytes at the start of the matching line => replace
-  print { $fh }
-    $replacement,
-    ($replacement =~ /\n\Z/ ? "" : "\n"),
-    @rest;
-  close $fh;
-}
-
-sub fix_nonpermalinks { my ($cat, $pagefile) = @_;
-  replace_link $pagefile, qr|\Q/***term*links***/\E|, join "", map {
-      my %L = $cat eq 'w' ? %{$fixlinks{$_}} : map s,^.*#,../$&,r, %{$fixlinks{$_}};
-      $cat eq $_ ? () :
-        join "", map { "    '#$_': '$L{$_}',\n" } sort keys %L;
-    } qw[ w c x u ]
-}
-
-fix_nonpermalinks w => 'index.html';
-fix_nonpermalinks c => 'candidate/index.html';
-fix_nonpermalinks x => 'experimental/index.html';
-fix_nonpermalinks u => 'unstaged/index.html';
-
-# the Atom feed {{{1
-
-exit if $debug_release;
-
-# returns the latest modification time of the summary line of a concrete path,
-#   or the time the term is moved between stages, whichever is later.
-# ISO date in UTC; b/c git returns the date in the TZ of the commiter.
-sub updated_from_path {
-  # must check if not in git yet.
-  my $path = $_[0] =~ s|'|'\\''|gr;
-  my $edittime = `git ls-files '$path'` eq ''
-    ? 0  # not in git => updated = now
-    : `git blame -L,1 --date=format:'<<<%s>>>' '$path'` =~ s/.*<<<([0-9]+)>>>.*\n/$1/r;
-  my $movetime = $edittime > 0 ? `bash .p/movetime.sh '@{[ $path =~ s,.*/,,r ]}'` : '';
-  my $unix = $movetime eq '' ? $edittime : max 0+$movetime, $edittime;
-  my $time = Time::Piece->new($unix == 0 ? undef : $unix);
-  my $date = ($time - $time->tzoffset)->datetime . 'Z';
-}
-
-# returns the earliest creation time of a term file in all stages.
-# ISO date in UTC; b/c git returns the date in the TZ of the commiter
-sub published_from_basename {
-  # if not in git yet, git doesn't error, and Time::Piece gives us "now" (b/c $unix is undef).
-  my $base = $_[0] =~ s|'|'\\''|gr;
-  my $unix = (split "\n", `git log --diff-filter=A --pretty=format:%cd --date=unix --reverse -- '?/$base'`)[0];
-  my $time = Time::Piece->new($unix);
-  my $date = ($time - $time->tzoffset)->datetime . 'Z';
-}
-
-my %tags = map { $_->[0] => sprintf '<link rel="alternate" href="%s/#"/><category scheme="https://www.noureddin.dev/ysmu/%s" term="%s" label="%s"/>', @{$_->[1]} } (
-  [w => [('')x2, 'stable',   'المصطلحات المتفق عليها']],
-  [c => [('candidate')x3,    'المصطلحات المرشحة للاتفاق']],
-  [x => [('experimental')x3, 'المصطلحات التجريبية']],
-  [u => [('unstaged')x3,     'المصطلحات المؤجلة']],
-);
-
-# this cannot give undef for a link; otherwise it would have died in the links index
-
-my %upd = map { $_ => updated_from_path $links{$_} .'/'. $_ } keys %links;
-
-my $updated = maxstr values %upd;
-
-my $m = openfile '>', 'feed.atom.xml';
-print { $m } <<"END_OF_TEXT" =~ s/>\s+</></gr;
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ar" dir="rtl">
-  <title>معجم يسمو للمصطلحات التقنية الحديثة</title>
-  <link rel="alternate" type="text/html" href="https://www.noureddin.dev/ysmu/" />
-  <link rel="self" type="application/atom+xml" href="https://www.noureddin.dev/ysmu/feed.atom" />
-  <icon>https://www.noureddin.dev/ysmu/etc/favicon-72x72.png</icon>
-  <updated>$updated</updated>
-  <id>tag:ysmu.noureddin.dev,2023:/feed.atom.xml</id>
-  <author>
-    <name>نور الدين | Noureddin</name>
-    <uri>https://www.noureddin.dev/</uri>
-  </author>
-END_OF_TEXT
-
-# https://www.ietf.org/archive/id/draft-snell-atompub-bidi-05.html
-# dir="rtl" is not widely supported, even https://validator.w3.org/feed/ warns about it,
-# so Unicode RTL embedding is still needed.
-
-# ASSUMPTION: if the arg contains RTL or LTR EMBED, it must be balanced with POP DIR.
-sub RTL(_) { "\N{RIGHT-TO-LEFT EMBEDDING}" . $_[0] . "\N{POP DIRECTIONAL FORMATTING}" }
-
-# ASCIIbetical sort, to keep the diffs low when changing summary translations or moving terms between stages
-for my $id (sort keys %upd) {
-  my $tag = $tags{ $links{$id} };
-  my $sum = $summs{$id};
-  my $upd = $upd{$id};
-  my $pub = published_from_basename $id;
-  print { $m }
-    '<entry>',
-    '<title>', human_title_of($id), '</title>',
-    $tag =~ s/#/#$id/gr,
-    '<updated>', $upd, '</updated>',
-    '<published>', $pub, '</published>',
-    '<id>tag:ysmu.noureddin.dev,2023:/', $id, '</id>',
-    '<summary>', RTL($sum), '</summary>',
-    # TODO: content
-    '</entry>', "\n";
-}
-
-print { $m } '</feed>';
-close $m;
-
+gen_atom %terms unless $debug_release;

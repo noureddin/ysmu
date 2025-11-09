@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>‫معجم يسمو — المصطلحات المؤجلة‬</title>
-  <link rel="stylesheet" type="text/css" href="../etc/style.min.css?h=Au-ms5cLE2lwLSjuXWclDhXBdGQ">
+  <link rel="stylesheet" type="text/css" href="../etc/style.min.css?h=yIXQcCcRz-6AX3DU9u6ruIEWZ9A">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:locale" content="ar_AR">
   <meta property="og:type" content="website">
@@ -44,78 +44,103 @@
 <button id="sub" type="submit" style="visibility:hidden;font-size:1pt;position:absolute;top:0">Search</button>
 </form>
 <section class="toc">
-  <a href="#binary" title="‫للأعداد والعوامل: ثنائي. للملفات والبيانات: رقمي.‬">binary</a>
-  <a href="#blob" title="‫كُتْلَة رَقَمِيَّة (ج: كُتَل رَقَمِيَّة).‬">blob</a>
-  <a href="#chroot" title="‫الاسم جَذر بَديل (ج: جُذور بَديلة)، والفعل بدّل الجذر، يُبدّل الجذر، تبديل الجذر.‬">chroot</a>
-  <a href="#cursor" title="‫مُؤَشِّر (ج: مُؤَشِّرَات).‬">cursor</a>
-  <a href="#hook" title="‫خُطَّاف (ج: خَطاطيف).‬">hook</a>
-  <a href="#pointer" title="‫للفأرة: مُؤَشِّر (ج: مُؤَشِّرَات). في البرمجة: مُشِير (ج: مُشِيرَات).‬">pointer</a>
-  <a href="#reference" title="‫في البرمجة: مُحِيل (ج: مُحِيلَات).‬">reference</a>
+  <a href="#binary" title="‫للأعداد والعوامل: ثنائي.  للملفات والبيانات: رقمي.‬" data-spell="">binary</a>
+  <a href="#blob" title="‫اسم: كُتْلَة رَقْمِيَّة (ج: كُتَل رَقْمِيَّة).‬" data-spell="">blob</a>
+  <a href="#chroot" title="‫الاسم: جَذر بَديل (ج: جُذور بَديلة).  الفعل: بدّل الجذر، يُبدّل الجذر، تبديل الجذر.‬" data-spell="">chroot</a>
+  <a href="#cursor" title="‫اسم: مُؤَشِّر (ج: مُؤَشِّرَات).‬" data-spell="">cursor</a>
+  <a href="#hook" title="‫اسم: خُطَّاف (ج: خَطاطيف).‬" data-spell="">hook</a>
+  <a href="#internationalize" title="‫الاسم: تدويل.  الفعل: دَوَّل يُدَوِّل تدويلًا، والأمر: دَوِّل، والمفعول: دُوِّل يُدَوَّل فهو مُدَوَّل.‬" data-spell="internationalise internationalisation internationalised internationalising internationalized internationalizing">internationalize, internationalization (i18n)</a>
+  <a href="#localize" title="‫الاسم: توطين.  الفعل: وَطَّن يُوَطِّن توطينًا، والأمر: وَطِّن، والمفعول: وُطِّن يُوَطَّن فهو مُوَطَّن.‬" data-spell="localise localisation localised localising localized localizing">localize, localization (l10n)</a>
+  <a href="#pointer" title="‫للفأرة: مُؤَشِّر (ج: مُؤَشِّرَات).  في البرمجة: مُشِير (ج: مُشِيرَات).  في أنظمة إدارة النسخ: إشارة (ج: إشارات).‬" data-spell="">pointer</a>
+  <a href="#reference" title="‫في البرمجة: مُحِيل (ج: مُحِيلَات).‬" data-spell="">reference</a>
   <p class="emptytoc blurred" style="display:none">ما من مصطلحات توافق تصفيتك</p>
 </section>
-<article><h2 id="binary"><a dir="ltr" href="#binary">binary</a></h2>
-<p>للأعداد والعوامل: ثنائي.<br>
-للملفات والبيانات: رقمي.</p>
-<p>نقول عدد ثنائي وعدد <a href="../link/decimal/">عشري</a> وعدد <a href="../link/hexadecimal/">ستعشري</a> وعدد <a href="../link/octal/">ثُماني</a>.<br>
+<main>
+<hr class="rm"><article><span class="anch" id="binary"><h2><a dir="ltr" href="#binary">binary</a></h2></span>
+<p class="main">للأعداد والعوامل: ثنائي.<br>للملفات والبيانات: رقمي.</p>
+<hr class="rm">
+<p>نقول عدد ثنائي وعدد عشري وعدد ستعشري وعدد ثُماني.<br>
 ومنها أن العدد العشري 4 يُمثَّل في نظام الأعداد الثنائية 100.</p>
 <p>أما للملفات والبيانات، فنقول رقمي. وهذا لأنها عكس «نصي».<br>
 فالبيانات، وبالتبعية الملفات، تُقسم غالبا إلى نوعين: بيانات نصية، وبيانات غير نصية.</p>
 <p>البيانات النصية هي التي لا تحتوي إلا على «نصوص»، أما البيانات غير النصية فهي تحتوي على «كل شيء آخر»: الصور والصوتيات والبرامج التنفيذية، إلخ.</p>
-<p>هذا التفريق تفريق عملي بحت. فأغلب الأوقات الفرق الوحيد في تعامل البرامج مع النوعين هو اعتبار وجود ال<a href="../link/character/">مِحرَف</a> الصفري (<code dir="ltr">U+0000</code>) من عدمه، فهو غير موجود في البيانات النصية لكن قد يوجد في البيانات الرقمية.</p>
-<p>فرق آخر هو معاملة <a href="../link/string/">سلسلة</a> إنهاء السطر على أنظمة التشغيل المختلفة، فويندوز يستعمل السلسلة CRLF (أي <code dir="ltr">"\r\n"</code> في الكثير من لغات البرمجة)، ولكن الأنظمة اليونكسية مثل ماك (منذ Mac OS X) وغنو/لينكس وأنظمة BSD الحرة وغيرهم، جميعها تستعمل مِحرَف LF (<code dir="ltr">U+000A</code>، أي <code dir="ltr">"\n"</code>) وحده. أما مِحرَف CL (<code dir="ltr">U+000D</code>، أي <code dir="ltr">"\r"</code>) فله سلوك آخر على هذه الأنظمة.</p>
+<p>هذا التفريق تفريق عملي بحت. فأغلب الأوقات الفرق الوحيد في تعامل البرامج مع النوعين هو اعتبار وجود المِحرَف الصفري (<code dir="ltr">U+0000</code>) من عدمه، فهو غير موجود في البيانات النصية لكن قد يوجد في البيانات الرقمية.</p>
+<p>فرق آخر هو معاملة سلسلة إنهاء السطر على أنظمة التشغيل المختلفة، فويندوز يستعمل السلسلة CRLF (أي <code dir="ltr">"\r\n"</code> في الكثير من لغات البرمجة)، ولكن الأنظمة اليونكسية مثل ماك (منذ Mac OS X) وغنو/لينكس وأنظمة BSD الحرة وغيرهم، جميعها تستعمل مِحرَف LF (<code dir="ltr">U+000A</code>، أي <code dir="ltr">"\n"</code>) وحده. أما مِحرَف CL (<code dir="ltr">U+000D</code>، أي <code dir="ltr">"\r"</code>) فله سلوك آخر على هذه الأنظمة.</p>
 <p>يظهر هذا الفرق عند فتح الملفات في عدد من لغات البرمجة: الوضع النصي (text) يحوّل سلسلة إنهاء السطر عند القراءة من الملف أو الكتابة إليه إلى ما يستعمله نظام تشغيلك الذي تشغّل عليه البرنامج. وفي الوضع الرقمي (binary) تكون القراءة والكتابة أمينة بغير تحويل أي مِحرَف. (ويظهر هذا في FTP، خصوصا لأن بعض البرامج تفترض الوضع النصي ما لم تغيره إلى الرقمي باختيار صريح، فتتدمر الملفات التنفيذية وغيرها عند النقل.)<br>
-(فرق آخر عند فتح الملفات بالوضع النصي هو إمكانية تحديد <a href="../link/character_encoding/">ترميز المحارف</a>، بل وجوب تحديده.)</p>
+(فرق آخر عند فتح الملفات بالوضع النصي هو إمكانية تحديد ترميز المحارف، بل وجوب تحديده.)</p>
 <p>(وهذا التفريق أيضا له سبب تاريخي: كانت النصوص بترميز ASCII، الذي استعمل وقتئذٍ ٧ بِتّات فقط، وتستعمل الملفات الرقمية دوما ٨ بتّات.)</p>
 <p>الواقع أن البيانات النصية (text data) جزء من البيانات الرقمية (binary data)، ولكن لها معاملة خاصة نظرا لطبيعتها.<br>
 والجميل أن المصطلح العربي يحمل هذا المعنى أيضا، بل يجعله أوضح.<br>
 </p>
 </article>
-<article><h2 id="blob"><a dir="ltr" href="#blob">blob</a></h2>
-<p>كُتْلَة رَقَمِيَّة (ج: كُتَل رَقَمِيَّة).</p>
-<p>كلمة BLOB (وتكتب blob أيضا) هي اختصار العبارة الإنجليزية ”binary large object“.<br>
-ويتصادف كلمة ”blob“ في الإنجليزية تعني «كتلة ذات شكل غير محدد».<br>
-وكانت في قواعد البيانات، حيث large تعني أن الكائن ذو حجم أكبر من الأحجام المعتادة للحقول (والتي لم تزد على عدة بايتات).<br>
-ولكن في Git وغيره تُستعمل لكائنات البيانات بغض النظر عن حجمها، فالملفات كلها جميعًا blobs في Git.<br>
-ولكن في Git توجد objects أيضا، وهي غير blobs، بل الـblobs نوع من الـobjects. فالأفضل ألا نقول للـblobs «كائنات رقمية» منعا لخلطها على القارئ مع objects (كائنات).</p>
+<hr class="rm"><article><span class="anch" id="blob"><h2><a dir="ltr" href="#blob">blob</a></h2></span>
+<p class="main">اسم: كُتْلَة رَقْمِيَّة (ج: كُتَل رَقْمِيَّة).</p>
+<hr class="rm">
+<p>كلمة ”blob“ في الإنجليزية تعني «كتلة ذات شكل غير محدد»، وهذا أصل الاسم (نسبةً إلى كائن خرافي في فلم رعب). ثم جعلوها اختصار العبارة الإنجليزية ”binary large object“. فكانت تكتب BLOB أحيانا.</p>
+<p>وكانت في قواعد البيانات، وفيها large تعني أن الكائن ذو حجم أكبر من الأحجام المعتادة للحقول (التي لم تزد على عدة بايتات).</p>
+<p>لكن في Git وغيره تُستعمل لكائنات البيانات بغض النظر عن حجمها، فالملفات كلها جميعًا blobs في Git.</p>
+<p>ولكن في Git توجد objects أيضا، وهي غير blobs، بل الـblobs نوع من الـobjects. فالأفضل ألا نقول للـblobs «كائنات رقمية» منعا لخلطها على القارئ مع objects (كائنات).</p>
 <p>فالأفضل هو «كتلة رقمية»، وممكن «كتلة» للاختصار عند أمن الخلط.</p>
 <p>ونقول «رقمية» وليس «ثنائية»؛ انظر <a dir="ltr" href="#binary">binary</a>.</p>
+<p class="seealso">اقرأ للاستزادة:</p><ul class="ext">
+  <li><a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Object_storage">مخزن الكتل في ويكيبديا الإنجليزية</a></li>
+</ul>
 <p class="seealso">انظر أيضا:</p><ul>
   <li><a dir="ltr" href="#binary">binary</a></li>
 </ul>
 </article>
-<article><h2 id="chroot"><a dir="ltr" href="#chroot">chroot</a></h2>
-<p>الاسم جَذر بَديل (ج: جُذور بَديلة)، والفعل بدّل الجذر، يُبدّل الجذر، تبديل الجذر.</p>
+<hr class="rm"><article><span class="anch" id="chroot"><h2><a dir="ltr" href="#chroot">chroot</a></h2></span>
+<p class="main">الاسم: جَذر بَديل (ج: جُذور بَديلة).<br>الفعل: بدّل الجذر، يُبدّل الجذر، تبديل الجذر.</p>
+<hr class="rm">
 <p>هو أمر يغير مجلد الجذر لعملية (برنامج أثناء تنفيذه)، فلا تستطيع الوصول إلى أي ملف أو مجلد خارج الجذر المحدد. وهي اختصار ”change root“.<br>
 </p>
 </article>
-<article><h2 id="cursor"><a dir="ltr" href="#cursor">cursor</a></h2>
-<p>مُؤَشِّر (ج: مُؤَشِّرَات).</p>
+<hr class="rm"><article><span class="anch" id="cursor"><h2><a dir="ltr" href="#cursor">cursor</a></h2></span>
+<p class="main">اسم: مُؤَشِّر (ج: مُؤَشِّرَات).</p>
+<hr class="rm">
 <p class="seealso">انظر أيضا:</p><ul>
   <li><a dir="ltr" href="#pointer">pointer</a></li>
 </ul>
 </article>
-<article><h2 id="hook"><a dir="ltr" href="#hook">hook</a></h2>
-<p>خُطَّاف (ج: خَطاطيف).</p>
+<hr class="rm"><article><span class="anch" id="hook"><h2><a dir="ltr" href="#hook">hook</a></h2></span>
+<p class="main">اسم: خُطَّاف (ج: خَطاطيف).</p>
+<hr class="rm">
 <p>وهي الحديدة المعوجة التي تعلّق فيها الأشياء.</p>
 <p>وتستعمل في البرمجيات لأنها المواضع التي يمكن إضافة أوامر إليها (أو تعلق عليها، مجازا).</p>
 <p>والجمع «خطاطيف» وليس «خطافات».</p>
 </article>
-<article><h2 id="pointer"><a dir="ltr" href="#pointer">pointer</a></h2>
-<p>للفأرة: مُؤَشِّر (ج: مُؤَشِّرَات).<br>
-في البرمجة: مُشِير (ج: مُشِيرَات).</p>
+<hr class="rm"><article><span class="anch" id="internationalize"><span class="anch" id="internationalization"><span class="anch" id="i18n"><h2><a dir="ltr" href="#internationalize">internationalize, internationalization (i18n)</a></h2></span></span></span>
+<p class="main">الاسم: تدويل.<br>الفعل: دَوَّل يُدَوِّل تدويلًا، والأمر: دَوِّل، والمفعول: دُوِّل يُدَوَّل فهو مُدَوَّل.</p>
+<hr class="rm">
+<p class="seealso">انظر أيضا:</p><ul>
+  <li><a dir="ltr" href="#localize">localize, localization (l10n)</a></li>
+</ul>
+</article>
+<hr class="rm"><article><span class="anch" id="localize"><span class="anch" id="localization"><span class="anch" id="l10n"><h2><a dir="ltr" href="#localize">localize, localization (l10n)</a></h2></span></span></span>
+<p class="main">الاسم: توطين.<br>الفعل: وَطَّن يُوَطِّن توطينًا، والأمر: وَطِّن، والمفعول: وُطِّن يُوَطَّن فهو مُوَطَّن.</p>
+<hr class="rm">
+<p class="seealso">انظر أيضا:</p><ul>
+  <li><a dir="ltr" href="#internationalize">internationalize, internationalization (i18n)</a></li>
+</ul>
+</article>
+<hr class="rm"><article><span class="anch" id="pointer"><h2><a dir="ltr" href="#pointer">pointer</a></h2></span>
+<p class="main">للفأرة: مُؤَشِّر (ج: مُؤَشِّرَات).<br>في البرمجة: مُشِير (ج: مُشِيرَات).<br>في أنظمة إدارة النسخ: إشارة (ج: إشارات).</p>
+<hr class="rm">
 <p>عند التحدث عن الفأرة مثلا، فكلمة «مؤشر» (pointer أو cursor) صحيحة لأنها اسم الفاعل من الفعل «يؤشر» أيْ ذلك الشيء الذي «يضع إشارة». أما في سياق البرمجة، فإن pointer لا تعني «مؤشر»، لأن الـpointer لا يضع إشارة على شيء، بل يشير إلى شيء، فاللفظ الصحيح هو «مُشِير». وهو اللفظ المستعمل <a rel="noreferrer noopener" href="https://web.archive.org/web/20111028171719/http://iamsamy.blogspot.com/2011/08/blog-post_11.html">في لغة كلمات</a>.</p>
 <p class="seealso">انظر أيضا:</p><ul>
   <li><a dir="ltr" href="#reference">reference</a></li>
   <li><a dir="ltr" href="#cursor">cursor</a></li>
 </ul>
 </article>
-<article><h2 id="reference"><a dir="ltr" href="#reference">reference</a></h2>
-<p>في البرمجة: مُحِيل (ج: مُحِيلَات).</p>
+<hr class="rm"><article><span class="anch" id="reference"><h2><a dir="ltr" href="#reference">reference</a></h2></span>
+<p class="main">في البرمجة: مُحِيل (ج: مُحِيلَات).</p>
+<hr class="rm">
 <p>كلمة reference في سياق الكتب تعني الكتاب الذي نرجع إليه للبحث عن معلومة، فترجمته إلى «مرجع» عندئذٍ صحيحة. وهذا يشمل ما يكافئها كالمواقع. لكن في سياق البرمجة، الـreference لا يَرجع إلى شيء، بل يُرجعنا نحن أو يُحيلنا إلى شيء (refer to)، فترجمته إلى «مُحيل» أفضل.</p>
 <p class="seealso">انظر أيضا:</p><ul>
   <li><a dir="ltr" href="#pointer">pointer</a></li>
 </ul>
 </article>
+</main>
 <footer>
   <p>يمكنك التواصل معنا عبر
     صفحة <a rel="noreferrer noopener" href="https://github.com/noureddin/ysmu/issues/">مسائل جت‌هب</a><br>
@@ -130,8 +155,9 @@
   function normalize_text (t) {
     return (t
       .toLowerCase()
+      // remove the punctuation used in the main translation (summary) and the terms
       .replace(/[\u0640\u064B-\u065F]+/g, '')
-      .replace(/[-_\s,،.;؛?؟!()]+/g, ' ')
+      .replace(/[-\u2013_\s,،.:;؛(){}\[\]«»\u2E28\u2E29]+/g, ' ')
       .replace(/^ /g, '').replace(/ $/g, ' ')
       )
   }
@@ -144,6 +170,7 @@
       a.className
        = normalize_text(a.textContent).indexOf(nq) === -1
       && normalize_text(a.title).indexOf(nq) === -1
+      && normalize_text(a.dataset.spell).indexOf(nq) === -1
           ? 'hidden'
           : ''
       if (a.className === '') { nonempty = true }
@@ -154,96 +181,96 @@
   }
   // redirect on nonpermalinks (eg, /#term) that aren't in this page
   const tl = {
-    '#2fa': '../#2fa',
-    '#admin': '../#admin',
-    '#administrator': '../#admin',
-    '#authenticate': '../#authenticate',
-    '#authentication': '../#authentication',
-    '#blur': '../#blur',
-    '#check_in': '../#check_in',
-    '#clone': '../#clone',
-    '#color_scheme': '../#color_scheme',
-    '#commit': '../#commit',
-    '#computer': '../#computer',
-    '#contrast': '../#contrast',
-    '#crypto-': '../#crypto-',
-    '#cryptocurrency': '../#cryptocurrency',
-    '#encrypt': '../#encrypt',
-    '#encryption': '../#encryption',
-    '#federated': '../#federated',
-    '#federation': '../#federation',
-    '#filter': '../#filter',
-    '#firewall': '../#firewall',
-    '#high_contrast': '../#high_contrast',
-    '#instance': '../#instance',
-    '#laptop': '../#laptop',
-    '#mfa': '../#mfa',
-    '#mode': '../#mode',
-    '#moderator': '../#moderator',
-    '#multi-factor_authentication': '../#mfa',
-    '#protocol': '../#protocol',
-    '#repository': '../#repository',
-    '#sandbox': '../#sandbox',
-    '#stable': '../#stable',
-    '#sysadmin': '../#sysadmin',
-    '#system_administrator': '../#sysadmin',
-    '#telephone': '../#telephone',
-    '#theme': '../#theme',
-    '#two-factor_authentication': '../#2fa',
-    '#accuracy': '../candidate/#accuracy',
-    '#advantage': '../candidate/#advantage',
-    '#algorithm': '../candidate/#algorithm',
-    '#api': '../candidate/#api',
-    '#application_programming_interface': '../candidate/#api',
-    '#attribute': '../candidate/#attribute',
-    '#badge': '../candidate/#badge',
-    '#binary_search': '../candidate/#binary_search',
-    '#bit': '../candidate/#bit',
-    '#byte': '../candidate/#byte',
-    '#command': '../candidate/#command',
-    '#constant': '../candidate/#constant',
-    '#copy': '../candidate/#copy',
-    '#deep_learning': '../candidate/#deep_learning',
-    '#disadvantage': '../candidate/#disadvantage',
-    '#feature': '../candidate/#feature',
-    '#function': '../candidate/#function',
-    '#hardware': '../candidate/#hardware',
-    '#logo': '../candidate/#logo',
-    '#machine_learning': '../candidate/#machine_learning',
-    '#memory': '../candidate/#memory',
-    '#motto': '../candidate/#motto',
-    '#octet': '../candidate/#octet',
-    '#operating_system': '../candidate/#os',
-    '#os': '../candidate/#os',
-    '#paste': '../candidate/#paste',
-    '#precision': '../candidate/#precision',
-    '#procedure': '../candidate/#procedure',
-    '#quantum': '../candidate/#quantum',
-    '#qubit': '../candidate/#qubit',
-    '#software': '../candidate/#software',
-    '#terminal': '../candidate/#terminal',
-    '#variable': '../candidate/#variable',
-    '#ai': '../experimental/#ai',
-    '#alpha': '../experimental/#alpha',
-    '#artificial': '../experimental/#artificial',
-    '#artificial_intelligence': '../experimental/#ai',
-    '#beta': '../experimental/#beta',
-    '#chat': '../experimental/#chat',
-    '#convenience': '../experimental/#convenience',
-    '#convenient': '../experimental/#convenient',
-    '#download': '../experimental/#download',
-    '#immutability': '../experimental/#immutability',
-    '#immutable': '../experimental/#immutable',
-    '#load': '../experimental/#load',
-    '#mount': '../experimental/#mount',
-    '#one-time': '../experimental/#one-time',
-    '#proxy': '../experimental/#proxy',
-    '#server': '../experimental/#server',
-    '#upload': '../experimental/#upload',
-    '#verbose': '../experimental/#verbose',
+    '#accuracy': '../candidate/?#accuracy',
+    '#administrator': '../?#administrator',
+    '#admin': '../?#administrator',
+    '#advantage': '../candidate/?#advantage',
+    '#algorithm': '../candidate/?#algorithm',
+    '#alpha': '../experimental/?#alpha',
+    '#application_programming_interface': '../candidate/?#application_programming_interface',
+    '#api': '../candidate/?#application_programming_interface',
+    '#artificial': '../experimental/?#artificial',
+    '#artificial_intelligence': '../experimental/?#artificial_intelligence',
+    '#ai': '../experimental/?#artificial_intelligence',
+    '#attribute': '../candidate/?#attribute',
+    '#authenticate': '../?#authenticate',
+    '#authentication': '../?#authenticate',
+    '#badge': '../candidate/?#badge',
+    '#beta': '../experimental/?#beta',
+    '#binary_search': '../candidate/?#binary_search',
+    '#bit': '../candidate/?#bit',
+    '#blur': '../?#blur',
+    '#byte': '../candidate/?#byte',
+    '#chat': '../experimental/?#chat',
+    '#check_in': '../?#check_in',
+    '#clone': '../?#clone',
+    '#color_scheme': '../?#color_scheme',
+    '#command': '../candidate/?#command',
+    '#commit': '../?#commit',
+    '#computer': '../?#computer',
+    '#constant': '../candidate/?#constant',
+    '#contrast': '../?#contrast',
+    '#convenient': '../experimental/?#convenient',
+    '#convenience': '../experimental/?#convenient',
+    '#copy': '../candidate/?#copy',
+    '#crypto-': '../?#crypto-',
+    '#cryptocurrency': '../?#cryptocurrency',
+    '#deep_learning': '../candidate/?#deep_learning',
+    '#disadvantage': '../candidate/?#disadvantage',
+    '#download': '../experimental/?#download',
+    '#encrypt': '../?#encrypt',
+    '#encryption': '../?#encrypt',
+    '#feature': '../candidate/?#feature',
+    '#federated': '../?#federated',
+    '#federation': '../?#federated',
+    '#filter': '../?#filter',
+    '#firewall': '../?#firewall',
+    '#function': '../candidate/?#function',
+    '#hardware': '../candidate/?#hardware',
+    '#high_contrast': '../?#high_contrast',
+    '#immutable': '../experimental/?#immutable',
+    '#immutability': '../experimental/?#immutable',
+    '#instance': '../?#instance',
+    '#laptop': '../?#laptop',
+    '#load': '../experimental/?#load',
+    '#logo': '../candidate/?#logo',
+    '#machine_learning': '../candidate/?#machine_learning',
+    '#memory': '../candidate/?#memory',
+    '#mode': '../?#mode',
+    '#moderator': '../?#moderator',
+    '#motto': '../candidate/?#motto',
+    '#mount': '../experimental/?#mount',
+    '#multi-factor_authentication': '../?#multi-factor_authentication',
+    '#mfa': '../?#multi-factor_authentication',
+    '#octet': '../candidate/?#octet',
+    '#one-time': '../experimental/?#one-time',
+    '#operating_system': '../candidate/?#operating_system',
+    '#os': '../candidate/?#operating_system',
+    '#paste': '../candidate/?#paste',
+    '#precision': '../candidate/?#precision',
+    '#procedure': '../candidate/?#procedure',
+    '#protocol': '../?#protocol',
+    '#proxy': '../experimental/?#proxy',
+    '#quantum': '../candidate/?#quantum',
+    '#qubit': '../candidate/?#qubit',
+    '#repository': '../?#repository',
+    '#sandbox': '../?#sandbox',
+    '#server': '../experimental/?#server',
+    '#software': '../candidate/?#software',
+    '#stable': '../?#stable',
+    '#system_administrator': '../?#system_administrator',
+    '#sysadmin': '../?#system_administrator',
+    '#telephone': '../?#telephone',
+    '#terminal': '../candidate/?#terminal',
+    '#theme': '../?#theme',
+    '#two-factor_authentication': '../?#two-factor_authentication',
+    '#2fa': '../?#two-factor_authentication',
+    '#upload': '../experimental/?#upload',
+    '#variable': '../candidate/?#variable',
+    '#verbose': '../experimental/?#verbose',
   }
   function goto_link () {
-    const lnk = tl[location.hash]  // a term starts with '#'; tl only has terms that aren't in this page
+    const lnk = tl[location.hash.toLowerCase()]  // a term starts with '#'; tl only has terms that aren't in this page
     if (lnk) { location.href = lnk }  // redirect to the correct page and part of page
   }
   onload = function () {
