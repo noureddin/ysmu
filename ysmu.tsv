@@ -1,29 +1,58 @@
+accuracy	اسم: صِحّة.	precision	accuracy	
 administrator (admin)	الاسم: مُدِير (ج: مُدِيرون).  الفعل: أدار يُدير إدارةً، والأمر: أدِر، والمفعول: أُدير يُدار فهو مُدار.	@ moderator system_administrator	administrator admin	
+algorithm	اسم: خُوَارِزْمِيَّة (ج: خوارزميات).		algorithm	
+application programming interface (API)	اسم: واجهة برمجية، واجهة برمجة التطبيقات.		application_programming_interface API	
+attribute	اسم: سِمَة (ج: سمات).	theme feature	attribute	
 authenticate, authentication	الاسم: اسْتِيثَاق (ج: اسْتِيثَاقَات).  الفعل: استَوثَق يَستَوثِق استيثاقًا، والأمر: استَوثِق، والمفعول: اُستُوثِق يُستُوثَق فهو مُستَوثَق.	@ two-factor_authentication multi-factor_authentication	authenticate authentication	
+badge	اسم: شارة (ج: شارات).	logo motto	badge	
+binary search	اسم: بحث تنصيفي.	@	binary_search	
+bit	اسم: بِت (ج: بتات؛ وهي بلا اختصار لمنع خلطها مع «بايت»).	byte	bit	
 blur	الاسم: تضبيب.  الفعل: ضَبَّب يُضَبِّب تضبيبًا، والأمر: ضَبِّب، والمفعول: ضُبِّب يُضَبَّب فهو مُضَبَّب.	@	blur	
+byte	اسم: أُثمون (ج: أثامين؛ اختصارها: أث).	@ bit octet	byte	
 check in	{{في أنظمة إدارة النسخ}}  الاسم: إيداع (ج: إيداعات).  الفعل: أَوْدَع يُودِع إيداعًا فهو مُودِع، والأمر أَوْدِع، والمفعول: أُودِع يُودَع فهو مُودَع.	commit	check_in	
 clone	الاسم: استِنساخ (ج: استِنساخات).  الفعل: استَنسَخ يَستَنسِخ استِنساخًا فهو مُستَنسِخ، والأمر: استَنسِخ، والمفعول: اُستُنسِخ يُستَنسَخ فهو مُستَنسَخ.	@ copy	clone	
 color scheme	اسم: نَسَق ألوان (ج: أنساق ألوان).	theme	color_scheme	colour scheme colourscheme colorscheme
+command	اسم: أمر (ج: أوامر).		command	
 commit	{{في أنظمة إدارة النسخ}}  الاسم: إيداع (ج: إيداعات).  الفعل: أَوْدَع يُودِع إيداعًا فهو مُودِع، والأمر أَوْدِع، والمفعول: أُودِع يُودَع فهو مُودَع.	@ repository	commit	committer committed committing
 computer	اسم: حاسوب (ج: حواسيب)؛ أو حاسب [آلي] (ج: حاسبات [آلية]).	@ laptop server	computer	
+constant	اسم وصفة: ثابِت (ج: ثوابت).	variable immutable	constant	
 contrast	اسم: تبايُن.	high_contrast	contrast	
+copy	الاسم والصفة: نُسْخة (ج: نُسَخ).  الفعل: نسخ ينسخ نَسْخًا.	clone instance	copy	
 crypto–	صفة: تَعمَوِيّ، تَعمَوِيَّة.	@ encrypt cryptocurrency	crypto-	
 cryptocurrency	اسم: عُمْلَة تَعمَوِيَّة (ج: عملات تعموية).	@ crypto-	cryptocurrency	
+deep learning	اسم: التعلُّم العميق.	machine_learning accuracy precision	deep_learning	
 encrypt, encryption	الاسم: تَعمِيَة.  الفعل: عَمَّى يُعمِّي تَعمِيَةً فهو مُعَمٍّ (المُعَمِّي)، والأمر: عَمِّ، والمفعول: عُمِّيَ يُعَمَّى فهو مُعَمَّى.	@	encrypt encryption	
+feature	اسم: مِيزة (ج: ميزات).	@ advantage attribute	feature	
 federated, federation	الصفة: اتِّحاديّ، اتِّحاديَّة.  الاسم: اتِّحاد (ج: اتِّحادات).	@	federated federation	
 filter	الاسم: تصفيَة (ج: تصفيات، أو لا يُجمع).  الفعل: صَفَّى يُصَفِّي تصفيَةً فهو مُصفِّي، والأمر: صَفِّ. والمفعول: صُفِّيَ يُصَفَّى فهو مُصَفَّى.  اسم الآلة: مِصفاة (ج: مِصفاوات).	@	filter	
 firewall	اسم: جِدار حماية (ج: جُدران حماية).		firewall	
+function	اسم: دالّة (ج: دوال).	procedure	function	
+hardware	اسم: عِتاد.	software	hardware	
 high contrast	الصفة: عالي التبايُن، عالية التبايُن.  الاسم: تبايُن عالٍ، التبايُن العالي.	@ contrast	high_contrast	
 instance	اسم: نُسْخَة (ج: نُسَخ).	@ copy	instance	
 laptop	اسم: حاسوب محمول (ج: حواسيب محمولة).	computer	laptop	
+logo	اسم: شِعار (ج: شعارات).	badge motto	logo	
+machine learning	اسم: تعلُّم الآلة.	deep_learning artificial_intelligence accuracy precision	machine_learning	
+memory	اسم: ذاكرة (ج: ذواكر).		memory	memories
 mode	اسم: وَضْع (ج: أوضاع).	@	mode	
 moderator	الاسم: مُشرِف (ج: مُشرِفون).  الفعل: أشرَف يُشرف إشرافًا.	administrator	moderator	moderate moderating moderation
+motto	اسم: هِتاف (ج: هتافات).	logo badge	motto	
 multi-factor authentication (MFA)	اسم: استيثاق متعدد العوامل.	authenticate two-factor_authentication	multi-factor_authentication MFA	
+octet	اسم: أُثمون (ج: أثامين؛ اختصارها: أث).	@ bit byte	octet	
+operating system (OS)	اسم: نظام تشغيل (ج: أنظمة تشغيل).		operating_system OS	
+paste	فعل: ألصَق يُلصِق إلصاقًا.		paste	
+precision	اسم: دِقّة.	accuracy	precision	
+procedure	اسم: إجراء (ج: إجراءات).	function	procedure	
 protocol	اسم: ميفاق (ج: موافيق).	@	protocol	
+quantum	صفة: كُمومي.		quantum	
+qubit	اسم: كيوبت (ج: كيوبتات)، وحدة كمومية.	quantum bit	qubit	
 repository	اسم: مُسْتَوْدَع (ج: مُسْتَوْدَعَات).	@ commit	repository	
 sandbox	الاسم: مَعزِل (ج: مَعَازِل).  الفعل: عَزَل يَعزِل عَزْلًا، والأمر: اعزِل، والمفعول: عُزِل يُعزَل فهو معزول.	@	sandbox	
+software	اسم: برمجيات (تستعمل بالجمع غالبا. وعند الضرورة مفردها: بَرْمَجِيّة).	hardware	software	
 stable	{{في إصدارات البرمجيات}}  الصفة: مستقِّر.  الاسم: إصدارة مستقرة، نسخة مستقرة، إصدار مستقر.	beta alpha	stable	
 system administrator (sysadmin)	اسم: مدير النظام (ج: مديرو النظام).	administrator	system_administrator sysadmin	
 telephone	اسم: هاتف (ج: هواتف).		telephone	
+terminal	اسم: طرَفِيّة (ج: طرفيات).	@	terminal	
 theme	اسم: نَسَق (ج: أنساق).	@ color_scheme	theme	
 two-factor authentication (2FA)	اسم: استيثاق ثنائي.	authenticate multi-factor_authentication	two-factor_authentication 2FA	
+variable	اسم وصفة: مُتَغَيِّر (ج: متغيرات).	constant immutable	variable	
