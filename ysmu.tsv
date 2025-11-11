@@ -40,7 +40,7 @@ motto	اسم: هِتاف (ج: هتافات).	logo badge	motto
 multi-factor authentication (MFA)	اسم: استيثاق متعدد العوامل.	authenticate two-factor_authentication	multi-factor_authentication MFA	
 octet	اسم: أُثمون (ج: أثامين؛ اختصارها: أث).	@ bit byte	octet	
 operating system (OS)	اسم: نظام تشغيل (ج: أنظمة تشغيل).		operating_system OS	
-paste	فعل: ألصَق يُلصِق إلصاقًا.		paste	
+paste	فعل: ألصَق يُلصِق إلصاقًا.	@	paste	
 precision	اسم: دِقّة.	accuracy	precision	
 procedure	اسم: إجراء (ج: إجراءات).	function	procedure	
 protocol	اسم: ميفاق (ج: موافيق).	@	protocol	
