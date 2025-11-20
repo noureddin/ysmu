@@ -34,7 +34,15 @@ my %terms = map {
   $t => { file => $file, cat => $cat, alt => $alt, short => $short, terms => \@terms, allterms => \@allterms, title => $title, stage => $stage }
 } glob '[wcxu]/*';
 
-# TODO: check if any duplicate terms
+my $has_dups;
+for (keys %terms) {
+  my @files = glob $terms{$_}{file} =~ s,^[wcxu]/,[wcxu]/,r;
+  if (@files > 1) {
+    warn "$_ has more than one file:\n", join "", map "  $_\n", @files;
+    ++$has_dups;
+  }
+}
+exit 2 if $has_dups;
 
 # for each term, we generate a link in link/TERM/ that redirects to it in
 # the agreed-upon, candidate, experimental, or unstaged page,
