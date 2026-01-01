@@ -364,6 +364,7 @@ footer svg {  /* feed icon; don't change width or height */
 code {
   background: var(--cd);
   border-radius: 0.75em / 0.5em;
+  font-size: 90%;
 }
 
 span.anch {
