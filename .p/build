@@ -244,7 +244,7 @@ sub toc_links {  # takes array of [ $id, "#$id" ]; returns a string '<section cl
         map {
           my $sum = "\N{RIGHT-TO-LEFT EMBEDDING}$terms{$_->[0]}{summary}\N{POP DIRECTIONAL FORMATTING}";
             # =~ s/  +/ /gr;  # multi-translation summaries have double-spaces
-          my $spell = join ' ', @{$terms{$_->[0]}{spellings}};
+          my $spell = join ' ', map s/ /_/gr, @{$terms{$_->[0]}{spellings}};
           qq[  <a href="$_->[1]" title="$sum" data-spell="$spell">$terms{$_->[0]}{title}</a>\n]
         }
         sort { fc $a->[0] cmp fc $b->[0] }
@@ -283,7 +283,7 @@ sub make_entries { my ($parent, $out_html, $out_tsv) = @_;
         $terms{$t}{summary} =~ s|\N{LEFT DOUBLE PARENTHESIS}(.*?)\N{RIGHT DOUBLE PARENTHESIS}|{{$1}}|gr,
         (join " ", ($has_explanation ? '@' : ()), @related_terms),
         (join " ", @{$terms{$t}{terms}}),
-        (join " ", @{$terms{$t}{spellings}}),
+        (join " ", map s/ /_/gr, @{$terms{$t}{spellings}}),
         "\n";  # the preceding \t is removed after the loop
     }
   }

@@ -11,7 +11,7 @@ blur	الاسم: تضبيب.  الفعل: ضَبَّب يُضَبِّب تضبي
 byte	اسم: أُثمون (ج: أثامين؛ اختصارها: أث).	@ bit octet	byte	
 check in	{{في أنظمة إدارة النسخ}}  الاسم: إيداع (ج: إيداعات).  الفعل: أَوْدَع يُودِع إيداعًا فهو مُودِع، والأمر أَوْدِع، والمفعول: أُودِع يُودَع فهو مُودَع.	commit	check_in	
 clone	الاسم: استِنساخ (ج: استِنساخات).  الفعل: استَنسَخ يَستَنسِخ استِنساخًا فهو مُستَنسِخ، والأمر: استَنسِخ، والمفعول: اُستُنسِخ يُستَنسَخ فهو مُستَنسَخ.	@ copy	clone	
-color scheme	اسم: نَسَق ألوان (ج: أنساق ألوان).	theme	color_scheme	colour scheme colourscheme colorscheme
+color scheme	اسم: نَسَق ألوان (ج: أنساق ألوان).	theme	color_scheme	colour_scheme colourscheme colorscheme
 command	اسم: أمر (ج: أوامر).		command	
 commit	{{في أنظمة إدارة النسخ}}  الاسم: إيداع (ج: إيداعات).  الفعل: أَوْدَع يُودِع إيداعًا فهو مُودِع، والأمر أَوْدِع، والمفعول: أُودِع يُودَع فهو مُودَع.	@ repository	commit	committer committed committing
 computer	اسم: حاسوب (ج: حواسيب)؛ أو حاسب [آلي] (ج: حاسبات [آلية]).	@ laptop server	computer	
@@ -53,6 +53,6 @@ stable	{{في إصدارات البرمجيات}}  الصفة: مستقِّر.  
 system administrator (sysadmin)	اسم: مدير النظام (ج: مديرو النظام).	administrator	system_administrator sysadmin	
 telephone	اسم: هاتف (ج: هواتف).		telephone	
 terminal	اسم: طرَفِيّة (ج: طرفيات).	@	terminal	
-theme	اسم: نَسَق (ج: أنساق).	@ color_scheme	theme	
+theme	اسم: نَسَق (ج: أنساق).	@ color_scheme	theme	theme_color theme_font theme_pack page_theme
 two-factor authentication (2FA)	اسم: استيثاق ثنائي.	authenticate multi-factor_authentication	two-factor_authentication 2FA	
 variable	اسم وصفة: مُتَغَيِّر (ج: متغيرات).	constant immutable	variable	
