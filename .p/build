@@ -299,7 +299,12 @@ sub make_entries { my ($parent, $out_html, $out_tsv) = @_;
   for my $lnk (@links) {
     if (!exists $links{$lnk}) {
       warn "Non-existent term: $lnk\n";
-      $body =~ s,<a\b[^>]* href="#$lnk">(.*?)</a>,$1,g
+      $body =~ s{<a\b[^>]* href="#$lnk">(.*?)</a>}{
+        my $txt = $1;
+        $txt eq $lnk
+          ? $txt
+          : "$txt (" . ($lnk =~ s/_/ /gr) . ")"
+      }ge
     }
     else {
       my $t = $links{$lnk};
