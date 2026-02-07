@@ -2,14 +2,18 @@ accuracy	اسم: صِحّة.	precision	accuracy
 administrator (admin)	الاسم: مُدِير (ج: مُدِيرون).  الفعل: أدار يُدير إدارةً، والأمر: أدِر، والمفعول: أُدير يُدار فهو مُدار.	@ moderator system_administrator	administrator admin	
 algorithm	اسم: خُوَارِزْمِيَّة (ج: خوارزميات).		algorithm	
 application programming interface (API)	اسم: واجهة برمجية، واجهة برمجة التطبيقات.		application_programming_interface API	
+attach, attachment	الاسم: مُرْفَق (ج: مرفقات).  الفعل: أرْفَق يُرْفِق إرفاقًا فهو مُرْفِق، والأمر: أَرْفِق، والمفعول: أُرْفِق يُرْفَق فهو مُرْفَق.		attach attachment	
 attribute	اسم: سِمَة (ج: سمات).	theme feature	attribute	
 authenticate, authentication	الاسم: اسْتِيثَاق (ج: اسْتِيثَاقَات).  الفعل: استَوثَق يَستَوثِق استيثاقًا، والأمر: استَوثِق، والمفعول: اُستُوثِق يُستُوثَق فهو مُستَوثَق.	@ two-factor_authentication multi-factor_authentication	authenticate authentication	
 badge	اسم: شارة (ج: شارات).	logo motto	badge	
 binary search	اسم: بحث تنصيفي.	@	binary_search	
 bit	اسم: بِت (ج: بتات؛ وهي بلا اختصار لمنع خلطها مع «بايت»).	byte	bit	
 blur	الاسم: تضبيب.  الفعل: ضَبَّب يُضَبِّب تضبيبًا، والأمر: ضَبِّب، والمفعول: ضُبِّب يُضَبَّب فهو مُضَبَّب.	@	blur	
+browse, browser	اسم الآلة: مُتَصَفِّح (ج: متصفحات).  الفعل: تصَفَّح يَتَصَفَّح تَصَفُّحًا، فهو مُتَصَفِّح، والأمر: تَصَفَّح، والمفعول: تُصُفِّح يُتَصَفَّح، فهو مُتَصَفَّح.		browse browser	
 byte	اسم: أُثمون (ج: أثامين؛ اختصارها: أث).	@ bit octet	byte	
 check in	{{في أنظمة إدارة النسخ}}  الاسم: إيداع (ج: إيداعات).  الفعل: أَوْدَع يُودِع إيداعًا فهو مُودِع، والأمر أَوْدِع، والمفعول: أُودِع يُودَع فهو مُودَع.	commit	check_in	
+chip	اسم: رُقاقة (ج: رقاقات).		chip	
+click	الاسم: نَقْرة (ج: نقرات).  الفعل: نَقَر يَنقِر نَقْرًا. والأمر: انقِر.	press	click	
 clone	الاسم: استِنساخ (ج: استِنساخات).  الفعل: استَنسَخ يَستَنسِخ استِنساخًا فهو مُستَنسِخ، والأمر: استَنسِخ، والمفعول: اُستُنسِخ يُستَنسَخ فهو مُستَنسَخ.	@ copy	clone	
 color scheme	اسم: نَسَق ألوان (ج: أنساق ألوان).	theme	color_scheme	colour_scheme colourscheme colorscheme
 command	اسم: أمر (ج: أوامر).		command	
@@ -42,6 +46,7 @@ octet	اسم: أُثمون (ج: أثامين؛ اختصارها: أث).	@ bit b
 operating system (OS)	اسم: نظام تشغيل (ج: أنظمة تشغيل).		operating_system OS	
 paste	فعل: ألصَق يُلصِق إلصاقًا.	@	paste	
 precision	اسم: دِقّة.	accuracy	precision	
+press	فعل: ضَغَط يَضْغَط ضَغْطًا فهو ضاغط، والأمر: اضغَط، والمفعول: ضَغِط يُضْغَط فهو مَضغوط.		press	
 procedure	اسم: إجراء (ج: إجراءات).	function	procedure	
 protocol	اسم: ميفاق (ج: موافيق).	@	protocol	
 quantum	صفة: كُمومي.		quantum	
