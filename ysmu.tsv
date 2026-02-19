@@ -28,6 +28,7 @@ cryptocurrency	اسم: عُمْلَة تَعمَوِيَّة (ج: عملات ت
 deep learning	اسم: التعلُّم العميق.	machine_learning accuracy precision	deep_learning	
 directory	{{في أنظمة الملفات}}  اسم: مُجَلَّد (ج: مجلدات).	@ folder file	directory	directories
 encrypt, encryption	الاسم: تَعمِيَة.  الفعل: عَمَّى يُعمِّي تَعمِيَةً فهو مُعَمٍّ (المُعَمِّي)، والأمر: عَمِّ، والمفعول: عُمِّيَ يُعَمَّى فهو مُعَمَّى.	@	encrypt encryption	
+even	صفة للأعداد: زَوجيّ، زوجية.	odd	even	
 feature	اسم: مِيزة (ج: ميزات).	@ advantage attribute	feature	
 federated, federation	الصفة: اتِّحاديّ، اتِّحاديَّة.  الاسم: اتِّحاد (ج: اتِّحادات).	@	federated federation	
 file	اسم: ملف (ج: ملفات).	folder directory	file	
@@ -38,6 +39,7 @@ function	اسم: دالّة (ج: دوال).	procedure	function
 hardware	اسم: عِتاد.	software	hardware	
 high contrast	الصفة: عالي التبايُن، عالية التبايُن.  الاسم: تبايُن عالٍ، التبايُن العالي.	@ contrast	high_contrast	
 instance	اسم: نُسْخَة (ج: نُسَخ).	@ copy	instance	
+integer	الاسم: عدد صحيح (ج: أعداد صحيحة).  الصفة: صحيح، صحيحة.		integer	
 laptop	اسم: حاسوب محمول (ج: حواسيب محمولة).	computer	laptop	
 logo	اسم: شِعار (ج: شعارات).	badge motto	logo	
 machine learning	اسم: تعلُّم الآلة.	deep_learning artificial_intelligence accuracy precision	machine_learning	
@@ -46,9 +48,14 @@ mode	اسم: وَضْع (ج: أوضاع).	@	mode
 moderator	الاسم: مُشرِف (ج: مُشرِفون).  الفعل: أشرَف يُشرف إشرافًا.	administrator	moderator	moderate moderating moderation
 motto	اسم: هِتاف (ج: هتافات).	logo badge	motto	
 multi-factor authentication (MFA)	اسم: استيثاق متعدد العوامل.	authenticate two-factor_authentication	multi-factor_authentication MFA	
+negative	صفة: سالب، سالبة.	positive	negative	
+network	اسم: شَبَكة (ج: شبكات).		network	
 octet	اسم: أُثمون (ج: أثامين؛ اختصارها: أث).	@ bit byte	octet	
+odd	صفة للأعداد: فَرديّ، فردية.	even	odd	
 operating system (OS)	اسم: نظام تشغيل (ج: أنظمة تشغيل).		operating_system OS	
 paste	فعل: ألصَق يُلصِق إلصاقًا.	@	paste	
+path	اسم: مسار (ج: مسارات).		path	
+positive	صفة: مُوجِب، موجِبة.	@ negative	positive	
 precision	اسم: دِقّة.	accuracy	precision	
 press	فعل: ضَغَط يَضْغَط ضَغْطًا فهو ضاغط، والأمر: اضغَط، والمفعول: ضَغِط يُضْغَط فهو مَضغوط.		press	
 procedure	اسم: إجراء (ج: إجراءات).	function	procedure	
