@@ -233,7 +233,7 @@ sub toc_links {  # takes array of [ $id, "#$id" ]; returns a string '<section cl
         map {
           /href="[^#]*#(.)/;
           my $c = $1;
-          $c = $c =~ /[0-9a-d]/ ? '0–9 A B C'
+          $c = $c =~ /[0-9a-c]/ ? '0–9 A B C'
              : $c =~ /[d-n]/
                ? 'D E F G H I J K L M N'
                : 'O P Q R S T U V W X Y Z';
