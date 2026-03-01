@@ -43,6 +43,12 @@ Lists (other than "see-also" term lists):
 
 (A convention is to use the default bullet for an unordered list of paragraph items, but an endash (`[['– ']]`) for tight lists.)
 
+Translation (aka Summary) paragraph:
+- `{{` and `}}` contain a field name.
+  It can be a "block element": on a line by its own to to define the field for the next line or lines (usually starts with "في").
+  And it can be an "inline element": on the same line as the definition (usually starts with "ل", like "للملفات").
+- Don't mix both block and inline `{{...}}` in the same summary paragraph.
+
 ---
 
 Other notes:

@@ -123,7 +123,6 @@ sub filepath_to_html(_) {
   return basic_html_to_big_html transform_para $ret;
   $ret =~ s{\A<p>([^\0]*?)</p>}{
     my $sum = $1;
-    $sum =~ s|<span dir="ltr">([^<>]*)</span>|\N{LEFT DOUBLE PARENTHESIS}$1\N{RIGHT DOUBLE PARENTHESIS}<br>|g;
     $sum =~ s/<br>\n?/  /g;
     $sum =~ s/  +/  /g;
     $sum =~ s/  \.  /   /g;
@@ -140,7 +139,8 @@ sub parse_entry(_) {
   $ret =~ s{\A<p>([^\0]*?)</p>}{
     $sum = $1;
     # process summary
-    $sum =~ s|<span dir="ltr">([^<>]*)</span>|\N{LEFT DOUBLE PARENTHESIS}$1\N{RIGHT DOUBLE PARENTHESIS}<br>|g;  # definition fields
+    $sum =~ s|<span dir="ltr">([^<>]*)</span><br>|\N{LEFT DOUBLE PARENTHESIS}$1\N{RIGHT DOUBLE PARENTHESIS}<br>|g;  # definition fields
+    $sum =~ s|<span dir="ltr">([^<>]*)</span> |\N{LEFT DOUBLE PARENTHESIS}$1\N{RIGHT DOUBLE PARENTHESIS}\N{EM SPACE}|g;
     $sum =~ s/<br>\n?/  /g;
     $sum =~ s/  +/  /g;
     $sum =~ s/  \.  /   /g;
