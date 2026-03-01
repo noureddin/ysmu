@@ -1,7 +1,7 @@
 # Ysmark (Ysmu Markup Language)
 
 Inline formatting (in a single line, not across lines):
-- `{{just some ltr text}}`: forces some part of the text to be LTR.
+- `{{just some ltr text}}`: forces some part of the text to be left-to-right (LTR).
 - `{{##SmallCaps##}}`: LTR & smallcaps.
 - `**strong emphasis**`: use sparingly.
 - ```` ``LTR code`` ````: an inline code span, always LTR.
@@ -17,25 +17,25 @@ Line formatting:
 
 Block formatting:
 - Blank lines delimit paragraphs.
-- `""""` on a line by its own, preceding a paragraph, makes it an Arabic (RTL) blockquote.
-- `''''` on a line by its own, preceding a paragraph, makes it an English (LTR) blockquote.
-- `::::` on a line by its own, makes every line till the end of paragraph a see-also linked term. It should be used at the end.
-- `####` on a line by its own, makes every line till the end of paragraph variant spellings of the same term (e.g., -ise/-ize, colour/color, and commonly used conjucations). It must come last (after the see-also paragraph-list).
-- `----` in a paragraph by its own makes a `<hr>` (thematic break); use sparingly.
-- `@@@@` in a paragraph by its own makes a negative paragraph space; can be used between paragraph and following tight lists
+- `""""` on a line by itself, preceding a paragraph, makes it an Arabic (RTL) blockquote.
+- `''''` on a line by itself, preceding a paragraph, makes it an English (LTR) blockquote.
+- `::::` on a line by itself, makes every line till the end of paragraph a see-also linked term. It should be used at the end.
+- `####` on a line by itself, makes every line till the end of paragraph variant spellings of the same term (e.g., -ise/-ize, colour/color, and commonly used conjucations). It must come last (after the see-also paragraph-list).
+- `----` in a paragraph by itself makes a `<hr>` (thematic break); use sparingly.
+- `@@@@` in a paragraph by itself makes a negative paragraph space; can be used between paragraph and following tight lists
   (ie, lists whose all items are lines, never a block element like a paragraph).
 - `!!!!` followed by a list of "`https://link` long mandatory title" lines to make a list of external links.
 - Starting a paragraph with `== title` makes that a `h2`, and preceding that with `[[id]]` on a separate line in the same
   paragraph gives it an id and makes it a link.
 
 Big blockquotes:
-- Start an Arabic (RTL) blockquote by `>>>>` in a paragraph by its own, and end it by `<<<<` in a paragraph on its own.
-- Start an English (LTR) blockquote by `}}}}` in a paragraph by its own, and end it by `{{{{` in a paragraph on its own.
+- Start an Arabic (RTL) blockquote by `>>>>` in a paragraph by itself, and end it by `<<<<` in a paragraph by itself.
+- Start an English (LTR) blockquote by `}}}}` in a paragraph by itself, and end it by `{{{{` in a paragraph by itself.
 
 Lists (other than "see-also" term lists):
-- Start an ordered list with `##((` in a paragraph by its own, and end it by `))##` in a paragraph by its own. (Think number = "#".)
-- Start an unordered list with `++((` in a paragraph by its own, and end it by `))++` in a paragraph by its own. (Think "+" is like a bullet.)
-- `[[type]]` can precede a list opening mark in a line by its own, to mark this list with a CSS `list-style-type`;
+- Start an ordered list with `##((` in a paragraph by itself, and end it by `))##` in a paragraph by itself. (Think number = "#".)
+- Start an unordered list with `++((` in a paragraph by itself, and end it by `))++` in a paragraph by itself. (Think "+" is like a bullet.)
+- `[[type]]` can precede a list opening mark in a line by itself, to mark this list with a CSS `list-style-type`;
   eg `[[arabic-indic]]\n##((` or `[['* ']]\n++((`.
 - Each item can be defined in two ways:
   - Start a line with `--` then a space, to make a `<li>` without inner `<p>`. (But each item still needs to be its own paragraph.)
@@ -45,7 +45,7 @@ Lists (other than "see-also" term lists):
 
 Translation (aka Summary) paragraph:
 - `{{` and `}}` contain a field name.
-  It can be a "block element": on a line by its own to to define the field for the next line or lines (usually starts with "في").
+  It can be a "block element": on a line by itself to define the field for the next line or lines (usually starts with "في").
   And it can be an "inline element": on the same line as the definition (usually starts with "ل", like "للملفات").
 - Don't mix both block and inline `{{...}}` in the same summary paragraph.
 
