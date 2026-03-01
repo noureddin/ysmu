@@ -12,16 +12,16 @@ $(targets): .p/* .t/* $(words) notes/src etc/style.min.css
 commit: ysmu.tsv
 	git add .
 	git commit
-	@# rebuild and re-commit to correct the dates in the atom feed
+	@# rebuild and re-commit to correct the dates in the Atom feed
 	perl -Mutf8 -CDSA .p/build
 	git add .
 	git commit --amend --no-edit
 	@# update the suami glossary
 	cp -f ysmu.tsv ../suami
-	(cd ../suami; make; git add index.html ysmu.tsv; git commit -m🌄 ;)
+	(msg="$$(git log -1 --format=%s)"; cd ../suami; make; git add index.html ysmu.tsv; git commit -m"🌄 $$msg" ;)
 
 push:
-	git push && (cd ../suami; pwd; git push;)
+	git push && git push aosus && (cd ../suami; pwd; git push;)
 
 .PHONY: clean commit push
 
