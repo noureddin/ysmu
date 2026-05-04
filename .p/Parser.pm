@@ -78,8 +78,10 @@ sub transform_list(_) {
     =~ s,^<p><strong></strong></p>\n(.*?)(?=\n<p><strong></strong></p>$|\n<li>|\Z),<li>$1</li>,mgrs
 }
 
+my $list_open = qr,<p> (?: \[\[ ([^";]*?) \]\] <br>\n)? (?:[#]{2}|[+]{2}) \(\( </p>,x;
+
 sub transform_para(_) {
-  return
+  my $r =
     ('<p>'.( $_[0] =~ s|<br>\n<br>\n|</p>\n\n<p>|gr).'</p>')
       =~ s|<p>\h*<br>\n|<p>|gr
       =~ s|<p>\h*</p>||gr
@@ -92,11 +94,15 @@ sub transform_para(_) {
       =~ s|<p>'{4}<br>\n(.*?)</p>|transform_en_blockquote($1)|mgrse
       =~ s|<p>(?:&gt;){4}</p>\n(.*?)\n<p>(?:&lt;){4}</p>|transform_ar_blockquote($1)|mgrse
       =~ s|<p>(?:[{]){4}</p>\n(.*?)\n<p>(?:[}]){4}</p>|transform_en_blockquote($1)|mgrse
-      =~ s|<p>\[\[([^";]*?)\]\]<br>\n\Q##((\E</p>(.*?)<p>\Q))##\E</p>|qq[<ol style="list-style-type:$1">].transform_list($2).'</ol>'|mgrse
-      =~ s|<p>\[\[([^";]*?)\]\]<br>\n\Q++((\E</p>(.*?)<p>\Q))++\E</p>|qq[<ul style="list-style-type:$1">].transform_list($2).'</ul>'|mgrse
-      =~ s|<p>\Q##((\E</p>(.*?)<p>\Q))##\E</p>|'<ol>'.transform_list($1).'</ol>'|mgrse
-      =~ s|<p>\Q++((\E</p>(.*?)<p>\Q))++\E</p>|'<ul>'.transform_list($1).'</ul>'|mgrse
-      =~ s|<p>@@@@</p>|<div style="margin: -1em"></div>|gr
+    ;
+  1 while
+      $r =~ s|<p>\[\[([^";\[\]]*?)\]\]<br>\n\Q##((\E</p>((?:(?!$list_open).)*?)<p>\Q))##\E</p>|qq[<ol style="list-style-type:$1">].transform_list($2).'</ol>'|mgse ||
+      $r =~ s|<p>\[\[([^";\[\]]*?)\]\]<br>\n\Q++((\E</p>((?:(?!$list_open).)*?)<p>\Q))++\E</p>|qq[<ul style="list-style-type:$1">].transform_list($2).'</ul>'|mgse ||
+      $r =~ s|<p>\Q##((\E</p>((?:(?!$list_open).)*?)<p>\Q))##\E</p>|'<ol>'.transform_list($1).'</ol>'|mgse ||
+      $r =~ s|<p>\Q++((\E</p>((?:(?!$list_open).)*?)<p>\Q))++\E</p>|'<ul>'.transform_list($1).'</ul>'|mgse ||
+      $r =~ s|<p>@@@@</p>|<div style="margin: -1em"></div>|g ||
+      0;
+  return $r;
 }
 
 sub basic_html_to_big_html(_) {

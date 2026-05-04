@@ -20,9 +20,9 @@ Block formatting:
 - `""""` on a line by itself, preceding a paragraph, makes it an Arabic (RTL) blockquote.
 - `''''` on a line by itself, preceding a paragraph, makes it an English (LTR) blockquote.
 - `::::` on a line by itself, makes every line till the end of paragraph a see-also linked term. It should be used at the end.
-- `####` on a line by itself, makes every line till the end of paragraph variant spellings of the same term (e.g., -ise/-ize, colour/color, and commonly used conjucations). It must come last (after the see-also paragraph-list).
+- `####` on a line by itself, makes every line till the end of paragraph variant spellings of the same term (e.g., -ise/-ize, colour/color, and commonly used conjucations). It can include related terms that are used/translated in the body. It must come last (after the see-also paragraph-list).
 - `----` in a paragraph by itself makes a `<hr>` (thematic break); use sparingly.
-- `@@@@` in a paragraph by itself makes a negative paragraph space; can be used between paragraph and following tight lists
+- `@@@@` in a paragraph by itself makes a negative paragraph space; can be used between a paragraph and a following tight list
   (ie, lists whose all items are lines, never a block element like a paragraph).
 - `!!!!` followed by a list of "`https://link` long mandatory title" lines to make a list of external links.
 - Starting a paragraph with `== title` makes that a `h2`, and preceding that with `[[id]]` on a separate line in the same
@@ -37,11 +37,10 @@ Lists (other than "see-also" term lists):
 - Start an unordered list with `++((` in a paragraph by itself, and end it by `))++` in a paragraph by itself. (Think "+" is like a bullet.)
 - `[[type]]` can precede a list opening mark in a line by itself, to mark this list with a CSS `list-style-type`;
   eg `[[arabic-indic]]\n##((` or `[['* ']]\n++((`.
+  - A convention is to use an endash (`[['– ']]`) for tight unordered lists.
 - Each item can be defined in two ways:
   - Start a line with `--` then a space, to make a `<li>` without inner `<p>`. (But each item still needs to be its own paragraph.)
-  - Put `****` in its own paragraph, to enclose in a `<li>` everything till the next item mark or list closing mark.
-
-(A convention is to use the default bullet for an unordered list of paragraph items, but an endash (`[['– ']]`) for tight lists.)
+  - Put `****` in its own paragraph, to enclose in a `<li>` everything till the next item mark or list closing mark. (Note: It must still precede the first item.)
 
 Translation (aka Summary) paragraph:
 - `{{` and `}}` contain a field name.
