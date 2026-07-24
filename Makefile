@@ -14,11 +14,14 @@ feed.atom.xml: index.html candidate/index.html  # other stages are not included 
 	deno run --quiet --allow-read --allow-env=HTTP_PROXY,http_proxy npm:clean-css-cli "$<" > "$@"
 
 commit: ysmu.tsv
-	@echo perl .p/build
-	@perl -Mutf8 -CDSA .p/build  # build (including the Atom feed, because it's excluded from the default build)
+	@echo perl .p/build -  # build without the Atom feed
+	@perl -Mutf8 -CDSA .p/build -
 	git add .; git commit
+	@# the dates in the Atom feed rely on the commits' dates
+	@# so we need to commit the terms first, then build the Atom feed
+	@# then we add the new Atom feed to the same commit
 	@echo perl .p/build
-	@perl -Mutf8 -CDSA .p/build  # rebuild and re-commit to correct the dates in the Atom feed
+	@perl -Mutf8 -CDSA .p/build
 	git add .; git commit --amend --no-edit
 	@# update the suami glossary
 	cp -f ysmu.tsv ../suami; (msg="$$(git log -1 --format=%s)"; cd ../suami; make; git add index.html ysmu.tsv; git commit -m"🌄 $$msg" ;)

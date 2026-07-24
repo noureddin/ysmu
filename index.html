@@ -104,7 +104,7 @@
   <a href="#license" title="‫رُخْصة (ج: رُخَص).‬" data-spell="">license</a>
   <a href="#logo" title="‫اسم: شِعار (ج: شعارات).‬" data-spell="">logo</a>
   <a href="#machine_learning" title="‫اسم: تعلُّم الآلة.‬" data-spell="">machine learning</a>
-  <a href="#meet" title="‫⸨في الأعمال⸩  الاسم: اجتماع (ج: اجتماعات).  الفعل: اجتَمَع [مع قومٍ] يجتَمِع اجتماعًا فهو مُجتمِع، والأمر: اجتمِع.  ⸨في التواصل⸩  الاسم: لِقاء (ج: لقاءات).  الفعل: التقى [قومًا] يلتقي التقاءً فهو ملتقٍ، والأمر: التقِ.‬" data-spell="">meet, meeting</a>
+  <a href="#meet" title="‫⸨في الأعمال⸩  الاسم: اجتماع (ج: اجتماعات).  الفعل: اجتَمَع [مع أحدٍ] يجتَمِع اجتماعًا فهو مُجتمِع، والأمر: اجتمِع.  ⸨في التواصل⸩  الاسم: لِقاء (ج: لقاءات).  الفعل: التقى [أحدًا] يلتقي التقاءً فهو ملتقٍ، والأمر: التقِ.‬" data-spell="">meet, meeting</a>
   <a href="#memory" title="‫اسم: ذاكرة (ج: ذواكر).‬" data-spell="memories">memory</a>
   <a href="#mode" title="‫اسم: وَضْع (ج: أوضاع).‬" data-spell="">mode</a>
   <a href="#moderator" title="‫الاسم: مُشرِف (ج: مُشرِفون).  الفعل: أشرَف يُشرف إشرافًا.‬" data-spell="moderate moderating moderation">moderator</a>
@@ -651,7 +651,7 @@
 </ul>
 </article>
 <hr class="rm"><article><span class="anch" id="meet"><span class="anch" id="meeting"><h2><a dir="ltr" href="#meet">meet, meeting</a></h2></span></span>
-<p class="main">⸨في الأعمال⸩<br><i>الاسم:</i> اجتماع (ج: اجتماعات).<br><i>الفعل:</i> اجتَمَع [مع قومٍ] يجتَمِع اجتماعًا فهو مُجتمِع، والأمر: اجتمِع.<br>⸨في التواصل⸩<br><i>الاسم:</i> لِقاء (ج: لقاءات).<br><i>الفعل:</i> التقى [قومًا] يلتقي التقاءً فهو ملتقٍ، والأمر: التقِ.</p>
+<p class="main">⸨في الأعمال⸩<br><i>الاسم:</i> اجتماع (ج: اجتماعات).<br><i>الفعل:</i> اجتَمَع [مع أحدٍ] يجتَمِع اجتماعًا فهو مُجتمِع، والأمر: اجتمِع.<br>⸨في التواصل⸩<br><i>الاسم:</i> لِقاء (ج: لقاءات).<br><i>الفعل:</i> التقى [أحدًا] يلتقي التقاءً فهو ملتقٍ، والأمر: التقِ.</p>
 <hr class="rm">
 <p class="seealso">انظر أيضا:</p><ul>
   <li><a dir="ltr" href="#interview">interview</a></li>
@@ -1049,6 +1049,7 @@ A general state, usually used with an adjective describing the state. Use of the
   // redirect on nonpermalinks (eg, /#term) that aren't in this page
   const tl = {
     '#advantage': 'experimental/?#advantage',
+    '#alert': 'candidate/?#alert',
     '#alpha': 'experimental/?#alpha',
     '#application': 'candidate/?#application',
     '#architecture': 'candidate/?#architecture',
@@ -1105,6 +1106,8 @@ A general state, usually used with an adjective describing the state. Use of the
     '#member': 'candidate/?#member',
     '#menu': 'candidate/?#menu',
     '#mount': 'experimental/?#mount',
+    '#notify': 'candidate/?#notify',
+    '#notification': 'candidate/?#notify',
     '#one-time': 'experimental/?#one-time',
     '#option': 'candidate/?#option',
     '#pointer': 'unstaged/?#pointer',
@@ -1131,6 +1134,7 @@ A general state, usually used with an adjective describing the state. Use of the
     '#update': 'experimental/?#update',
     '#upload': 'experimental/?#upload',
     '#verbose': 'experimental/?#verbose',
+    '#warning': 'candidate/?#warning',
   }
   function goto_link () {
     const lnk = tl[location.hash.toLowerCase()]  // a term starts with '#'; tl only has terms that aren't in this page
