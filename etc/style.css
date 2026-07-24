@@ -82,11 +82,16 @@ html {
 }
 
 body {
-  font-family: "Amiri", "KacstOne", "Noto Naskh Arabic", "Noto Serif", serif;
+  font-family: "Amiri", "KacstOne", "Noto Naskh Arabic", "Noto Sans Arabic", "Noto Serif", serif;
   width: min(85%, 35em);
   margin: auto;
   color: var(--fg);
   background: var(--bg);
+}
+
+i {  /* parts of speech and sub-meanings (not fields) */
+  font-family: "Noto Kufi Arabic", "Noto Sans Arabic", sans-serif;
+  font-style: normal;
 }
 
 input {

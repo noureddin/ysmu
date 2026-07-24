@@ -281,7 +281,11 @@ sub make_entries { my ($parent, $out_html, $out_tsv) = @_;
     ++$n;
     my ($t) = $file =~ m#/([^,]+)(?=,|$)#g;
     push @toc, [ $t, '#'.$t ];
-    $body .= $terms{$t}{entry}."\n";
+    my ($sum) = $terms{$t}{entry} =~ /<p class="main">([^\0]*?)<hr class="rm">/;
+    $sum =~ s/<br>/\a/g;  # an arbitrary single-character that is not used here
+    $sum =~ s/(^.*?|\a.*?)([^:\a\N{EM SPACE}]+:)(?<!\(ج:)/$1<i>$2<\/i>/g;
+    $sum =~ s/\a/<br>/g;
+    $body .= ($terms{$t}{entry} =~ s/(<p class="main">)([^\0]*?)(<hr class="rm">)/$1$sum$3/r)."\n";
     if ($out_tsv) {
       my $has_explanation = $terms{$t}{entry} =~ m|<hr class="rm">\n<p>|;
       #

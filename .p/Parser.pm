@@ -141,16 +141,6 @@ sub filepath_to_html(_) {
     $ret .= parse_line $_;
   }
   return basic_html_to_big_html transform_para $ret;
-  $ret =~ s{\A<p>([^\0]*?)</p>}{
-    my $sum = $1;
-    $sum =~ s/<br>\n?/  /g;
-    $sum =~ s/  +/  /g;
-    $sum =~ s/  \.  /   /g;
-    $sum =~ s/ +\z//g;
-    # return
-    '<p class="main">'.$sum.'</p><hr class="rm">'
-  }ge;
-  return $ret;
 }
 
 sub parse_entry(_) {
