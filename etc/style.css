@@ -280,7 +280,7 @@ p.main { /* the summary paragraph; highlighted differently */
   color: var(--fs);
   background: var(--sp);
   padding: 0.25em 0.5em;
-  border-radius: 0.25em;
+  border-radius: 6px;
 }
 
 p.main br { /* separate the different translations of a single term */
