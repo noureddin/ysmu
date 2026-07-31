@@ -285,6 +285,7 @@ sub make_entries { my ($parent, $out_html, $out_tsv) = @_;
     $sum =~ s/<br>/\a/g;  # an arbitrary single-character that is not used here
     $sum =~ s/(^.*?|\a.*?)([^:\a\N{EM SPACE}]+:)(?<!\(ج:)/$1<i class="pos">$2<\/i>/g;
     $sum =~ s/\a/<br>/g;
+    $sum =~ s/\x{2997}.*?\x{2998}/<i>$&<\/i>/g;  # sub-meanings with multiple parts of speech
     $body .= ($terms{$t}{entry} =~ s/(<p class="main">)([^\0]*?)(<hr class="rm">)/$1$sum$3/r)."\n";
     if ($out_tsv) {
       my $has_explanation = $terms{$t}{entry} =~ m|<hr class="rm">\n<p>|;
@@ -295,7 +296,9 @@ sub make_entries { my ($parent, $out_html, $out_tsv) = @_;
       #
       $tsv .= join "\t",
         $terms{$t}{title},
-        $terms{$t}{summary} =~ s|\N{LEFT DOUBLE PARENTHESIS}(.*?)\N{RIGHT DOUBLE PARENTHESIS}|{{$1}}|gr,
+        $terms{$t}{summary}
+          =~ s|\N{LEFT DOUBLE PARENTHESIS}(.*?)\N{RIGHT DOUBLE PARENTHESIS}|{{$1}}|gr
+          =~ s|\N{LEFT BLACK TORTOISE SHELL BRACKET}(.*?)\N{RIGHT BLACK TORTOISE SHELL BRACKET}|{$1}|gr,
         (join " ", ($has_explanation ? '@' : ()), @related_terms),
         (join " ", @{$terms{$t}{terms}}),
         (join " ", map s/ /_/gr, @{$terms{$t}{spellings}}),

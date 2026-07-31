@@ -26,6 +26,13 @@ commit: ysmu.tsv
 	@# update the suami glossary
 	cp -f ysmu.tsv ../suami; (msg="$$(git log -1 --format=%s)"; cd ../suami; make; git add index.html ysmu.tsv; git commit -m"🌄 $$msg" ;)
 
+recommit: ysmu.tsv
+	@echo perl .p/build
+	@perl -Mutf8 -CDSA .p/build
+	git add .; git commit --amend --no-edit
+	@# update the suami glossary
+	cp -f ysmu.tsv ../suami; (msg="$$(git log -1 --format=%s)"; cd ../suami; make; git add index.html ysmu.tsv; git commit -m"🌄 $$msg" ;)
+
 push:
 	git push && git push aosus && (cd ../suami; pwd; git push;)
 

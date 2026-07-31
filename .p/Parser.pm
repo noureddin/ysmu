@@ -146,11 +146,13 @@ sub filepath_to_html(_) {
 sub parse_entry(_) {
   my $ret = filepath_to_html $_[0];
   my $sum;
-  $ret =~ s{\A<p>([^\0]*?)</p>}{
+  $ret =~ s<\A<p>([^\0]*?)</p>><
     $sum = $1;
     # process summary
     $sum =~ s|<span dir="ltr">([^<>]*)</span><br>|\N{LEFT DOUBLE PARENTHESIS}$1\N{RIGHT DOUBLE PARENTHESIS}<br>|g;  # definition fields
     $sum =~ s|<span dir="ltr">([^<>]*)</span> |\N{LEFT DOUBLE PARENTHESIS}$1\N{RIGHT DOUBLE PARENTHESIS}\N{EM SPACE}|g;
+    $sum =~ s|\} |\}\N{EN SPACE}|g;
+    $sum =~ s|\{(.*?)\}|\N{LEFT BLACK TORTOISE SHELL BRACKET}$1\N{RIGHT BLACK TORTOISE SHELL BRACKET}|g;  # sub-meanings with multiple parts of speech
     $sum =~ s/<br>\n?/  /g;
     $sum =~ s/  +/  /g;
     $sum =~ s/  \.  /   /g;
@@ -169,7 +171,7 @@ sub parse_entry(_) {
           split " "x3, $sum;
     # return
     join "\n", @summary_paras, '<hr class="rm">'
-  }ge;
+  >ge;
   return $ret, $sum;
 }
 

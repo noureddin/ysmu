@@ -8,7 +8,7 @@ attribute	اسم: سِمَة (ج: سمات).	theme feature	attribute
 authenticate, authentication	الاسم: اسْتِيثَاق (ج: اسْتِيثَاقَات).  الفعل: استَوثَق يَستَوثِق استيثاقًا، والأمر: استَوثِق، والمفعول: اُستُوثِق يُستُوثَق فهو مُستَوثَق.	@ two-factor_authentication multi-factor_authentication	authenticate authentication	
 backup	صفة: احتياطيّ، احتياطيّة.  اسم: نسخة احتياطية (ج: نُسَخ احتياطية).  فعل: نَسَخ احتياطيًّا ينسخ نسخًا فهو ناسِخٌ احتياطيًّا، والأمر: انسخ احتياطيًّا، والمفعول: نُسخ احتياطيًّا يُنسَخ فهو منسوخٌ احتياطيًّا.	@	backup	back_up back-up backed_up backing_up
 badge	اسم: شارة (ج: شارات).	logo motto	badge	
-binary search	اسم: بحث تنصيفي.	@	binary_search	half-interval_search logarithmic_search binary_chop bisection_method interval_halving_method dichotomy_method
+binary search	الاسم: بحث تنصيفي.  الفعل: بَحَثَ تنصيفيًّا يبحَث بحثًا تنصيفيًّا فهو باحثٌ تنصيفيًّا، والأمر: ابحث تنصيفيًّا، والمفعول: بُحث عنه تنصيفيًّا يُبحث فهو مبحوثٌ عنه تنصيفيًّا.	@	binary_search	half-interval_search logarithmic_search binary_chop bisection_method interval_halving_method dichotomy_method
 bit	اسم: بِت (ج: بتات؛ وهي بلا اختصار لمنع خلطها مع «بايت»).	byte	bit	
 blur	الاسم: تضبيب.  الفعل: ضَبَّب يُضَبِّب تضبيبًا، والأمر: ضَبِّب، والمفعول: ضُبِّب يُضَبَّب فهو مُضَبَّب.	@	blur	
 browse, browser	اسم الآلة: مُتَصَفِّح (ج: متصفحات).  الفعل: تصَفَّح يَتَصَفَّح تَصَفُّحًا، فهو مُتَصَفِّح، والأمر: تَصَفَّح، والمفعول: تُصُفِّح يُتَصَفَّح، فهو مُتَصَفَّح.		browse browser	
@@ -27,7 +27,7 @@ commit	{{في أنظمة إدارة النسخ}}  الاسم: إيداع (ج: �
 compress, compression	{{تقليل حجم البيانات}} فعل: ضَغَط يَضْغَط ضَغْطًا فهو ضاغِط، والأمر: اضغَط، والمفعول: ضُغِط يُضْغَط فهو مَضغوط.	extract	compress compression	
 computer	اسم: حاسوب (ج: حواسيب)؛ أو حاسب [آلي] (ج: حاسبات [آلية]).	@ laptop server	computer	
 conference	اسم: مؤتمَر (ج: مؤتمرات).	meet	conference	
-constant	اسم وصفة: ثابِت (ج: ثوابت).	variable immutable	constant	
+constant	صفة واسم: ثابِت (ج: ثوابت).	variable immutable	constant	
 contrast	اسم: تبايُن.	high_contrast	contrast	
 copy	الاسم والصفة: نُسْخة (ج: نُسَخ).  الفعل: نسخ ينسخ نَسْخًا.	clone instance	copy	
 crypto–	صفة: تَعمَوِيّ، تَعمَوِيَّة.	@ encrypt cryptocurrency	crypto-	
@@ -36,7 +36,7 @@ deep learning	اسم: التعلُّم العميق.	machine_learning accuracy p
 directory	{{في أنظمة الملفات}} اسم: مُجَلَّد (ج: مجلدات).  {{في غير ذلك}} اسم: دَليل (ج: أدِلّة).	@ folder file	directory	directories
 draft	اسم: مُسَوَّدة (ج: مسوَّدات).	@	draft	
 encrypt, encryption	الاسم: تَعمِيَة.  الفعل: عَمَّى يُعمِّي تَعمِيَةً فهو مُعَمٍّ (المُعَمِّي)، والأمر: عَمِّ، والمفعول: عُمِّيَ يُعَمَّى فهو مُعَمَّى.	@	encrypt encryption	
-even	صفة للأعداد: زَوجيّ، زوجية.	odd	even	
+even	{{للأعداد}} صفة: زَوجيّ، زوجية.	odd	even	
 extract, extraction	{{للبيانات المضغوطة}} فعل: استَخْرَج يَستَخْرِج استِخْرَاجًا فهو مُستَخْرِج، والأمر: استَخْرِج، والمفعول: اُستُخْرِج يُستَخْرَج فهو مُستَخْرَج.	@ compress	extract extraction	
 feature	اسم: مِيزة (ج: ميزات).	@ advantage attribute	feature	
 federated, federation	الصفة: اتِّحاديّ، اتِّحاديَّة.  الاسم: اتِّحاد (ج: اتِّحادات).	@	federated federation	
@@ -56,7 +56,7 @@ key	اسم: مِفتاح (ج: مفاتيح).	button	key
 keyboard	اسم: لوحة مفاتيح (ج: لوحات مفاتيح).		keyboard	
 laptop	اسم: حاسوب محمول (ج: حواسيب محمولة).	computer	laptop	
 layer	اسم: طَبَقة (ج: طبقات).	alpha	layer	
-license	رُخْصة (ج: رُخَص).		license	
+license	اسم: رُخْصة (ج: رُخَص).		license	
 logo	اسم: شِعار (ج: شعارات).	badge motto	logo	
 machine learning	اسم: تعلُّم الآلة.	deep_learning artificial_intelligence accuracy precision	machine_learning	
 meet, meeting	{{في الأعمال}}  الاسم: اجتماع (ج: اجتماعات).  الفعل: اجتَمَع [مع أحدٍ] يجتَمِع اجتماعًا فهو مُجتمِع، والأمر: اجتمِع.  {{في التواصل}}  الاسم: لِقاء (ج: لقاءات).  الفعل: التقى [أحدًا] يلتقي التقاءً فهو ملتقٍ، والأمر: التقِ.	interview conference	meet meeting	
@@ -64,13 +64,13 @@ memory	اسم: ذاكرة (ج: ذواكر).		memory	memories
 mode	اسم: وَضْع (ج: أوضاع).	@	mode	
 moderator	الاسم: مُشرِف (ج: مُشرِفون).  الفعل: أشرَف يُشرف إشرافًا.	administrator	moderator	moderate moderating moderation
 motto	اسم: هِتاف (ج: هتافات).	logo badge	motto	
-mouse	فأرة (ج: فأرات).	keyboard	mouse	
+mouse	اسم: فأرة (ج: فأرات).	keyboard	mouse	
 multi-factor authentication (MFA)	اسم: استيثاق متعدد العوامل.	authenticate two-factor_authentication	multi-factor_authentication MFA	
 native	صفة: أصيل، أصيلة.	@	native	
 negative	صفة: سالب، سالبة.	positive	negative	
 network	اسم: شَبَكة (ج: شبكات).		network	
 octet	اسم: أُثمون (ج: أثامين؛ اختصارها: أث).	@ bit byte	octet	
-odd	صفة للأعداد: فَرديّ، فردية.	even	odd	
+odd	{{للأعداد}} صفة: فَرديّ، فردية.	even	odd	
 operating system (OS)	اسم: نظام تشغيل (ج: أنظمة تشغيل).		operating_system OS	
 paste	فعل: ألصَق يُلصِق إلصاقًا.	@	paste	
 path	اسم: مسار (ج: مسارات).		path	
@@ -78,7 +78,7 @@ permission	اسم: إذْن (ج: أُذون).		permission
 positive	صفة: مُوجِب، موجِبة.	@ negative	positive	
 precision	اسم: دِقّة.	accuracy	precision	
 press	فعل: ضَغَط يَضْغَط ضَغْطًا فهو ضاغط، والأمر: اضغَط، والمفعول: ضَغِط يُضْغَط فهو مَضغوط.		press	
-privacy	خصوصية.		privacy	
+privacy	اسم: خُصوصيّة.		privacy	
 procedure	اسم: إجراء (ج: إجراءات).	function	procedure	
 program	الاسم: برنامج (ج: برامج).  الفعل: بَرْمَج يُبَرْمِج برمجةً فهو مُبَرْمِج، والأمر: بَرْمِج، والمفعول: بُرْمِج يُبَرْمَج فهو مُبَرْمَج.		program	
 project	اسم: مشروع (ج: مشروعات، مشاريع).	@	project	
@@ -88,7 +88,7 @@ qubit	اسم: كيوبت (ج: كيوبتات)، وحدة كمومية.	quantum 
 rename	الاسم: تغيير اسم (ج: تغييرات أسماء).  الفعل: غَيَّر الاسمَ يُغَيِّره تغييرًا فهو مُغَيِّر، والأمر: غَيِّر الاسمَ، والمفعول: غُيِّر الاسمُ يُغيَّر فهو مُغَيَّر.		rename	
 repository	اسم: مُسْتَوْدَع (ج: مُسْتَوْدَعَات).	@ commit	repository	
 row	اسم: صَفّ (ج: صُفوف).	column	row	
-safety	سلامة.		safety	
+safety	اسم: سَلامة.		safety	
 sandbox	الاسم: مَعزِل (ج: مَعَازِل).  الفعل: عَزَل يَعزِل عَزْلًا، والأمر: اعزِل، والمفعول: عُزِل يُعزَل فهو معزول.	@	sandbox	
 search	الاسم: بحث.  الفعل: بَحَث يَبحَث بَحْثًا فهو باحث، والأمر: ابحَث، والمفعول: بُحِثَ عنه يُبحَث فهو مبحوث عنه.		search	
 software	اسم: برمجيات (تستعمل بالجمع غالبا. وعند الضرورة مفردها: بَرْمَجِيّة).	hardware	software	
@@ -100,5 +100,5 @@ terminal	اسم: طرَفِيّة (ج: طرفيات).	@	terminal
 theme	اسم: نَسَق (ج: أنساق).	@ color_scheme	theme	theme_color theme_font theme_pack page_theme
 two-factor authentication (2FA)	اسم: استيثاق ثنائي.	authenticate multi-factor_authentication	two-factor_authentication 2FA	
 upgrade	الاسم: ترقية (ج: ترقيات).  الفعل: رَقّى يُرَقّي ترقيةً فهو مُرَقِّي، والأمر: رَقِّ، والمفعول: رُقِّي يُرَقَى فهو مُرَقَّى.	update	upgrade	
-variable	اسم وصفة: مُتَغَيِّر (ج: متغيرات).	constant immutable	variable	
+variable	صفة واسم: مُتَغَيِّر (ج: متغيرات).	constant immutable	variable	
 window	اسم: نافذة (ج: نوافذ).		window	
