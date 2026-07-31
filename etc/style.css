@@ -93,6 +93,9 @@ i {  /* parts of speech and sub-meanings (not fields) */
   font-family: "Noto Kufi Arabic", "Noto Sans Arabic", sans-serif;
   font-style: normal;
 }
+i.pos {  /* parts of speech */
+  font-size: 90%;  /* Kufi is slightly too big */
+}
 
 input {
   font-family: inherit;
