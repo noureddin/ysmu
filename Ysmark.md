@@ -38,6 +38,9 @@ Lists (other than "see-also" term lists):
 - `[[type]]` can precede a list opening mark in a line by itself, to mark this list with a CSS `list-style-type`;
   eg `[[arabic-indic]]\n##((` or `[['* ']]\n++((`.
   - A convention is to use an endash (`[['– ']]`) for tight unordered lists.
+- `[[;start]]` alternatively can precede an ordered list opening mark in a line by itself, to indicate the number of the first item;
+  eg `[[;5]]\n##((`.
+  - Both can be combined: `[[arabic;5]]\n##((` to have an order list with Western numerals, starting with 5.
 - Each item can be defined in two ways:
   - Start a line with `--` then a space, to make a `<li>` without inner `<p>`. (But each item still needs to be its own paragraph.)
   - Put `****` in its own paragraph, to enclose in a `<li>` everything till the next item mark or list closing mark. (Note: It must still precede the first item.)

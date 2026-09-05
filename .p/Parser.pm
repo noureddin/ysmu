@@ -15,6 +15,7 @@ my %links_short = (
   '١٢مصري' => sub { "https://archive.org/details/CAI2012AREN/page/$_[0]/mode/1up" },
   'تنسيق' => sub { "https://archive.org/details/BUR2000ENFRAR/page/$_[0]/mode/1up" },
   'عربآيز' => sub { "https://www.arabeyes.org/techdict:$_[0]" },
+  'مصطلح' => sub { "https://mostalah.org/search?q=$_[0]" },
 );
 
 my $shortlink = join "|", sort keys %links_short;
@@ -60,7 +61,7 @@ sub transform_see_also(_) {
     sprintf qq[<p class="seealso">انظر أيضا:</p><ul>\n%s\n</ul>],
       join "\n",
         map { s|<br>||; s| |_|g; qq[  <li><a dir="ltr" href="#$_"><<title_of:$_>></a></li>] }
-          split "\n", $_[0]
+          grep !/#\h/, split "\n", $_[0]
 }
 
 sub transform_external_resources(_) {
@@ -110,7 +111,9 @@ sub transform_para(_) {
       =~ s|<p>(?:[{]){4}</p>\n(.*?)\n<p>(?:[}]){4}</p>|transform_en_blockquote($1)|mgrse
     ;
   1 while
+      $r =~ s|<p>\[\[([^";\[\]]*?);([0-9]+)\]\]<br>\n\Q##((\E</p>((?:(?!$list_open).)*?)<p>\Q))##\E</p>|qq[<ol start="$2" style="list-style-type:$1">].transform_list($3).'</ol>'|mgse ||
       $r =~ s|<p>\[\[([^";\[\]]*?)\]\]<br>\n\Q##((\E</p>((?:(?!$list_open).)*?)<p>\Q))##\E</p>|qq[<ol style="list-style-type:$1">].transform_list($2).'</ol>'|mgse ||
+      $r =~ s|<p>\[\[;([0-9]+)\]\]<br>\n\Q##((\E</p>((?:(?!$list_open).)*?)<p>\Q))##\E</p>|qq[<ol start="$1">].transform_list($2).'</ol>'|mgse ||
       $r =~ s|<p>\[\[([^";\[\]]*?)\]\]<br>\n\Q++((\E</p>((?:(?!$list_open).)*?)<p>\Q))++\E</p>|qq[<ul style="list-style-type:$1">].transform_list($2).'</ul>'|mgse ||
       $r =~ s|<p>\Q##((\E</p>((?:(?!$list_open).)*?)<p>\Q))##\E</p>|'<ol>'.transform_list($1).'</ol>'|mgse ||
       $r =~ s|<p>\Q++((\E</p>((?:(?!$list_open).)*?)<p>\Q))++\E</p>|'<ul>'.transform_list($1).'</ul>'|mgse ||
