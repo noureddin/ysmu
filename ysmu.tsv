@@ -1,5 +1,7 @@
 accuracy	اسم: صِحّة.	precision	accuracy	
 administrator (admin)	الاسم: مُدِير (ج: مُدِيرون).  الفعل: أدار يُدير إدارةً، والأمر: أدِر، والمفعول: أُدير يُدار فهو مُدار.	@ moderator system_administrator	administrator admin	
+alarm	{آلة الوقت}  اسم: مُنَبِّه (ج: منبهات).  {إبلاغ بأمر خطير}  الاسم: إنذار (ج: إنذارات).  الفعل: أنذَرَ [أحدًا بشيء] يُنذِر إنذارًا فهو مُنذِر، والأمر: أنذِرْ، والمفعول: أُنذِر يُنذَر فهو مُنذَر.	@ alert warning notify timer stopwatch	alarm	alarm_clock
+alert	{لأمر خطير}  الاسم: إنذار (ج: إنذارات).  الفعل: أنذَرَ [أحدًا بشيء] يُنذِر إنذارًا فهو مُنذِر، والأمر: أنذِرْ، والمفعول: أُنذِر يُنذَر فهو مُنذَر.  {لغير ذلك}  الاسم: تنبيه (ج: تنبيهات).  الفعل: نَبَّهَ [أحدًا لشيء] يُنَبِّه تنبيهًا فهو مُنَبِّه، والأمر: نَبِّه، والمفعول: نُبِّه يُنَبَّه فهو مُنَبَّه.	@ alarm notify warning	alert	
 algorithm	اسم: خُوَارِزْمِيَّة (ج: خوارزميات).		algorithm	
 align, alignment	الاسم: مُحاذاة (ج: محاذيات).  الفعل: حاذَى يُحاذِي محاذاةً فهو مُحاذِي، والأمر: حاذِ، والمفعول: حُوذِيَ يُحاذَى فهو مُحاذَى.	@	align alignment	align aligned alignment right-aligned left-aligned centered justify justified justification right-justified left-justified full_justification snap_to_grid align_to_grid
 application programming interface (API)	اسم: واجهة برمجية، واجهة برمجة التطبيقات.		application_programming_interface API	
@@ -69,6 +71,7 @@ multi-factor authentication (MFA)	اسم: استيثاق متعدد العوام
 native	صفة: أصيل، أصيلة.	@	native	
 negative	صفة: سالب، سالبة.	positive	negative	
 network	اسم: شَبَكة (ج: شبكات).		network	
+notify, notification	الاسم: إشعار (ج: إشعارات).  الفعل: أشعَر [أحدًا بشيء] يُشعِر إشعارًا فهو مُشعِر، والأمر: أشعِر، والمفعول: أُشعِر يُشعَر فهو مُشعَر.	alarm alert warning	notify notification	
 octet	اسم: أُثمون (ج: أثامين؛ اختصارها: أث).	@ bit byte	octet	
 odd	{{للأعداد}} صفة: فَرديّ، فردية.	even	odd	
 operating system (OS)	اسم: نظام تشغيل (ج: أنظمة تشغيل).		operating_system OS	
@@ -93,12 +96,15 @@ sandbox	الاسم: مَعزِل (ج: مَعَازِل).  الفعل: عَزَ�
 search	الاسم: بحث.  الفعل: بَحَث يَبحَث بَحْثًا فهو باحث، والأمر: ابحَث، والمفعول: بُحِثَ عنه يُبحَث فهو مبحوث عنه.		search	
 software	اسم: برمجيات (تستعمل بالجمع غالبا. وعند الضرورة مفردها: بَرْمَجِيّة).	hardware	software	
 stable	{{في إصدارات البرمجيات}}  الصفة: مستقِّر.  الاسم: إصدارة مستقرة، نسخة مستقرة، إصدار مستقر.	beta alpha	stable	
+stopwatch	اسم: ساعة إيقاف (ج: ساعات إيقاف).	@ timer	stopwatch	
 system	اسم: نِظام (ج: أنظمة، نُظُم).	@	system	
 system administrator (sysadmin)	اسم: مدير النظام (ج: مديرو النظام).	administrator	system_administrator sysadmin	
 telephone	اسم: هاتف (ج: هواتف).		telephone	
 terminal	اسم: طرَفِيّة (ج: طرفيات).	@	terminal	
 theme	اسم: نَسَق (ج: أنساق).	@ color_scheme	theme	theme_color theme_font theme_pack page_theme
+timer	اسم: مُؤَقِّت (ج: مؤقِّتات).	@ stopwatch alarm	timer	
 two-factor authentication (2FA)	اسم: استيثاق ثنائي.	authenticate multi-factor_authentication	two-factor_authentication 2FA	
 upgrade	الاسم: ترقية (ج: ترقيات).  الفعل: رَقّى يُرَقّي ترقيةً فهو مُرَقِّي، والأمر: رَقِّ، والمفعول: رُقِّي يُرَقَى فهو مُرَقَّى.	update	upgrade	
 variable	صفة واسم: مُتَغَيِّر (ج: متغيرات).	constant immutable	variable	
+warning	الاسم: تحذير (ج: تحذيرات).  الفعل: حذّر [أحدًا من شيء] يُحذّر تحذيرًا فهو مُحذِّر، والأمر: حَذِّر، والمفعول: حُذِّر يُحَذَّر فهو مُحذَّر.	alarm alert notify	warning	
 window	اسم: نافذة (ج: نوافذ).		window	
