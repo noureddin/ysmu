@@ -375,7 +375,7 @@ close $summary;
 # all other stages have an identical structure
 
 use constant LAMMA =>
-  qq[<a href="https://www.m-a-arabia.com/vb/showpost.php?s=b5f485336008816282cd7dfc5411d5ef&p=64761&postcount=3">ل\N{ZERO WIDTH JOINER}مّا</a>];
+  qq[<a href="https://www.m-a-arabia.com/site/29268.html">ل\N{ZERO WIDTH JOINER}مّا</a>];
 
 sub make_stage { my ($words_dir, $name, $title, $alert, $emptymsg) = @_;
   $alert = $alert =~ s|~|&nbsp;|gr =~ s/(\bو|\b)لمّا\b/$1@{[ LAMMA ]}/r;
