@@ -48,6 +48,7 @@ firewall	اسم: جِدار حماية (ج: جُدران حماية).		firewall
 folder	اسم: مُجَلَّد (ج: مجلدات).	directory file	folder	
 forum, fora	اسم: منتدى (ج: منتديات).		forum fora	
 function	اسم: دالّة (ج: دوال).	procedure	function	
+geolocate, geolocation	الاسم: مَوضِع جُغرافيّ (ج: مَواضِع جُغرافِيّة).  والفعل: حَدَّدَ المَوضِعَ جُغرافِيًّا يُحَدِّده فهو مُحَدِّدٌ المَوضِعَ جُغرافِيًّا، والمصدر: تحديد الموضعِ الجغرافيّ، والأمر: حَدِّد المَوضِعَ جُغرافِيًّا، والمفعول: حُدِّد المَوضِعَ جُغرافِيًّا يُحَدَّد فهو مُحَدَّدٌ المَوضِعَ جُغرافِيًّا.	@ locate	geolocate geolocation	geolocating
 graphics processing unit (GPU)	اسم: مُعالِج رسوميات (ج: معالجات رسوميات).	central_processing_unit	graphics_processing_unit GPU	
 hardware	اسم: عِتاد.	software	hardware	
 high contrast	الصفة: عالي التبايُن، عالية التبايُن.  الاسم: تبايُن عالٍ، التبايُن العالي.	@ contrast	high_contrast	
@@ -59,6 +60,7 @@ keyboard	اسم: لوحة مفاتيح (ج: لوحات مفاتيح).		keyboard
 laptop	اسم: حاسوب محمول (ج: حواسيب محمولة).	computer	laptop	
 layer	اسم: طَبَقة (ج: طبقات).	alpha	layer	
 license	اسم: رُخْصة (ج: رُخَص).		license	
+locate, location	الاسم: مَوضِع (ج: مَواضِع).  الفعل: حَدَّدَ المَوضِعَ يُحَدِّده فهو مُحَدِّدٌ المَوضِعَ، والمصدر: تحديد الموضعِ، والأمر: حَدِّد المَوضِعَ، والمفعول: حُدِّد المَوضِعَ يُحَدَّد فهو مُحَدَّدٌ المَوضِعَ.	@ geolocate position site path	locate location	locating<br>
 logo	اسم: شِعار (ج: شعارات).	badge motto	logo	
 machine learning	اسم: تعلُّم الآلة.	deep_learning artificial_intelligence accuracy precision	machine_learning	
 meet, meeting	{{في الأعمال}}  الاسم: اجتماع (ج: اجتماعات).  الفعل: اجتَمَع [مع أحدٍ] يجتَمِع اجتماعًا فهو مُجتمِع، والأمر: اجتمِع.  {{في التواصل}}  الاسم: لِقاء (ج: لقاءات).  الفعل: التقى [أحدًا] يلتقي التقاءً فهو ملتقٍ، والأمر: التقِ.	interview conference	meet meeting	
@@ -78,6 +80,7 @@ operating system (OS)	اسم: نظام تشغيل (ج: أنظمة تشغيل).	
 paste	فعل: ألصَق يُلصِق إلصاقًا.	@	paste	
 path	اسم: مسار (ج: مسارات).		path	
 permission	اسم: إذْن (ج: أُذون).		permission	
+position	الاسم: مَوْضِع (ج: مَواضِع).  الفعل: وَضَعَ يَضَع وَضْعًا فهو واضع، والأمر: ضَعْ، والمفعول: وُضِعَ يُوضَع فهو مُوضَع.  أو: مَوْضَعَ يُمَوْضِع مَوْضَعةً فهو مُمَوْضِع، والأمر: مَوْضِعْ، والمفعول: مُوضِعَ يُمَوْضَع فهو مُمَوْضَع.	@ locate	position	
 positive	صفة: مُوجِب، موجِبة.	@ negative	positive	
 precision	اسم: دِقّة.	accuracy	precision	
 press	فعل: ضَغَط يَضْغَط ضَغْطًا فهو ضاغط، والأمر: اضغَط، والمفعول: ضَغِط يُضْغَط فهو مَضغوط.		press	
@@ -94,6 +97,7 @@ row	اسم: صَفّ (ج: صُفوف).	column	row
 safety	اسم: سَلامة.		safety	
 sandbox	الاسم: مَعزِل (ج: مَعَازِل).  الفعل: عَزَل يَعزِل عَزْلًا، والأمر: اعزِل، والمفعول: عُزِل يُعزَل فهو معزول.	@	sandbox	
 search	الاسم: بحث.  الفعل: بَحَث يَبحَث بَحْثًا فهو باحث، والأمر: ابحَث، والمفعول: بُحِثَ عنه يُبحَث فهو مبحوث عنه.		search	
+site	اسم: مَوْقِع (ج: مواقع).	@ locate position path	site	
 software	اسم: برمجيات (تستعمل بالجمع غالبا. وعند الضرورة مفردها: بَرْمَجِيّة).	hardware	software	
 stable	{{في إصدارات البرمجيات}}  الصفة: مستقِّر.  الاسم: إصدارة مستقرة، نسخة مستقرة، إصدار مستقر.	beta alpha	stable	
 stopwatch	اسم: ساعة إيقاف (ج: ساعات إيقاف).	@ timer	stopwatch	
